@@ -1,69 +1,36 @@
-# React + TypeScript + Vite
+# Aguka –system (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Overview
 
-Currently, two official plugins are available:
+This is the **frontend application** of **Aguka**, a digital platform that helps community savings groups (associations) in Rwanda manage contributions, loans, and dividend sharing **transparently**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The frontend is built with **React, TypeScript, Vite, TailwindCSS**, and communicates with the backend APIs to provide members with dashboards, notifications, and financial records.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Tech Stack
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- ⚛️ **React (Vite + TypeScript)** – modern, fast frontend framework
+- 🎨 **TailwindCSS** – utility-first CSS for responsive styling
+- 🔗 **React Router** – client-side routing
+- 🛠 **Axios / Fetch API** – API communication
+- 🗂 **State Management** – React Context API / Redux Toolkit
+- 🧪 **Jest + React Testing Library** – testing framework
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 📂 Project Structure
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+src/
+ ┣ components/     # Reusable UI components (buttons, modals, inputs)
+ ┣ features/       # Feature-based modules (loans, contributions, members)
+ ┣ pages/          # Page-level components (Dashboard, Login, Register)
+ ┣ routes/         # Route definitions (AppRoutes.tsx)
+ ┣ services/       # API calls and external integrations
+ ┣ lib/            # Utility functions, helpers
+ ┣ types/          # TypeScript types & interfaces
+ ┣ assets/         # Images, icons, static files
+ ┣ App.tsx         # Root component
+ ┗ main.tsx        # Application entry point
 ```
