@@ -1,5 +1,13 @@
+import { BrowserRouter } from "react-router-dom";
+import AppRoutes from "./routes/AppRoutes";
 function App() {
-  return <>welcomme to aguka</>;
+  return (
+    <>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;
