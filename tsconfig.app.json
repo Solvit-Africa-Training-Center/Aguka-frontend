@@ -29,9 +29,11 @@
       "@features/*": ["features/*"],
       "@pages/*": ["pages/*"],
       "@lib/*": ["lib/*"],
-      "@routes/*": ["routses/*"],
+      "@routes/*": ["routes/*"],
       "@types/*": ["types/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@hooks/*": ["hooks/*"],
+      "@photos/*": ["photos/*"]
     }
   },
   "include": ["src"]
