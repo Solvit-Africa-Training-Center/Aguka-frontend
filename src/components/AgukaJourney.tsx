@@ -15,17 +15,17 @@ const AgukaJourney = () => {
           </span>
         </div>
 
-        <div className="flex gap-10 text-center ml-40   ">
-          <button className="p-4 flex gap-2 bg-[#003B42] w-50 capitalize rounded-md items-center">
+        <div className="flex gap-8 text-center ml-40   ">
+          <button className="p-4 flex gap-2 bg-[#003B42] w-50 h-20 capitalize rounded-md items-center">
             <span className="text-xl">create group</span>
             <span>
               <ArrowRight />
             </span>
           </button>
-          <button className="p-4 flex gap-2 border-1 border-bg-#D4D4D4 rounded-md w-60 capitalize items-center">
+          <button className="p-4 flex gap-2 border-1 border-bg-#D4D4D4 rounded-md w-65 h-20  capitalize items-center">
             <span className="text-xl">join existing group</span>
-            <span>
-              <ArrowRight />
+            <span className="animate-ping duration-5 transition">
+              <ArrowRight  />
             </span>
           </button>
         </div>

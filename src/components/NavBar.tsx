@@ -4,8 +4,7 @@ import { NavLink } from "react-router-dom";
 NavLink;
 const NavBar: React.FC = () => {
   return (
-    <div className=" w-full text-white text-2xl bg-[rgba(0,59,66,1)]
- flex justify-between   fixed font-poppins pt-3 pb-3 pr-[114px] pl-[114px] Z-10">
+    <div className=" w-full text-white text-2xl bg-[rgba(0,59,66,1)] flex justify-between   fixed font-poppins pt-3 pb-3 pr-[114px] pl-[114px]">
       <div className="w-[100px] ">
         <img src={logo} alt="aguka logo" className="rounded-full" />
       </div>
