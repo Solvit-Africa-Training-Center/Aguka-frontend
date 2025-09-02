@@ -3,10 +3,9 @@
 
 :root {
   --color-primary-300: #003B42;  
-  --color-secondary-50: #ffffff; 
-  --color-success: #22c55e;      
+  --color-secondary-50: #ffffff;       
   --color-warning: #F9A825;      
-  --color-border: #948E8E;       /* white border for visibility */
+  --color-border: #948E8E;       
 }
 
 body {

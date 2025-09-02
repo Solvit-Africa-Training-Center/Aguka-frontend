@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import loginImg from '@photos/login.jpg'; 
+import logoImg from '@photos/logo.png';
 import { Link } from "react-router-dom";
 
 export default function Login() {
@@ -27,19 +28,31 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center p-4 font-poppins overflow-y-auto" 
       style={{ backgroundColor: "var(--color-primary-300)" }}>
       <div className="text-[var(--color-secondary-50)] rounded-xl shadow-lg grid md:grid-cols-2 overflow-hidden max-w-4xl w-full">
+
         
         {/* Left Section */}
          <div className="hidden md:flex flex-col items-center justify-center p-6 relative">
-          <img src={loginImg} alt="Login" className="rounded-lg object-cover w-full h-full"/>
-          <div className="absolute top-10 left-10">
-            <h1 className="text-3xl font-bold text-[var(--color-secondary-50)] ">Save Together,</h1>
-            <h1 className="text-3xl font-bold text-[var(--color-warning)] mt-2">Grow Together</h1>
+<div className="relative w-full h-full">
+  <img 
+    src={loginImg} 
+    alt="Login" 
+    className="rounded-lg object-cover w-full h-full"
+  />
+  {/* Black transparent overlay */}
+  <div className="absolute inset-0 bg-black/60 rounded-lg"></div>
+</div>
+          <div className="absolute top-10 left-8">
+            <img src={logoImg} alt="Logo" className="w-20 h-20 mb-4 rounded-full object-cover"/>
+             <div className="absolute top-10 left-40">
+            <h1 className="text-2xl  font-bold text-[var(--color-secondary-50)] "> Save Together,</h1>
+            <h1 className="text-2xl font-bold text-[var(--color-warning)] mt-2"> GrowTogether</h1>
           </div>
+        </div>
         </div>
 
         {/* Right Section */}
         <div className="p-8 flex flex-col justify-center rounded-lg w-full">
-          <h2 className="text-3xl font-normal mb-6 text-[var(--color-secondary-50)] text-center ">Welcome</h2>
+          <h2 className="text-3xl font-normal mb-6 text-[var(--color-secondary-50)] text-center ">Join Aguka!</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email/Phone Number */}
@@ -86,7 +99,7 @@ export default function Login() {
           </div>
 
           {/* Google Button */}
-          <button className="w-full flex items-center justify-center gap-2 border border-[var(--color-border)] rounded-lg py-3 hover:bg-[#012B36] transition text-[var(--color-secondary-50)]">
+          <button className="w-full flex items-center justify-center gap-2  rounded-lg py-3 hover:bg-[#012B36] transition text-[var(--color-secondary-50)]">
             <FcGoogle size={24} />
             <span></span>
           </button>
