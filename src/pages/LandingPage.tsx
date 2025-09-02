@@ -7,14 +7,18 @@ import NavBar from "@components/NavBar";
 
 const LandingPage: React.FC = () => {
   return (
-    <div
-      className="bg-[rgba(0,59,66,0.7)]">
+    <div className="bg-[#003B42B2] ">
       <NavBar />
       <Hero />
       <KeyMetrics />
-      <About />
+      <section id="about">
+        <About />
+      </section>
+
       <AgukaJourney />
-      <Footer />
+      <section id="footer">
+        <Footer />
+      </section>
     </div>
   );
 };
