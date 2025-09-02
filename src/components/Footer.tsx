@@ -6,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { MdOutlineMail } from "react-icons/md";
 import { MdWifiCalling3 } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div>
@@ -31,16 +32,16 @@ const Footer = () => {
         </div>
         <div className="flex flex-col capitalize mt-10">
           <h2 className="text-3xl capitalize space-y-10 mb-5">legal</h2>
-          <span className="text-xl">privancy policy</span>
-          <span className="text-xl">terms of service</span>
-          <span className="text-xl">compliance</span>
-          <span className="text-xl">security</span>
+          <Link to="/faq" className="text-xl">privancy policy</Link>
+          <Link to="service" className="text-xl">terms of service</Link>
+          <Link to="/"className="text-xl">compliance</Link>
+          <Link to="/" className="text-xl">security</Link>
         </div>
         <div className="flex flex-col capitalize mt-10">
           <h2 className="text-3xl capitalize space-y-10 mb-5">quick link</h2>
-          <span className="text-xl">why aguka</span>
-          <span className="text-xl">services</span>
-          <span className="text-xl uppercase">faq</span>
+          <a href="#about" className="text-xl">why aguka</a>
+          <Link to="service" className="text-xl">services</Link>
+          <Link to="faq" className="text-xl uppercase">faq</Link>
         </div>
         <div className="flex flex-col ">
           <h2 className="text-3xl capitalize space-y-10 mb-5 mt-10">contact us</h2>
