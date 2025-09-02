@@ -11,7 +11,7 @@ const Hero = () => {
             </span>
           </h2>
 
-          <p className=" text-[#F4F4F4] text-3xl w-300 font-poppins text-left ml-80">
+          <p className=" text-[#F4F4F4] text-3xl w-300 font-poppins text-center ml-80 ">
             Join thousands building wealth through community-powered tontine
             circles. Pool your savings, take turns receiving, and achieve your
             financial goals faster.
@@ -20,7 +20,7 @@ const Hero = () => {
           <div className=" text-white pt-15 flex gap-10  mt-20 relative justify-center">
             <div className="flex gap-14 ">
               <button className="bg-[rgba(0,59,66,1)] hover:bg-[#FFA629] p-4 w-60 rounded-xl capitalize text-xl flex ">
-                <span>stay your circle </span>
+                <span>start your circle </span>
                 <span>
                   <MoveRight className="size-6 mt-1 ml-2" />
                 </span>
