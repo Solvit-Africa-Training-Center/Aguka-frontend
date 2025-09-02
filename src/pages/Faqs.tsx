@@ -73,8 +73,7 @@ export default function FAQPage() {
             </div>
           ))}
         </div>
-
-        
+        <hr className=" mt-10 flex-grow border-[var(--color-border)]" />
         <p className="mt-10 text-sm text-center">
           &copy; 2025 Unguka. All rights reserved. Building wealth through
           community.

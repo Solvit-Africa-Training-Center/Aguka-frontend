@@ -38,7 +38,7 @@ export default function Login() {
     alt="Login" 
     className="rounded-lg object-cover w-full h-full"
   />
-  {/* Black transparent overlay */}
+  
   <div className="absolute inset-0 bg-black/60 rounded-lg"></div>
 </div>
           <div className="absolute top-10 left-8">
@@ -55,21 +55,21 @@ export default function Login() {
           <h2 className="text-3xl font-normal mb-6 text-[var(--color-secondary-50)] text-center ">Join Aguka!</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email/Phone Number */}
+            
             <div className="flex flex-col">
               <label htmlFor="emailOrPhone" className="mb-1 text-sm text-[var(--color-secondary-50)]">Email/Phone number</label>
               <input type="text" id="emailOrPhone" name="emailOrPhone" value={form.emailOrPhone} onChange={handleChange} placeholder=""
                 className="w-full p-3 rounded-md border border-[var(--color-border)] bg-transparent text-[var(--color-secondary-50)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"/>
             </div>
 
-            {/* Password */}
+           
             <div className="flex flex-col">
               <label htmlFor="password" className="mb-1 text-sm text-[var(--color-secondary-50)]">Password</label>
               <input type="password" id="password" name="password" value={form.password} onChange={handleChange} placeholder=""
                 className="w-full p-3 rounded-md border border-[var(--color-border)] bg-transparent text-[var(--color-secondary-50)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"/>
             </div>
 
-            {/* Remember Me & Forgot Password */}
+          
             <div className="flex justify-between items-center">
               <div className="flex items-center">
                 <input type="checkbox" id="rememberMe" name="rememberMe" checked={form.rememberMe} onChange={handleChange}
@@ -83,7 +83,7 @@ export default function Login() {
               </a>
             </div>
 
-            {/* Submit */}
+           
             <button type="submit"
               className="w-full py-3 rounded-lg font-semibold transition mt-4"
               style={{ backgroundColor: "var(--color-warning)", color: "var(--color-secondary-50)" }}>
@@ -91,20 +91,19 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Divider */}
+         
           <div className="flex items-center my-6 text-gray-400">
             <hr className="flex-grow border-[var(--color-border)]" />
             <span className="mx-2 text-sm text-[var(--color-warning)]">Or continue with</span>
             <hr className="flex-grow border-[var(--color-border)]" />
           </div>
 
-          {/* Google Button */}
+        
           <button className="w-full flex items-center justify-center gap-2  rounded-lg py-3 hover:bg-[#012B36] transition text-[var(--color-secondary-50)]">
             <FcGoogle size={24} />
             <span></span>
           </button>
-
-          {/* Sign Up Link */}
+          
           <p className="text-center mt-6 text-gray-400 text-sm">
             Don't have an account?{" "}
            <Link to="/registermember" className="text-[var(--color-warning)] hover:underline">Sign Up </Link>
