@@ -1,5 +1,5 @@
 import logo from "assets/logo/agukalogo.png";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
@@ -45,6 +45,7 @@ const NavBar: React.FC = () => {
           </button>
         </div>
       </div>
+      <Outlet />
     </div>
   );
 };

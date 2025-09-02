@@ -26,25 +26,40 @@ const Footer = () => {
               <FaFacebook />
               <FaLinkedin />
               <FcGoogle />
-              
             </div>
           </div>
         </div>
         <div className="flex flex-col capitalize mt-10">
           <h2 className="text-3xl capitalize space-y-10 mb-5">legal</h2>
-          <Link to="/faq" className="text-xl">privancy policy</Link>
-          <Link to="service" className="text-xl">terms of service</Link>
-          <Link to="/"className="text-xl">compliance</Link>
-          <Link to="/" className="text-xl">security</Link>
+          <Link to="/faq" className="text-xl">
+            privancy policy
+          </Link>
+          <Link to="service" className="text-xl">
+            terms of service
+          </Link>
+          <Link to="/" className="text-xl">
+            compliance
+          </Link>
+          <Link to="/" className="text-xl">
+            security
+          </Link>
         </div>
         <div className="flex flex-col capitalize mt-10">
           <h2 className="text-3xl capitalize space-y-10 mb-5">quick link</h2>
-          <a href="#about" className="text-xl">why aguka</a>
-          <Link to="service" className="text-xl">services</Link>
-          <Link to="faq" className="text-xl uppercase">faq</Link>
+          <a href="#about" className="text-xl">
+            why aguka
+          </a>
+          <Link to="service" className="text-xl">
+            services
+          </Link>
+          <Link to="faq" className="text-xl uppercase">
+            faq
+          </Link>
         </div>
         <div className="flex flex-col ">
-          <h2 className="text-3xl capitalize space-y-10 mb-5 mt-10">contact us</h2>
+          <h2 className="text-3xl capitalize space-y-10 mb-5 mt-10">
+            contact us
+          </h2>
           <div className="flex">
             <MdOutlineMail className="text-secondary-300 size-8 " />
             <span className="text-xl">unguka@gmail.com</span>
