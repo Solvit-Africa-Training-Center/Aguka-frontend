@@ -33,7 +33,7 @@ const Hero = () => {
               </a>
             </div>
 
-            <button className="fixed right-5 size-20 bg-primary-500 rounded-full items-center flex  mt-20 animate animate-pulse">
+            <button className="fixed right-5 size-20 bg-primary-500 rounded-full items-center flex  mt-20 animate animate-spin">
               <div>
                 <i className="ri-movie-2-ai-fill text-5xl text-[#FFA629] ml-4 " />
               </div>
