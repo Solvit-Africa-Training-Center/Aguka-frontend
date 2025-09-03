@@ -57,7 +57,7 @@ const faqs = [
   },
 ];
 
-export default function FAQPage() {
+export default function Faqs() {
   return (
     <div className="min-h-screen bg-[var(--color-primary-300)] text-[var(--color-secondary-50)] flex justify-center items-start py-10">
       <div className="w-full max-w-3xl rounded-lg p-6" style={{ fontFamily: "var(--font-poppins)" }}>
@@ -75,8 +75,7 @@ export default function FAQPage() {
         </div>
         <hr className=" mt-10 flex-grow border-[var(--color-border)]" />
         <p className="mt-10 text-sm text-center">
-          &copy; 2025 Unguka. All rights reserved. Building wealth through
-          community.
+          &copy; 2025 Unguka. All rights reserved. Building wealth through community.
         </p>
       </div>
     </div>
