@@ -158,7 +158,7 @@ function ServicePage() {
             <div className="w-100  mt-10 ml-[190px]">
               <div className="flex  gap-2 items-center p-2 bg-[#344A46]">
                 <SquareCheckBig className="size-10 text-[#64DB86]" />
-                <span className="text-3xl font-bold font-poppins">
+                <span className="text-2xl font-bold font-poppins">
                   Simple & transparent
                 </span>
               </div>
@@ -166,15 +166,15 @@ function ServicePage() {
             <div className="w-100  mt-10 ">
               <div className="flex  gap-2 items-center p-2 bg-[#344A46]">
                 <SquareCheckBig className="size-10 text-[#64DB86]" />
-                <span className="text-3xl font-bold font-poppins">
+                <span className="text-2xl font-bold font-poppins">
                   safe & secure
                 </span>
               </div>
             </div>
-            <div className="w-150  mt-10 ml-[190px]">
+            <div className="w-180  mt-10 ml-[190px]">
               <div className="flex  gap-2 items-center p-2 bg-[#344A46]">
                 <SquareCheckBig className="size-10 text-[#64DB86]" />
-                <span className="text-3xl font-bold font-poppins">
+                <span className="text-2xl font-bold font-poppins">
                   Community_Powered Wealth Building
                 </span>
               </div>
