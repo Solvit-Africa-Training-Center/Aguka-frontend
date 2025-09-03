@@ -3,7 +3,6 @@ import LandingPage from "@pages/LandingPage";
 import ServicePage from "@pages/ServicePage";
 import NavBar from "@components/NavBar";
 import ErrorPage from "@pages/ErrorPage";
-
 const AppRoutes = () => {
   return (
     <div>

@@ -62,7 +62,7 @@ function ServicePage() {
         </div>
         <div className="grid grid-cols-2 gap-10 pt-10 ">
           <img
-             className="w-200 h-[401px] "
+            className="w-200 h-[401px] "
             src="image/3d7d19d46a8b49b810ff346704e80eab1ba710fb.jpg"
             alt=""
           />
@@ -103,12 +103,12 @@ function ServicePage() {
         </div>
         <div className="grid grid-cols-2 gap-10 pt-10 ">
           <img
-             className="w-200 h-[401px] "
+            className="w-200 h-[401px] "
             src="image/db8ca82f6fb9ef4a4ed0da74a73fea1d2022c46e.jpg"
             alt=""
           />
           <img
-             className="w-200 h-[401px] "
+            className="w-200 h-[401px] "
             src="image/a1333eb4795af0a5477d96165b386faa1f4921f7.jpg"
             alt=""
           />

@@ -21,7 +21,7 @@ const NavBar: React.FC = () => {
           <div className="space-x-10 font-bold p-4">
             <a href="/">Why Aguka</a>
 
-            <NavLink to="service" className="capitalize">
+            <NavLink to="service" className="capitalize scroll-smooth">
               Services
             </NavLink>
             <NavLink to="faq" className="uppercase">
