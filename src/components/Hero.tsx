@@ -25,13 +25,15 @@ const Hero = () => {
                   <MoveRight className="size-6 mt-1 ml-2" />
                 </span>
               </button>
-              <button className="bg-[rgba(48,119,128,1)] hover:bg-[#F9A825] p-4 w-60 rounded-xl capitalize text-xl ">
-                why aguka ?
-              </button>
+              <a href="#about">
+                {" "}
+                <button className="bg-[rgba(48,119,128,1)] hover:bg-[#F9A825] p-4 w-60 rounded-xl capitalize text-xl ">
+                  why aguka ?
+                </button>
+              </a>
             </div>
 
             <button className="fixed right-5 size-20 bg-primary-500 rounded-full items-center flex  mt-20 animate animate-pulse">
-             
               <div>
                 <i className="ri-movie-2-ai-fill text-5xl text-[#FFA629] ml-4 " />
               </div>

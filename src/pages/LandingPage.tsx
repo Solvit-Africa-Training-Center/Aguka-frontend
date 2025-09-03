@@ -4,11 +4,13 @@ import Footer from "@components/Footer";
 import Hero from "@components/Hero";
 import KeyMetrics from "@components/KeyMetric";
 import NavBar from "@components/NavBar";
+import { Outlet } from "react-router-dom";
 
 const LandingPage: React.FC = () => {
   return (
     <div className="bg-[#003B42B2] ">
       <NavBar />
+
       <Hero />
       <KeyMetrics />
       <section id="about">
@@ -19,6 +21,9 @@ const LandingPage: React.FC = () => {
       <section id="footer">
         <Footer />
       </section>
+      <div>
+        <Outlet />
+      </div>
     </div>
   );
 };
