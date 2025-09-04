@@ -9,7 +9,7 @@ const About: React.FC = () => {
       <div className="grid w-[1728px] h-[1488px] justify-between  top-[2391px] left-[-1px] p-10 ">
         <div className="w-[1573px] h-[1215px]   ">
           <div className="place-items-center ml-40">
-            <h2 className=" w-[613px] h-[144px] text-center text-7xl font-bold mb-20 capitalize">
+            <h2 className=" w-[613px] h-[144px] text-center text-7xl font-semibold mb-5 mt-10 capitalize">
               why aguka?
             </h2>
           </div>
@@ -25,13 +25,13 @@ const About: React.FC = () => {
               <div className="w-[693px] rounded-[30px] border border-[#D4D4D4] bg-[#003B42] p-10">
                 <div className=" grid w-[622px] h-[360px] gap-[50px]">
                   <div className="w-20 h-20 rounded-2xl p-3  bg-gradient-to-b from-[#B0C2C4] to-[#545D5E] place-items-center">
-                    <Users className="size-8 mt-2 text-secondary-300" />
+                    <Users className="size-8 mt-2 text-secondary-300 font-extrabold" />
                   </div>
                   <div className="w-[622px] h-[169px] grid gap-[50px]">
                     <h3 className="w-[622px] h-[47px text-[#FFFF] text-[40px] ">
                       From Your Circle
                     </h3>
-                    <p className="w-[622px] h-[72px] font-semibold text-[24px] text-[#D4D4D4] ">
+                    <p className="w-[622px] h-[72px] font-semibold text-[24px] text-[#BABABA] ">
                       Gather 5-20 trusted friends, family, or community members
                       to create your tontine circle.
                     </p>
@@ -50,13 +50,13 @@ const About: React.FC = () => {
               <div className="w-[693px] rounded-[30px] border border-[#D4D4D4] bg-[#003B42] p-10">
                 <div className=" grid w-[622px] h-[360px] gap-[50px]">
                   <div className="w-20 h-20 rounded-2xl p-3  bg-gradient-to-b from-[#B0C2C4] to-[#545D5E] place-items-center">
-                    <DollarSign className="size-8 mt-2 text-secondary-300" />
+                    <DollarSign className="size-8 mt-2 text-secondary-300 font-extrabold" />
                   </div>
                   <div className="w-[622px] h-[169px] grid gap-[50px]">
                     <h3 className="w-[622px] h-[47px text-[#FFFF] text-[40px] ">
                       Set Contribution Schedule
                     </h3>
-                    <p className="w-[622px] h-[72px] font-semibold text-[24px] text-[#D4D4D4] ">
+                    <p className="w-[622px] h-[72px] font-semibold text-[24px] text-[#BABABA] ">
                       Decide on regular contribution amounts and frequency -
                       weekly, monthly, or custom intervals.
                     </p>
@@ -74,13 +74,13 @@ const About: React.FC = () => {
               <div className="w-[693px] rounded-[30px] border border-[#D4D4D4] bg-[#003B42] p-10">
                 <div className=" grid w-[622px] h-[360px] gap-[50px]">
                   <div className="w-20 h-20 rounded-2xl p-3  bg-gradient-to-b from-[#B0C2C4] to-[#545D5E] place-items-center">
-                    <Calendar className="size-8 mt-2 text-secondary-300" />
+                    <Calendar className="size-8 mt-2 text-secondary-300 font-extrabold" />
                   </div>
                   <div className="w-[622px] h-[169px] grid gap-[50px]">
                     <h3 className="w-[622px] h-[47px text-[#FFFF] text-[40px] ">
                       Take Turns Receiving
                     </h3>
-                    <p className="w-[622px] h-[72px] font-semibold text-[24px] text-[#D4D4D4] ">
+                    <p className="w-[622px] h-[72px] font-semibold text-[24px] text-[#BABABA] ">
                       Each member receives the full pot in rotation, creating
                       powerful savings momentum for everyone.
                     </p>
@@ -99,13 +99,13 @@ const About: React.FC = () => {
               <div className="w-[693px] rounded-[30px] border border-[#D4D4D4] bg-[#003B42] p-10">
                 <div className=" grid w-[622px] h-[360px] gap-[50px]">
                   <div className="w-20 h-20 rounded-2xl p-3  bg-gradient-to-b from-[#B0C2C4] to-[#545D5E] place-items-center">
-                    <SquareArrowOutUpRight className="size-8 mt-2 text-secondary-300" />
+                    <SquareArrowOutUpRight className="size-8 mt-2 text-secondary-300 font-extrabold" />
                   </div>
                   <div className="w-[622px] h-[169px] grid gap-[50px]">
                     <h3 className="w-[622px] h-[47px text-[#FFFF] text-[40px] ">
                       Build Wealth Together
                     </h3>
-                    <p className="w-[622px] h-[72px] font-semibold text-[24px] text-[#D4D4D4] ">
+                    <p className="w-[622px] h-[72px] font-semibold text-[24px] text-[#BABABA] ">
                       Watch your financial goals become achievable through the
                       power of collective savings and accountability.
                     </p>
