@@ -51,16 +51,19 @@ export default function Login() {
       <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 gap-0.5 w-full ">
         {/* Left Section */}
         <div className=" w-full  md:flex flex-col ">
-          <img src={loginImg} alt="Login" className=" relative w-full min-h-screen " />
-           <div className="absolute inset-0 bg-black opacity-60"></div>
+          <img
+            src={loginImg}
+            alt="Login"
+            className=" relative w-full min-h-screen "
+          />
+          <div className="absolute inset-0 bg-black opacity-60"></div>
           <div className="absolute top-[140px] left-[88px] gap-[67px] grid w-[700px] h-[389px]">
-            
-              <img
-                src={logoImg}
-                alt="Logo"
-                className="w-40 h-40 mb-2 ml-70 rounded-full object-cover "
-              />
-           
+            <img
+              src={logoImg}
+              alt="Logo"
+              className="w-40 h-40 mb-2 ml-70 rounded-full object-cover "
+            />
+
             <div className="text-center">
               <h1 className="text-7xl font-extrabold text-[var(--color-secondary-50)]">
                 Save Together,
@@ -72,8 +75,10 @@ export default function Login() {
 
             <div className="text-center w-[681px] text-xl">
               <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
+                Aguka empowers communities to build financial strength through
+                collective savings. by pooling resource s,member access
+                opportunities to grow,achieve their goals, and support one
+                another
               </p>
             </div>
           </div>
@@ -106,7 +111,7 @@ export default function Login() {
                     <p className="text-red-400 text-sm">
                       {errors.emailOrPhone}
                     </p>
-                  )}   
+                  )}
                 </div>
 
                 <div className="flex flex-col w-[589px] h-[153px]">
