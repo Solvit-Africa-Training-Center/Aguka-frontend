@@ -14,7 +14,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -32,7 +32,7 @@
       "@routes/*": ["routes/*"],
       "@types/*": ["types/*"],
       "@services/*": ["services/*"],
-      "@hooks/*":["hooks/*"]
+      "@photos/*": ["photos/*"]
     }
   },
   "include": ["src"]
