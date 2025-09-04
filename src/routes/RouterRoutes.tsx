@@ -5,6 +5,7 @@ import Faqs from "@pages/Faqs";
 import CheckEmail from "@features/auth/CheckEmail";
 import ResetPassword from "@features/auth/ResetPassword";
 import ForgotPassword from "@features/auth/ForgotPassword";
+import FillBeforeRegister from "@features/auth/FillBeforeRegister";
 
 
 export default function AppRoutes() {
@@ -17,6 +18,7 @@ export default function AppRoutes() {
       <Route path="/checkemail" element={<CheckEmail/>} /> 
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/forgotpassword" element={<ForgotPassword/>}/>
+      <Route path="/fillbeforeregister" element={<FillBeforeRegister />} />
     </Routes>
   );
 }

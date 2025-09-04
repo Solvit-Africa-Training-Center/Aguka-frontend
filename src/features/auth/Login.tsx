@@ -4,7 +4,6 @@ import loginImg from '@photos/login.jpg';
 import logoImg from '@photos/logo.png';
 import { Link, useNavigate } from "react-router-dom";
 
-
 export default function Login() {
   const [form, setForm] = useState({
     emailOrPhone: "",
@@ -15,9 +14,6 @@ export default function Login() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState<string>("");
   const navigate = useNavigate();
-   
-
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;

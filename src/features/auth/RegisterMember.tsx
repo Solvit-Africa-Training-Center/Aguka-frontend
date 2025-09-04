@@ -8,10 +8,10 @@ import { BiLogoGmail } from "react-icons/bi";
 export default function RegisterMember() {
   const [form, setForm] = useState({
     fullName: "",
-    phone: "",
+   
     email: "",
     password: "",
-    groupId: ""
+   
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -28,11 +28,11 @@ export default function RegisterMember() {
     const newErrors: Record<string, string> = {};
 
     if (!form.fullName.trim()) newErrors.fullName = "Full Name is required";
-    if (!form.phone.trim()) {
-      newErrors.phone = "Phone is required";
-    } else if (!/^[0-9]{10,15}$/.test(form.phone)) {
-      newErrors.phone = "Enter a valid phone number (10-15 digits)";
-    }
+    // if (!form.phone.trim()) {
+    //   newErrors.phone = "Phone is required";
+    // } else if (!/^[0-9]{10,15}$/.test(form.phone)) {
+    //   newErrors.phone = "Enter a valid phone number (10-15 digits)";
+    // }
 
     if (!form.email.trim()) {
       newErrors.email = "Email is required";
@@ -46,7 +46,7 @@ export default function RegisterMember() {
       newErrors.password = "Password must be at least 6 characters";
     }
 
-    if (!form.groupId.trim()) newErrors.groupId = "Group Id is required";
+    // if (!form.groupId.trim()) newErrors.groupId = "Group Id is required";
 
     return newErrors;
   };
@@ -67,12 +67,12 @@ export default function RegisterMember() {
     setSuccess("Your account has been created successfully!");
     setForm({
       fullName: "",
-      phone: "",
+      // phone: "",
       email: "",
       password: "",
-      groupId: ""
+      // groupId: ""
     });
-        navigate("/login");
+        navigate("/FillBeforeRegister");
   };
 
   return (
