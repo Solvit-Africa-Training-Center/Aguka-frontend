@@ -186,7 +186,7 @@ export default function Login() {
             <button className="w-full flex items-center justify-center ">
               <img
                 src="image/gmail.png"
-                className="border border-[#FFFFFF]  rounded-2xl w-23 p-3 h-13"
+                className="border border-[#FFFFFF]  rounded-2xl w-23 p-4 h-13"
               />
             </button>
 
