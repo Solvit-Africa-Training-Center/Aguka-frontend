@@ -8,12 +8,12 @@ const NavBar: React.FC = () => {
     navigate("/login");
   };
   const handleRegister = () => {
-    navigate("/register");
+    navigate("/registermember");
   };
 
   return (
     <div>
-      <div className=" w-full text-white text-xl bg-[#003B42] flex justify-between   fixed font-poppins pt-3 pb-3 pr-[114px] pl-[114px] z-20">
+      <div className=" w-full text-white text-xl bg-[#003B42] flex justify-between  border-b border-primary-200 fixed font-poppins pt-3 pb-3 pr-[114px] pl-[114px] z-20">
         <div className="w-[100px] ">
           <img src={logo} alt="aguka logo" className="rounded-full" />
         </div>
