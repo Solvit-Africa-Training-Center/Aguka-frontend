@@ -11,11 +11,11 @@ const Footer = () => {
   return (
     <div>
       <div className="p-10 flex gap-10 font-poppins w-full text-white space-x-50 ">
-        <div className="place-items-center ml-30">
-          <div className="justify-center ">
+        <div className=" ml-30">
+          <div className=" ">
             <img src={logo} alt="logo aguka" className="w-20 rounded-full " />
           </div>
-          <div className="w-60 space-y-3 text-xl">
+          <div className="w-70 space-y-3 text-xl">
             <span className="">
               Empowering communities to build wealth together through modern
               Unguka. Join thousands who are achieving their financial goals
@@ -31,28 +31,28 @@ const Footer = () => {
         </div>
         <div className="flex flex-col capitalize mt-10">
           <h2 className="text-3xl capitalize space-y-10 mb-5">legal</h2>
-          <Link to="/faq" className="text-xl">
+          <Link to="/faq" className="text-xl hover:underline">
             privancy policy
           </Link>
-          <Link to="service" className="text-xl">
+          <Link to="service" className="text-xl hover:underline">
             terms of service
           </Link>
-          <Link to="/" className="text-xl">
+          <Link to="/" className="text-xl hover:underline">
             compliance
           </Link>
-          <Link to="/" className="text-xl">
+          <Link to="/" className="text-xl hover:underline">
             security
           </Link>
         </div>
         <div className="flex flex-col capitalize mt-10">
           <h2 className="text-3xl capitalize space-y-10 mb-5">quick link</h2>
-          <a href="#about" className="text-xl">
+          <a href="#about" className="text-xl hover:underline">
             why aguka
           </a>
-          <Link to="service" className="text-xl">
+          <Link to="service" className="text-xl hover:underline">
             services
           </Link>
-          <Link to="faq" className="text-xl uppercase">
+          <Link to="faq" className="text-xl uppercase hover:underline">
             faq
           </Link>
         </div>

@@ -141,7 +141,7 @@ export default function Login() {
                       name="rememberMe"
                       checked={form.rememberMe}
                       onChange={handleChange}
-                      className="h-[24px] w-[21px] text-[var(--color-warning)]  focus:ring-[var(--color-warning)] border-[#948E8E] rounded-[15px] bg-[#003B42]"
+                      className="h-[24px] w-[21px] text-[var(--color-warning)]   border border-[#948E8E] rounded-[15px] bg-[#003B42]"
                     />
                     <label
                       htmlFor="rememberMe"

@@ -26,11 +26,6 @@ export default function RegisterMember() {
     const newErrors: Record<string, string> = {};
 
     if (!form.fullName.trim()) newErrors.fullName = "Full Name is required";
-    // if (!form.phone.trim()) {
-    //   newErrors.phone = "Phone is required";
-    // } else if (!/^[0-9]{10,15}$/.test(form.phone)) {
-    //   newErrors.phone = "Enter a valid phone number (10-15 digits)";
-    // }
 
     if (!form.email.trim()) {
       newErrors.email = "Email is required";
@@ -131,14 +126,6 @@ export default function RegisterMember() {
               )}
             </div>
 
-            {/* Phone */}
-            {/* <div className="flex flex-col">
-              <label htmlFor="phone" className="mb-1 text-sm text-[var(--color-secondary-50)]">Phone</label>
-              <input type="text" id="phone" name="phone" value={form.phone} onChange={handleChange}
-                className="w-full p-2 rounded-md border border-[var(--color-border)] text-[var(--color-secondary-50)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"/>
-              {errors.phone && <p className="text-red-400 text-sm">{errors.phone}</p>}
-            </div> */}
-
             {/* Email */}
             <div className="flex flex-col">
               <label
@@ -179,15 +166,6 @@ export default function RegisterMember() {
               )}
             </div>
 
-            {/* Group Id */}
-            {/* <div className="flex flex-col">
-              <label htmlFor="groupId" className="mb-1 text-sm text-[var(--color-secondary-50)]">Group Id</label>
-              <input type="text" id="groupId" name="groupId" value={form.groupId} onChange={handleChange}
-                className="w-full p-2 rounded-md border border-[var(--color-border)] text-[var(--color-secondary-50)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"/>
-              {errors.groupId && <p className="text-red-400 text-sm">{errors.groupId}</p>}
-            </div> */}
-
-            {/* Submit */}
             <button
               type="submit"
               className="w-full py-3 rounded-lg font-semibold transition mt-4"
