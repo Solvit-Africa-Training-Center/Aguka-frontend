@@ -1,6 +1,5 @@
 import { useState } from "react";
-import loginImg from "@photos/login.jpg";
-import logoImg from "@photos/logo.png";
+import logo from "assets/logo/agukalogo.png";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -52,14 +51,14 @@ export default function Login() {
         {/* Left Section */}
         <div className=" w-full  md:flex flex-col ">
           <img
-            src={loginImg}
+            src="photos/login.jpg"
             alt="Login"
             className=" relative w-full min-h-screen "
           />
           <div className="absolute inset-0 bg-black opacity-60"></div>
           <div className="absolute top-[140px] left-[88px] gap-[67px] grid w-[700px] h-[389px]">
             <img
-              src={logoImg}
+              src={logo}
               alt="Logo"
               className="w-40 h-40 mb-2 ml-70 rounded-full object-cover "
             />
@@ -186,7 +185,7 @@ export default function Login() {
             <button className="w-full flex items-center justify-center ">
               <img
                 src="image/gmail.png"
-                className="border border-[#FFFFFF]  rounded-2xl w-23 p-4 h-13"
+                className="border border-[#FFFFFF]  rounded-2xl w-20 p-2 h-13"
               />
             </button>
 

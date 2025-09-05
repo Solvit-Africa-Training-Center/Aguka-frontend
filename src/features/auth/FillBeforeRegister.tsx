@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logoImg from "@photos/logo.png";
+import logo from "assets/logo/agukalogo.png";
 import { useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {
@@ -42,7 +42,7 @@ export default function ResetPassword() {
       {/* Logo */}
       <div className="absolute top-8">
         <img
-          src={logoImg}
+          src={logo}
           alt="Logo"
           className="w-20 h-20 mb-4 rounded-full object-cover"
         />

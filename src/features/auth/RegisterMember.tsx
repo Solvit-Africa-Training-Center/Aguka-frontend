@@ -1,6 +1,6 @@
 import { useState } from "react";
-import registerImg from "@photos/registermember.jpg";
-import logoImg from "@photos/logo.png";
+
+import logo from "assets/logo/agukalogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { BiLogoGmail } from "react-icons/bi";
 
@@ -81,7 +81,7 @@ export default function RegisterMember() {
         <div className="hidden md:flex items-center justify-center p-6 relative">
           <div className=" relative w-full h-full">
             <img
-              src={registerImg}
+              src="photos/registermember.jpg"
               alt="Register"
               className="rounded-lg object-cover w-full h-full"
             />
@@ -89,7 +89,7 @@ export default function RegisterMember() {
           </div>
           <div className="absolute justify center ">
             <img
-              src={logoImg}
+              src={logo}
               alt="Logo"
               className="w-20 h-20 mb-4 rounded-full object-cover"
             />
