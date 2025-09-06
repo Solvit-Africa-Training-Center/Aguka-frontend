@@ -68,31 +68,27 @@ export default function RegisterMember() {
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center p-4 font-poppins overflow-y-auto"
-      style={{ backgroundColor: "var(--color-primary-300)" }}>
-      <div className="text-[var(--color-secondary-50)] rounded-xl shadow-lg grid md:grid-cols-2 overflow-hidden max-w-4xl w-full">
+    <div className="min-h-screen w-full flex font-poppins bg-[#003B42]">
+      <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 gap-0.5 w-full ">
         {/* Left Section */}
-        <div className="hidden md:flex items-center justify-center p-6 relative">
-          <div className=" relative w-full h-full">
-            <img
-              src="photos/registermember.jpg"
-              alt="Register"
-              className="rounded-lg object-cover w-full h-full"
-            />
-            <div className="absolute inset-0 bg-black/60 rounded-lg"></div>
-          </div>
-          <div className="absolute justify center ">
+        <div className=" w-full  md:flex flex-col ">
+          <img
+            src="photos/registermember.jpg"
+            alt="Register"
+            className="rounded-lg object-cover   w-[835px] h-full"
+          />
+          <div className="absolute inset-0 bg-black opacity-60 w-[835px]"></div>
+          <div className="absolute top-[140px] left-[88px] gap-[67px] grid w-[700px] h-[389px]">
             <img
               src={logo}
               alt="Logo"
-              className="w-20 h-20 mb-4 rounded-full object-cover"
+              className="w-40 h-40 mb-2 ml-70 rounded-full object-cover "
             />
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-[var(--color-secondary-50)]">
+              <h1 className="text-7xl font-extrabold text-[var(--color-secondary-50)]">
                 Save Together,
               </h1>
-              <h1 className="text-2xl font-bold text-[var(--color-warning)] mt-2">
+              <h1 className="text-7xl font-extrabold text-[var(--color-warning)] mt-2">
                 Grow Together
               </h1>
             </div>
