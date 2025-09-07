@@ -1,91 +1,74 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { LockKeyhole } from "lucide-react";
+import { Mail } from "lucide-react";
+import type { ForgotPasswordForm } from "types/auth";
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+  const [form, setForm] = useState<ForgotPasswordForm>({ email: "" });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ email: e.target.value });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // simulate API request
     setTimeout(() => {
       setIsLoading(false);
-      navigate("/checkemail", { state: { email } });
+      navigate("/checkemail", { state: { email: form.email } });
     }, 1500);
   };
 
   return (
-    <div className="min-h-screen flex justify-center bg-[var(--color-primary-300)] p-4 font-poppins">
-      <div className="bg-[var(--color-primary-300)] rounded-xl shadow-lg w-full max-w-md p-8">
+    <div className="min-h-screen w-full flex  justify-center font-poppins bg-[#003B42] p-4">
+      <div className="W-200 h-150 mt-30 border border-[#F9A825]  p-10  rounded-lg">
         <h2 className="text-4xl font-bold text-center text-[var(--color-warning)] mb-6">
           Forgot Password?
         </h2>
+        <div className="place-items-center p-5">
+          <LockKeyhole className="size-10  text-secondary-300 " />
+        </div>
+        <div className="place-items-center ">
+          <p className="text-left text-2xl text-white w-100 pl-10 mb-6">
+            We will send you an Email to Reset Your Password
+          </p>
 
-        <p className="text-center text-2xl text-[var(--color-secondary-50)] mb-6">
-          We will send you an Email to Reset Your Password
-        </p>
+          <div className="mt-20">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="relative w-full">
+                <input
+                  id="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  required
+                  className="w-full pl-10 pr-4 py-3 border-2 border-[#948E8E] text-[var(--color-secondary-50)] rounded-lg focus:ring-2 focus:ring-[#003B42] outline-none transition"
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#948E8E]">
+                  <Mail />
+                </div>
+              </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="w-full px-4 py-3 border border-[#948E8E] text-[var(--color-secondary-50)] rounded-lg focus:ring-2 focus:ring-[#003B42] focus:border-transparent outline-none transition"
-            />
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-[var(--color-warning)] text-white py-3 rounded-lg font-bold hover:bg-opacity-90 transition disabled:opacity-50 text-2xl">
+                {isLoading ? "Sending..." : "Submit"}
+              </button>
+            </form>
           </div>
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-[var(--color-warning)] text-white py-3 px-4 rounded-lg font-medium hover:bg-opacity-90 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003B42] disabled:opacity-50"
-          >
-            {isLoading ? (
-              <span className="flex items-center justify-center">
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 
-                      0 5.373 0 12h4zm2 5.291A7.962 
-                      7.962 0 014 12H0c0 3.042 1.135 
-                      5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Sending...
-              </span>
-            ) : (
-              "Submit"
-            )}
-          </button>
-        </form>
-
+        </div>
         <div className="text-center mt-6">
           <p className="text-[var(--color-secondary-50)]">
             Remember Password?{" "}
             <Link
               to="/login"
-              className="text-sm text-[var(--color-warning)] hover:underline ml-1"
-            >
+              className="text-sm text-[var(--color-warning)] hover:underline ml-1">
               Login
             </Link>
           </p>

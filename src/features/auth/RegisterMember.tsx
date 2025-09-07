@@ -1,112 +1,99 @@
 import { useState } from "react";
-
-import logo from "assets/logo/agukalogo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { BiLogoGmail } from "react-icons/bi";
+import type { RegisterForm } from "types/auth";
+import logo from "assets/logo/agukalogo.png";
+
+interface ValidationErrors {
+  fullName?: string;
+  email?: string;
+  password?: string;
+}
+
+const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
+  const errors: ValidationErrors = {};
+
+  if (!form.fullName.trim()) errors.fullName = "Full Name is required";
+  if (!form.email.trim()) errors.email = "Email is required";
+  else if (!/\S+@\S+\.\S+/.test(form.email))
+    errors.email = "Enter a valid email address";
+  if (!form.password.trim()) errors.password = "Password is required";
+  else if (form.password.length < 6)
+    errors.password = "Password must be at least 6 characters";
+
+  return errors;
+};
 
 export default function RegisterMember() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<RegisterForm>({
     fullName: "",
-
     email: "",
     password: "",
   });
-
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<ValidationErrors>({});
   const [success, setSuccess] = useState<string>("");
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
     setSuccess("");
-  };
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!form.fullName.trim()) newErrors.fullName = "Full Name is required";
-
-    if (!form.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
-      newErrors.email = "Enter a valid email address";
-    }
-
-    if (!form.password.trim()) {
-      newErrors.password = "Password is required";
-    } else if (form.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    // if (!form.groupId.trim()) newErrors.groupId = "Group Id is required";
-
-    return newErrors;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const formErrors = validateForm();
+    const formErrors = validateRegisterForm(form);
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
-      setSuccess("");
       return;
     }
 
-    // Replace this with API call later
-    console.log("Form Submitted ", form);
-
+    console.log("Form Submitted", form);
     setSuccess("Your account has been created successfully!");
-    setForm({
-      fullName: "",
-      // phone: "",
-      email: "",
-      password: "",
-      // groupId: ""
-    });
-    navigate("/FillBeforeRegister");
+    setForm({ fullName: "", email: "", password: "" });
+
+    setTimeout(() => navigate("/FillBeforeRegister"), 1000);
   };
 
   return (
-    <div className="min-h-screen w-full flex font-poppins bg-[#003B42]">
-      <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 gap-0.5 w-full ">
+    <div className="w-full flex font-poppins h-screen">
+      <div className="grid md:grid-cols-2 w-full h-screen">
         {/* Left Section */}
-        <div className=" w-full  md:flex flex-col ">
+        <div className="w-full relative h-screen">
           <img
-            src="photos/registermember.jpg"
+            src="/photos/registermember.jpg"
             alt="Register"
-            className="rounded-lg object-cover   w-[835px] h-full"
+            className="w-full h-screen "
           />
-          <div className="absolute inset-0 bg-black opacity-60 w-[835px]"></div>
-          <div className="absolute top-[140px] left-[88px] gap-[67px] grid w-[700px] h-[389px]">
+          <div className="absolute inset-0 bg-black opacity-70"></div>
+          <div className="absolute top-1/4 left-16 w-[600px] grid gap-6 text-center text-white">
             <img
               src={logo}
               alt="Logo"
-              className="w-40 h-40 mb-2 ml-70 rounded-full object-cover "
+              className="w-36 h-36 rounded-full mx-auto"
             />
-            <div className="text-center">
-              <h1 className="text-7xl font-extrabold text-[var(--color-secondary-50)]">
-                Save Together,
-              </h1>
-              <h1 className="text-7xl font-extrabold text-[var(--color-warning)] mt-2">
-                Grow Together
-              </h1>
-            </div>
+            <h1 className="text-6xl font-bold">Save Together,</h1>
+            <h1 className="text-6xl font-bold  text-[#F9A825] ">
+              Grow Together
+            </h1>
+            <p className="text-sm mt-2 w-200">
+              Aguka empowers communities to build financial strength through
+              collective savings. By pooling resources, members access
+              opportunities to grow, achieve their goals, and support one
+              another.
+            </p>
           </div>
         </div>
 
         {/* Right Section */}
-        <div className="p-8 flex flex-col justify-center rounded-lg w-full">
-          <h2 className="text-3xl font-normal mb-6 text-[var(--color-secondary-50)]">
-            Create an account
+        <div className="flex flex-col bg-[#003B42] h-screen w-full justify-center px-32 py-10 relative">
+          <h2 className="text-5xl text-white font-bold mb-8">
+            Create an Account
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-3">
-            {/* Full Name */}
-            <div className="flex flex-col">
-              <label
-                htmlFor="fullName"
-                className="mb-1 text-sm text-[var(--color-secondary-50)]">
+          <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
+            <div>
+              <label htmlFor="fullName" className="text-2xl text-white mb-1">
                 Full Name
               </label>
               <input
@@ -115,18 +102,16 @@ export default function RegisterMember() {
                 name="fullName"
                 value={form.fullName}
                 onChange={handleChange}
-                className="w-full p-2 rounded-md border border-[var(--color-border)] text-[var(--color-secondary-50)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
+                placeholder="Enter your full name"
+                className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
               {errors.fullName && (
-                <p className="text-red-400 text-sm">{errors.fullName}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.fullName}</p>
               )}
             </div>
 
-            {/* Email */}
-            <div className="flex flex-col">
-              <label
-                htmlFor="email"
-                className="mb-1 text-sm text-[var(--color-secondary-50)]">
+            <div>
+              <label htmlFor="email" className="text-2xl text-white mb-1">
                 Email
               </label>
               <input
@@ -135,18 +120,16 @@ export default function RegisterMember() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                className="w-full p-2 rounded-md border border-[var(--color-border)] text-[var(--color-secondary-50)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
+                placeholder="Enter your email"
+                className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
               {errors.email && (
-                <p className="text-red-400 text-sm">{errors.email}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.email}</p>
               )}
             </div>
 
-            {/* Password */}
-            <div className="flex flex-col">
-              <label
-                htmlFor="password"
-                className="mb-1 text-sm text-[var(--color-secondary-50)]">
+            <div>
+              <label htmlFor="password" className="text-2xl text-white mb-1">
                 Password
               </label>
               <input
@@ -155,48 +138,44 @@ export default function RegisterMember() {
                 name="password"
                 value={form.password}
                 onChange={handleChange}
-                className="w-full p-2 rounded-md border border-[var(--color-border)] text-[var(--color-secondary-50)] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
+                placeholder="Enter your password"
+                className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
               />
               {errors.password && (
-                <p className="text-red-400 text-sm">{errors.password}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.password}</p>
               )}
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-lg font-semibold transition mt-4"
-              style={{
-                backgroundColor: "var(--color-warning)",
-                color: "var(--color-secondary-50)",
-              }}>
-              Sign up
+              className="w-full py-4 rounded-lg font-semibold text-black bg-[#F9A825] hover:bg-secondary-600 transition">
+              Sign Up
             </button>
 
             {success && (
-              <div className="mb-4 p-3 rounded-md bg-green-100 text-green-700 border border-green-400">
+              <div className="mt-4 p-3 rounded-md bg-green-100 text-green-700 border border-green-400">
                 {success}
               </div>
             )}
           </form>
 
-          <div className="flex items-center my-4 mt-2 text-gray-400">
-            <hr className="flex-grow border-[var(--color-border)]" />
-            <span className="mx-2 text-sm text-[var(--color-warning)]">
-              Or continue with
-            </span>
-            <hr className="flex-grow border-[var(--color-border)]" />
+          <div className="flex items-center my-6 text-gray-400 w-full max-w-md">
+            <hr className="flex-grow border-gray-400" />
+            <span className="mx-2 text-[#F9A825]">Or continue with</span>
+            <hr className="flex-grow border-gray-400" />
           </div>
-
-          <button className="w-full flex items-center justify-center gap-2 rounded-lg py-3 hover:bg-[#012B36] transition text-[var(--color-secondary-50)]">
-            <BiLogoGmail size={24} />
-            {/* <span>Continue with Gmail</span> */}
-          </button>
-
-          <p className="text-center mt-2 text-gray-400 text-sm">
+          <div className=" w-100 justify-center place-items-center">
+            <button className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3  mb-6">
+              <img
+                src="/image/gmail.png"
+                alt="Google login"
+                className="w-10 h-10 "
+              />
+            </button>
+          </div>
+          <p className="text-center text-gray-300 w-150">
             Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-[var(--color-warning)] hover:underline">
+            <Link to="/login" className="text-[#F9A825] hover:underline">
               Login
             </Link>
           </p>
