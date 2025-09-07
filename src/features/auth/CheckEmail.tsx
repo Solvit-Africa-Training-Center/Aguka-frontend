@@ -9,7 +9,7 @@ export default function CheckEmail() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-primary-300)] p-4 font-poppins">
-      <div className="bg-[var(--color-primary-300)] rounded-xl shadow-lg w-full max-w-md p-8 text-center">
+      <div className="border-2 border-secondary-300 rounded-xl  w-full max-w-md p-8 text-center">
         <h2 className="text-4xl font-bold text-[var(--color-warning)] mb-6">
           Check Your Email
         </h2>
