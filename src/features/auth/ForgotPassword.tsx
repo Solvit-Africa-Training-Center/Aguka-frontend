@@ -51,7 +51,7 @@ export default function ForgotPassword() {
                 />
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#948E8E]">
                   <Mail />
-                </div>
+                </div>g
               </div>
 
               <button
