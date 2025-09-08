@@ -266,7 +266,7 @@ export default function Login() {
               Don&apos;t have an account?{" "}
               <Link
                 to="/registermember"
-                className="text-[var(--color-warning)] hover:underline">
+                className="text-[#F9A825]  hover:underline">
                 Sign Up
               </Link>
             </p>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import type { ForgotPasswordForm } from "types/auth";
 import { Mail } from "lucide-react";
+import { LockKeyhole } from "lucide-react";
 
 export default function ForgotPassword() {
   const [form, setForm] = useState<ForgotPasswordForm>({ email: "" });
@@ -23,68 +24,41 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#003B42] p-4 font-poppins">
-      <div className="bg-[var(--color-primary-300)] rounded-xl shadow-lg w-full max-w-md p-8">
-        <h2 className="text-4xl font-bold text-center text-[var(--color-warning)] mb-6">
+    <div className="min-h-screen w-full flex pt-20 justify-center font-poppins bg-[var(--color-primary-300)] p-4">
+      <div className="bg-[var(--color-primary-300)] pt-15 rounded-xl border border-[#F9A825] w-full max-w-xl h-150 p-8 space-y-8">
+        <h2 className="text-5xl text-center font-bold  text-[#F9A825] mb-6 ">
           Forgot Password?
         </h2>
-
-        <p className="text-center text-2xl text-[var(--color-secondary-50)] mb-6">
+        <div className="place-items-center ">
+          {" "}
+          <LockKeyhole className="size-12 text-[#F9A825] " />
+        </div>
+        <p className="text-left text-2xl text-white ml-30 mt-20 w-100 mb-6 font-bold">
           We will send you an Email to Reset Your Password
         </p>
 
-          <div className="mt-20">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="relative w-full">
-                <input
-                  id="email"
-                  type="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                  required
-                  className="w-full pl-10 pr-4 py-3 border-2 border-[#948E8E] text-[var(--color-secondary-50)] rounded-lg focus:ring-2 focus:ring-[#003B42] outline-none transition"
-                />
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#948E8E]">
-                  <Mail />
-                </div>
-              </div>
+        <form onSubmit={handleSubmit} className="space-y-10">
+          <div className="relative">
+            <Mail
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]"
+              size={20}
+            />
+            <input
+              id="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              required
+              className="w-full pl-10 pr-4 py-3 border-2 border-[#948E8E] text-[var(--color-secondary-50)] rounded-lg focus:ring-2 focus:ring-[#003B42] outline-none transition"
+            />
+          </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[var(--color-warning)] text-white py-3 px-4 rounded-lg font-medium hover:bg-opacity-90 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003B42] disabled:opacity-50"
-          >
-            {isLoading ? (
-              <span className="flex items-center justify-center">
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 
-                      0 5.373 0 12h4zm2 5.291A7.962 
-                      7.962 0 014 12H0c0 3.042 1.135 
-                      5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Sending...
-              </span>
-            ) : (
-              "Submit"
-            )}
+            className="w-full text-3xl text-white py-3 rounded-lg font-bold  bg-[#F9A825] border-2 border-[#948E8E]">
+            {isLoading ? "Sending..." : "Submit"}
           </button>
         </form>
 
@@ -93,14 +67,12 @@ export default function ForgotPassword() {
             Remember Password?{" "}
             <Link
               to="/login"
-              className="text-sm text-[var(--color-warning)] hover:underline ml-1"
-            >
+              className="text-sm text-[#F9A825] hover:underline ml-1">
               Login
             </Link>
           </p>
         </div>
       </div>
-    </div>
     </div>
   );
 }

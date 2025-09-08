@@ -1,60 +1,48 @@
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import { Send } from "lucide-react";
 
 export default function CheckEmail() {
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email || "your email";
-
- 
+  const email = location.state?.email || "**********san@gmail.com";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--color-primary-300)] p-4 font-poppins">
-      <div className="border-2 border-secondary-300 rounded-xl  w-full max-w-md p-8 text-center">
-        <h2 className="text-4xl font-bold text-[var(--color-warning)] mb-6">
+    <div className="min-h-screen w-full flex pt-20 justify-center font-poppins bg-[var(--color-primary-300)] p-4">
+      <div className="bg-[var(--color-primary-300)] pt-15 rounded-xl border border-[#F9A825] w-full max-w-xl h-150 p-8 space-y-8">
+        <h2 className="text-5xl text-center font-bold text-[#F9A825] mb-6">
           Check Your Email
         </h2>
 
-        <div className="flex flex-col items-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
-            <svg
-              className="w-10 h-10 text-green-600"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
+        <div className="place-items-center">
+          <Send className="size-12 text-[#F9A825]" />
+        </div>
 
-          <p className="text-2xl text-[var(--color-secondary-50)] mb-2">
-            We've sent an Email on the address
-          </p>
-          <p className="text-sm text-[var(--color-warning)] mb-10">{email}</p>
-          <p className="text-sm text-[var(--color-secondary-50)] mb-4">
-            Please check your inbox (and your spam folder just in case) for an
-            email from Orion.
-          </p>
+        <p className="text-center text-2xl text-white w-full mb-6 font-bold">
+          We've sent an Email on the address
+        </p>
 
-          <button
-            type="button"
-            className="w-full py-3 rounded-lg font-semibold transition mt-6"
-            style={{
-              backgroundColor: "var(--color-warning)",
-              color: "var(--color-secondary-50)",
-            }}
-            onClick={() => navigate("/login")}>
-            Open Email
-          </button>
+        <p className="text-center text-xl text-[#F9A825] font-semibold mb-8">
+          {email}
+        </p>
 
-          <p className="text-[var(--color-secondary-50)] mt-4">
+        <p className="text-center text-lg text-white mb-10">
+          Please check your inbox (and your spam folder, just in case) for an
+          email from Orion
+        </p>
+
+        <button
+          type="button"
+          className="w-full text-3xl text-white py-3 rounded-lg font-bold bg-[#F9A825] border-2 border-[#948E8E]"
+          onClick={() => navigate("/login")}>
+          Open Email
+        </button>
+
+        <div className="text-center mt-6">
+          <p className="text-white text-lg">
             Remember Password?{" "}
             <Link
               to="/login"
-              className="text-[var(--color-warning)] hover:underline">
+              className="text-[#F9A825] hover:underline font-semibold">
               Login
             </Link>
           </p>

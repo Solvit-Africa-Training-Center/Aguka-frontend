@@ -1,28 +1,44 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSearchParams } from "react-router-dom";
+import { LockKeyhole, Eye, EyeOff } from "lucide-react";
 
-export default function ResetPassword() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+interface ResetPasswordForm {
+  password: string;
+  confirmPassword: string;
+}
+
+interface ResetPasswordProps {}
+
+const ResetPassword: React.FC<ResetPasswordProps> = () => {
+  const [form, setForm] = useState<ResetPasswordForm>({
+    password: "",
+    confirmPassword: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token"); // token from URL
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // use `token` when calling backend API
-  console.log("Reset token:", token);
+  const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
+    if (form.password !== form.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
 
     setIsLoading(true);
 
+    // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
       alert("Password reset successful!");
@@ -30,82 +46,89 @@ export default function ResetPassword() {
     }, 1500);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--color-primary-300)] p-4 font-poppins">
-      <div className="bg-[var(--color-primary-300)] rounded-xl shadow-lg w-full max-w-md p-8">
-        <h2 className="text-4xl font-bold text-center text-[var(--color-warning)] mb-6">
+    <div className="min-h-screen w-full flex pt-20 justify-center font-poppins bg-[var(--color-primary-300)] p-4">
+      <div className="bg-[var(--color-primary-300)] pt-15 rounded-xl border border-[#F9A825] w-full max-w-xl h-150 p-8 space-y-8">
+        <h2 className="text-5xl text-center font-bold text-[#F9A825] mb-6">
           Reset Password
         </h2>
 
-        <p className="text-center text-2xl text-[var(--color-secondary-50)] mb-6">
+        <div className="place-items-center">
+          <LockKeyhole className="size-12 text-[#F9A825]" />
+        </div>
+
+        <p className="text-center text-2xl text-white w-full mb-6 font-bold">
           Enter your new password below
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
+        <form onSubmit={handleSubmit} className="space-y-10">
+          <div className="relative">
             <input
-              type="password"
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              onChange={handleChange}
               placeholder="New Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-[#948E8E] text-[var(--color-secondary-50)] rounded-lg focus:ring-2 focus:ring-[#003B42] focus:border-transparent outline-none transition"
+              className="w-full pl-4 pr-10 py-3 border-2 border-[#948E8E] text-white bg-transparent rounded-lg focus:ring-2 focus:ring-[#003B42] outline-none transition"
             />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]">
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
 
-          <div>
+          <div className="relative">
             <input
-              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              value={form.confirmPassword}
+              onChange={handleChange}
               placeholder="Confirm New Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border border-[#948E8E] text-[var(--color-secondary-50)] rounded-lg focus:ring-2 focus:ring-[#003B42] focus:border-transparent outline-none transition"
+              className="w-full pl-4 pr-10 py-3 border-2 border-[#948E8E] text-white bg-transparent rounded-lg focus:ring-2 focus:ring-[#003B42] outline-none transition"
             />
+            <button
+              type="button"
+              onClick={toggleConfirmPasswordVisibility}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]">
+              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-[var(--color-warning)] text-white py-3 px-4 rounded-lg font-medium hover:bg-opacity-90 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#003B42] disabled:opacity-50">
-            {isLoading ? (
-              <span className="flex items-center justify-center">
-                <svg
-                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24">
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 
-                       0 5.373 0 12h4zm2 5.291A7.962 
-                       7.962 0 014 12H0c0 3.042 1.135 
-                       5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Saving...
-              </span>
-            ) : (
-              "Submit"
-            )}
+            className="w-full text-3xl text-white py-3 rounded-lg font-bold bg-[#F9A825] border-2 border-[#948E8E]">
+            {isLoading ? "Saving..." : "Submit"}
           </button>
-          <p className="text-center mt-6 text-gray-400 text-sm">
-            Remember password?{" "}
+        </form>
+
+        <div className="text-center mt-6">
+          <p className="text-white text-lg">
+            Remember Password?{" "}
             <Link
               to="/login"
-              className="text-[var(--color-warning)] hover:underline">
+              className="text-[#F9A825] hover:underline font-semibold">
               Login
             </Link>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default ResetPassword;
