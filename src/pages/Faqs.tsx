@@ -61,6 +61,7 @@ export default function Faqs() {
     <div className="min-h-screen bg-[var(--color-primary-300)]  grid items-start py-20 ">
       <div>
         <div className="mt-35 w-200 ml-70">
+          <h1 className="text-center text-3xl text-[#F9A825] mb-10">FREQUENTLY ASKED QUESTIONS?</h1>
           <div className="space-y-8">
             {faqs.map((faq, idx) => (
               <div key={idx} className="pb-4">

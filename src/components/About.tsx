@@ -6,7 +6,7 @@ const About: React.FC = () => {
     <div className="bg-[#003B42] w-full font-poppins text-white pt-20">
       <hr className=" w-full text-primary-100/60 " />
 
-      <div className="grid w-[1728px] h-[1488px] justify-between  top-[2391px] left-[-1px] p-10 ">
+      <div className="grid w-full h-[1488px] justify-between  top-[2391px] left-[-1px] p-10 ">
         <div className="w-[1573px] h-[1215px]   ">
           <div className="place-items-center ml-40">
             <h2 className=" w-[613px] h-[144px] text-center text-7xl font-semibold mb-5 mt-10 capitalize">

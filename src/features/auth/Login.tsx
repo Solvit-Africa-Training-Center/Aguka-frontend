@@ -1,6 +1,5 @@
 import { useState } from "react";
-import loginImg from "@photos/login.jpg";
-import logoImg from "@photos/logo.png";
+import logo from "assets/logo/agukalogo.png";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -51,16 +50,19 @@ export default function Login() {
       <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 gap-0.5 w-full ">
         {/* Left Section */}
         <div className=" w-full  md:flex flex-col ">
-          <img src={loginImg} alt="Login" className=" relative w-full min-h-screen " />
-           <div className="absolute inset-0 bg-black opacity-60"></div>
+          <img
+            src="photos/login.jpg"
+            alt="Login"
+            className=" relative w-full min-h-screen "
+          />
+          <div className="absolute inset-0 bg-black opacity-60"></div>
           <div className="absolute top-[140px] left-[88px] gap-[67px] grid w-[700px] h-[389px]">
-            
-              <img
-                src={logoImg}
-                alt="Logo"
-                className="w-40 h-40 mb-2 ml-70 rounded-full object-cover "
-              />
-           
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-40 h-40 mb-2 ml-70 rounded-full object-cover "
+            />
+
             <div className="text-center">
               <h1 className="text-7xl font-extrabold text-[var(--color-secondary-50)]">
                 Save Together,
@@ -72,8 +74,10 @@ export default function Login() {
 
             <div className="text-center w-[681px] text-xl">
               <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
+                Aguka empowers communities to build financial strength through
+                collective savings. by pooling resource s,member access
+                opportunities to grow,achieve their goals, and support one
+                another
               </p>
             </div>
           </div>
@@ -106,7 +110,7 @@ export default function Login() {
                     <p className="text-red-400 text-sm">
                       {errors.emailOrPhone}
                     </p>
-                  )}   
+                  )}
                 </div>
 
                 <div className="flex flex-col w-[589px] h-[153px]">
@@ -137,7 +141,7 @@ export default function Login() {
                       name="rememberMe"
                       checked={form.rememberMe}
                       onChange={handleChange}
-                      className="h-[24px] w-[21px] text-[var(--color-warning)]  focus:ring-[var(--color-warning)] border-[#948E8E] rounded-[15px] bg-[#003B42]"
+                      className="h-[24px] w-[21px] text-[var(--color-warning)]   border border-[#948E8E] rounded-[15px] bg-[#003B42]"
                     />
                     <label
                       htmlFor="rememberMe"
@@ -181,7 +185,7 @@ export default function Login() {
             <button className="w-full flex items-center justify-center ">
               <img
                 src="image/gmail.png"
-                className="border border-[#FFFFFF]  rounded-2xl w-23 p-3 h-13"
+                className="border border-[#FFFFFF]  rounded-2xl w-15 p-2 h-13"
               />
             </button>
 
