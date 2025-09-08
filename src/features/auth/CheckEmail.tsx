@@ -1,15 +1,15 @@
-import { useLocation } from "react-router-dom";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 
 export default function CheckEmail() {
   const location = useLocation();
-  const email = location.state?.email || "your email";
   const navigate = useNavigate();
-  navigate("/login");
+  const email = location.state?.email || "your email";
+
+ 
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-primary-300)] p-4 font-poppins">
-      <div className="bg-[var(--color-primary-300)] rounded-xl shadow-lg w-full max-w-md p-8 text-center">
+      <div className="border-2 border-secondary-300 rounded-xl  w-full max-w-md p-8 text-center">
         <h2 className="text-4xl font-bold text-[var(--color-warning)] mb-6">
           Check Your Email
         </h2>
@@ -34,22 +34,23 @@ export default function CheckEmail() {
             We've sent an Email on the address
           </p>
           <p className="text-sm text-[var(--color-warning)] mb-10">{email}</p>
-          <p className="text-2sm text-[var(--color-secondary-50)] mb-4">
-            Please check your inbox(and your spam folder just in case) for an
-            email of Orion
+          <p className="text-sm text-[var(--color-secondary-50)] mb-4">
+            Please check your inbox (and your spam folder just in case) for an
+            email from Orion.
           </p>
 
           <button
-            type="submit"
+            type="button"
             className="w-full py-3 rounded-lg font-semibold transition mt-6"
             style={{
               backgroundColor: "var(--color-warning)",
               color: "var(--color-secondary-50)",
-            }}>
-            Open an Email
+            }}
+            onClick={() => navigate("/login")}>
+            Open Email
           </button>
 
-          <p className="text-[var(--color-secondary-50)] ">
+          <p className="text-[var(--color-secondary-50)] mt-4">
             Remember Password?{" "}
             <Link
               to="/login"
