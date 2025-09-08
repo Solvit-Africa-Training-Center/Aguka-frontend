@@ -1,3 +1,51 @@
 @import "tailwindcss";
 
+@theme {
+  --font-poppins: "Poppins", sans-serif;
 
+
+  /* primary color  */
+  --color-primary-50: oklch(0.9365 0.0055 211.04);
+  --color-primary-100: oklch(0.9062 0.0098 204.91);
+  --color-primary-200: rgb(176, 194, 196);
+  --color-primary-300: rgb(0, 59, 66);
+  --color-primary-400: rgb(0, 53, 59);
+  --color-primary-500: rgb(0, 47, 53);
+  --color-primary-600: rgb(0, 44, 50);
+  --color-primary-700: rgb(0, 35, 40);
+  --color-primary-800: rgb(0, 27, 30);
+  --color-primary-900: rgb(0, 21, 23);
+
+  /* secondary color */
+
+  --color-secondary-50: rgb(254, 246, 233);
+  --color-secondary-100: rgb(254, 242, 222);
+  --color-secondary-200: rgb(253, 228, 187);
+  --color-secondary-300: rgb(249, 168, 37);
+  --color-secondary-400: rgb(224, 151, 33);
+  --color-secondary-500: rgb(199, 134, 30);
+  --color-secondary-600: rgb(187, 126, 28);
+  --color-secondary-700: rgb(149, 101, 22);
+  --color-secondary-800: rgb(112, 76, 17);
+  --color-secondary-900: rgb(87, 59, 13);
+
+  /* accent color */
+
+  --color-accent-50: rgb(230, 240, 241);
+  --color-accent-100: rgb(217, 233, 235);
+  --color-accent-200: rgb(176, 209, 213);
+  --color-accent-300: rgb(0, 108, 119);
+  --color-accent-400: rgb(0, 97, 107);
+  --color-accent-500: rgb(0, 86, 95);
+  --color-accent-600: rgb(0, 81, 89);
+  --color-accent-700: rgb(0, 65, 71);
+  --color-accent-800: rgb(0, 49, 54);
+  --color-accent-900: rgb(0, 38, 42);
+
+  /* another accent color */
+
+  /* --color-primary-300: #003b42;
+
+  --color-warning: #f9a825;
+  --color-border: #948e8e; */
+}
