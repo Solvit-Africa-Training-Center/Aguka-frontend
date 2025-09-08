@@ -33,18 +33,22 @@ export default function ForgotPassword() {
           We will send you an Email to Reset Your Password
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-              className="w-full px-4 py-3 border border-[#948E8E] text-[var(--color-secondary-50)] rounded-lg focus:ring-2 focus:ring-[#003B42] focus:border-transparent outline-none transition"
-            />
-          </div>
+          <div className="mt-20">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="relative w-full">
+                <input
+                  id="email"
+                  type="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  required
+                  className="w-full pl-10 pr-4 py-3 border-2 border-[#948E8E] text-[var(--color-secondary-50)] rounded-lg focus:ring-2 focus:ring-[#003B42] outline-none transition"
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#948E8E]">
+                  <Mail />
+                </div>
+              </div>
 
           <button
             type="submit"
