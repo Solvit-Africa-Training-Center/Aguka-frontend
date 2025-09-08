@@ -10,6 +10,7 @@ import CheckEmail from "@features/auth/CheckEmail";
 // import ResetPassword from "@features/auth/ResetPassword";
 import ForgotPassword from "@features/auth/ForgotPassword";
 import FillBeforeRegister from "@features/auth/FillBeforeRegister";
+import RegisterGroup from "@features/auth/RegisterGroup";
 
 const AppRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const AppRoutes = () => {
         {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/fillbeforeregister" element={<FillBeforeRegister />} />
+        <Route path='/registergroup' element={<RegisterGroup/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorPage />}></Route>
       </Routes>

@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const AgukaJourney = () => {
   return (
@@ -17,22 +18,22 @@ const AgukaJourney = () => {
                 </span>
               </div>
             </div>
-      <div className="flex w-[859px] h-[119px] gap-10 ">
-        <div className="grid pt-[30px] pr-[15px] pl-[46px] pb-[30px]" >
-              <button className="p-4 flex gap-2 bg-[#003B42] hover:bg-secondary-300 w-50 h-16 capitalize rounded-md items-center ">
-                <span className="text-xl">create group</span>
-                <span>
-                  <ArrowRight />
-                </span>
-              </button>
+            <div className="flex w-[859px] h-[119px] gap-10 ">
+              <div className="grid pt-[30px] pr-[15px] pl-[46px] pb-[30px]">
+                <button className="p-4 flex gap-2 bg-[#003B42] hover:bg-secondary-300 w-50 h-16 capitalize rounded-md items-center ">
+                  <Link to="/registergroup" className="text-xl">create group</Link>
+                  <span>
+                    <ArrowRight />
+                  </span>
+                </button>
               </div>
-              <div className="w-[377px] h-[119px] pt-[30px] pr-[15px]  pb-[30px]" >
-              <button className="p-4 flex gap-2 border-1 border-#D4D4D4 rounded-md w-65 h-16 bg-[#D4D4D4] capitalize items-center">
-                <span className="text-xl">join existing group</span>
-                <span className="">
-                  <ArrowRight className="animate-ping" />
-                </span>
-              </button>
+              <div className="w-[377px] h-[119px] pt-[30px] pr-[15px]  pb-[30px]">
+                <button className="p-4 flex gap-2 border-1 border-#D4D4D4 rounded-md w-65 h-16 bg-[#D4D4D4] capitalize items-center">
+                  <span className="text-xl">join existing group</span>
+                  <span className="">
+                    <ArrowRight className="animate-ping" />
+                  </span>
+                </button>
               </div>
             </div>
           </div>
