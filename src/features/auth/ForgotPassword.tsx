@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import type { ForgotPasswordForm } from "types/auth";
+
 
 export default function ForgotPassword() {
   const [form, setForm] = useState<ForgotPasswordForm>({ email: "" });

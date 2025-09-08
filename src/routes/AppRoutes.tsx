@@ -10,6 +10,7 @@ import CheckEmail from "@features/auth/CheckEmail";
 import ResetPassword from "@features/auth/ResetPassword";
 import ForgotPassword from "@features/auth/ForgotPassword";
 import FillBeforeRegister from "@features/auth/FillBeforeRegister";
+import LoanProfile from "@components/LoanProfile";
 
 const AppRoutes = () => {
   return (
@@ -27,6 +28,7 @@ const AppRoutes = () => {
         <Route path="/fillbeforeregister" element={<FillBeforeRegister />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorPage />}></Route>
+        <Route path="/loan" element={<LoanProfile />} />
       </Routes>
     </div>
   );
