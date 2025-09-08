@@ -6,6 +6,8 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { VscBook } from "react-icons/vsc";
 import { SquareCheckBig } from "lucide-react";
+import { Link } from "react-router-dom";
+
 
 function ServicePage() {
   return (
@@ -188,9 +190,9 @@ function ServicePage() {
           <div className="space-y-15 m-15">
             <h1 className="text-4xl">Ready to start Saving Smarter?</h1>
             <div className="flex gap-10 place-content-center text-3xl font-bold font-poppins ">
-              <button className="bg-[#F9A825] text-black p-4 rounded-2xl cursor-pointer">
+              <Link to="/registergroup" className="bg-[#F9A825] text-black p-4 rounded-2xl cursor-pointer">
                 Create your circle
-              </button>
+              </Link>
               <button className="bg-[#82807D] text-white p-4 rounded-2xl cursor-pointer ">
                 Join a group
               </button>
