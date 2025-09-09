@@ -74,28 +74,33 @@ export default function Login() {
     }
 
     try {
-      // 🟢 Example API call (replace with your real API endpoint)
-      // const response = await fetch("/api/login", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(form),
-      // });
+    const response = await fetch("https://aguka.onrender.com/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: form.emailOrPhone,
+        password: form.password,
+      }),
+    });
 
-      // if (!response.ok) throw new Error("Login failed");
-      // const data = await response.json();
-
-      console.log("Login Submitted", form);
-
-      setSuccess("Login successful!");
-      setForm({ emailOrPhone: "", password: "", rememberMe: false });
-
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
-    } catch (error) {
-      setErrors({ emailOrPhone: "Invalid credentials" });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Login failed");
     }
-  };
+
+    const data = await response.json();
+    console.log("✅ Login success:", data);
+
+    // Save token if backend sends one
+    localStorage.setItem("token", data.token);
+    navigate("/dashboard");
+  } catch (error: any) {
+    console.error("❌ Error logging in:", error.message);
+    setErrors({ emailOrPhone: error.message });
+  }
+};
 
   return (
     <div className="min-h-screen w-full flex font-poppins">

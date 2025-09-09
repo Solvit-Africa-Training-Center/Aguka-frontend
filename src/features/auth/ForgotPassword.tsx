@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import type { ForgotPasswordForm } from "types/auth";
-
+import { Mail } from "lucide-react";
 
 export default function ForgotPassword() {
   const [form, setForm] = useState<ForgotPasswordForm>({ email: "" });
@@ -23,7 +23,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--color-primary-300)] p-4 font-poppins">
+    <div className="min-h-screen flex items-center justify-center bg-[#003B42] p-4 font-poppins">
       <div className="bg-[var(--color-primary-300)] rounded-xl shadow-lg w-full max-w-md p-8">
         <h2 className="text-4xl font-bold text-center text-[var(--color-warning)] mb-6">
           Forgot Password?
@@ -100,6 +100,7 @@ export default function ForgotPassword() {
           </p>
         </div>
       </div>
+    </div>
     </div>
   );
 }

@@ -18,8 +18,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<NavBar />}>
           <Route index element={<LandingPage />} />
-          <Route path="service" element={<ServicePage />} />
-          <Route path="faq" element={<Faqs />} />
+          <Route path="/service" element={<ServicePage />} />
+          <Route path="/faq" element={<Faqs />} />
         </Route>
         <Route path="/registermember" element={<RegisterMember />} />
         <Route path="/checkemail" element={<CheckEmail />} />

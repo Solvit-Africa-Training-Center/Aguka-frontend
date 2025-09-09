@@ -40,20 +40,46 @@ export default function RegisterMember() {
     setSuccess("");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const formErrors = validateRegisterForm(form);
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      return;
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const formErrors = validateRegisterForm(form);
+  if (Object.keys(formErrors).length > 0) {
+    setErrors(formErrors);
+    return;
+  }
+
+  try {
+    const response = await fetch("https://aguka.onrender.com/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+     body: JSON.stringify({
+        name: form.fullName,
+        email: form.email,
+        password: form.password,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Registration failed");
     }
 
-    console.log("Form Submitted", form);
+    const data = await response.json();
+    console.log("Registered successfully:", data);
+
     setSuccess("Your account has been created successfully!");
     setForm({ fullName: "", email: "", password: "" });
 
     setTimeout(() => navigate("/FillBeforeRegister"), 1000);
-  };
+  } catch (error: any) {
+    console.error("Error registering:", error.message);
+    setErrors({ email: error.message }); 
+  }
+};
+
 
   return (
     <div className="w-full flex font-poppins h-screen">
