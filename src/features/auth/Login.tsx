@@ -99,6 +99,7 @@ export default function Login() {
   } catch (error: any) {
     console.error("❌ Error logging in:", error.message);
     setErrors({ emailOrPhone: error.message });
+    setErrors({ emailOrPhone: error.message });
   }
 };
 
