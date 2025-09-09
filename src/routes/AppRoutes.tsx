@@ -7,10 +7,9 @@ import RegisterMember from "@features/auth/RegisterMember";
 import Login from "@features/auth/Login";
 import Faqs from "@pages/Faqs";
 import CheckEmail from "@features/auth/CheckEmail";
-import ResetPassword from "@features/auth/ResetPassword";
+// import ResetPassword from "@features/auth/ResetPassword";
 import ForgotPassword from "@features/auth/ForgotPassword";
 import FillBeforeRegister from "@features/auth/FillBeforeRegister";
-import LoanProfile from "@components/LoanProfile";
 
 const AppRoutes = () => {
   return (
@@ -23,9 +22,10 @@ const AppRoutes = () => {
         </Route>
         <Route path="/registermember" element={<RegisterMember />} />
         <Route path="/checkemail" element={<CheckEmail />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
+        {/* <Route path="/resetpassword" element={<ResetPassword />} /> */}
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/fillbeforeregister" element={<FillBeforeRegister />} />
+        <Route path='/registergroup' element={<RegisterGroup/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorPage />}></Route>
         <Route path="/loan" element={<LoanProfile />} />

@@ -21,3 +21,16 @@ export interface RegisterForm {
   email: string;
   password: string;
 }
+
+export interface GroupCreation {
+  name: string;
+  description: string;
+  location: string;
+  profilePicture?: File | null;
+  meetingLocation?: string;
+  interestRate?: number;
+  contact?: string;
+  email?: string;
+  minContribution: number;
+  agreementTerms?: File | null;
+}
