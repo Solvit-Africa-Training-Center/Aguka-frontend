@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "assets/logo/agukalogo.png";
+import { useUser } from "hooks/useUser"; // custom hook
 
 interface LoginForm {
   emailOrPhone: string;
@@ -51,6 +52,7 @@ export default function Login() {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [success, setSuccess] = useState<string>("");
   const navigate = useNavigate();
+  const { setEmail } = useUser(); // <-- use the custom hook
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -62,46 +64,21 @@ export default function Login() {
     setSuccess("");
   };
 
-  // Handle submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formErrors = validateLoginForm(form);
-
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       setSuccess("");
       return;
     }
 
-    try {
-    const response = await fetch("https://aguka.onrender.com/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: form.emailOrPhone,
-        password: form.password,
-      }),
-    });
+    // Save email to context (and localStorage inside hook)
+    setEmail(form.emailOrPhone);
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Login failed");
-    }
-
-    const data = await response.json();
-    console.log("✅ Login success:", data);
-
-    // Save token if backend sends one
-    localStorage.setItem("token", data.token);
-    navigate("/dashboard");
-  } catch (error: any) {
-    console.error("❌ Error logging in:", error.message);
-    setErrors({ emailOrPhone: error.message });
-    setErrors({ emailOrPhone: error.message });
-  }
-};
+    // Navigate to dashboard
+    navigate("/memberdashboard");
+  };
 
   return (
     <div className="min-h-screen w-full flex font-poppins">
