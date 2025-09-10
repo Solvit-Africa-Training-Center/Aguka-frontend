@@ -3,36 +3,42 @@ import { createContext, useState, type ReactNode, useEffect } from "react";
 
 export interface UserContextType {
   email: string;
-  setEmail: (email: string) => void;
+  name: string;
+  setUser: (email: string, name: string) => void;
   clearUser: () => void;
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [email, setEmailState] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("userEmail");
-    if (storedEmail) setEmailState(storedEmail);
+    const storedName = localStorage.getItem("userName");
+    if (storedEmail) setEmail(storedEmail);
+    if (storedName) setName(storedName);
   }, []);
 
-  const setEmail = (email: string) => {
-    setEmailState(email);
+  const setUser = (email: string, name: string) => {
+    setEmail(email);
+    setName(name);
     localStorage.setItem("userEmail", email);
+    localStorage.setItem("userName", name);
   };
 
   const clearUser = () => {
-    setEmailState("");
+    setEmail("");
+    setName("");
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName");
     localStorage.removeItem("token");
   };
 
   return (
-    <UserContext.Provider value={{ email, setEmail, clearUser }}>
+    <UserContext.Provider value={{ email, name, setUser, clearUser }}>
       {children}
     </UserContext.Provider>
   );
 };
-
-

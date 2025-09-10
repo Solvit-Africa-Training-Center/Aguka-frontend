@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { RegisterForm } from "types/auth";
 import logo from "assets/logo/agukalogo.png";
-
 interface ValidationErrors {
   fullName?: string;
   email?: string;
