@@ -50,7 +50,7 @@ export default function RegisterMember() {
   }
 
   try {
-    const response = await fetch("https://aguka.onrender.com/api/users", {
+    const response = await fetch("/api/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

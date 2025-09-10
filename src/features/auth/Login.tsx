@@ -74,13 +74,13 @@ export default function Login() {
     }
 
     try {
-    const response = await fetch("https://aguka.onrender.com/api/users/login", {
+    const response = await fetch("/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: form.emailOrPhone,
+        identifier: form.emailOrPhone,
         password: form.password,
       }),
     });
@@ -91,16 +91,16 @@ export default function Login() {
     }
 
     const data = await response.json();
-    console.log("✅ Login success:", data);
+    console.log("Login success:", data);
 
-    // Save token if backend sends one
+    
     localStorage.setItem("token", data.token);
     navigate("/dashboard");
   } catch (error: any) {
-    console.error("❌ Error logging in:", error.message);
-    setErrors({ emailOrPhone: error.message });
-    setErrors({ emailOrPhone: error.message });
-  }
+  const message = error?.message || "Unknown error";
+  console.error("Error logging in:", message);
+  setErrors({ emailOrPhone: message });
+}
 };
 
   return (
