@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import "remixicon/fonts/remixicon.css";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store } from "./services/store/store.tsx";
 import App from "./App.tsx";
 import { UserProvider } from "context/UserContext.tsx";
 

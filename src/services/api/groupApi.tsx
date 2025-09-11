@@ -1,4 +1,5 @@
-import { apiSlice } from "@features/api/apiSlice"; 
+import { apiSlice } from "./apiSlice";
+
 
 export const groupApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
