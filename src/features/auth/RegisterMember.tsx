@@ -45,24 +45,19 @@ export default function RegisterMember() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formErrors = validateRegisterForm(form);
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      return;
-    }
 
-  try {
-    const response = await fetch("https://aguka.onrender.com/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-     body: JSON.stringify({
-        name: form.fullName,
-        email: form.email,
-        password: form.password,
-      }),
-    });
+    try {
+      const response = await fetch("https://aguka.onrender.com/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.fullName,
+          email: form.email,
+          password: form.password,
+        }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();

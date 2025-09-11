@@ -94,7 +94,11 @@ export default function Login() {
 
     
     localStorage.setItem("token", data.token);
-    navigate("/memberdashboard");
+
+    
+
+    navigate("/presidentdashboard");
+
   } catch (error: any) {
   const message = error?.message || "Unknown error";
   console.error("Error logging in:", message);
