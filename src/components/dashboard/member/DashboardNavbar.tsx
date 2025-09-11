@@ -7,11 +7,13 @@ import AsidebarMember from "./AsidebarMember";
 
 const DashboardNavbar: React.FC = () => {
   const { name, email } = useUser();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const firstChar =
     name
       ?.split(" ")
+
       .map((n) => n[0])
       .join("")
       .toUpperCase() ||

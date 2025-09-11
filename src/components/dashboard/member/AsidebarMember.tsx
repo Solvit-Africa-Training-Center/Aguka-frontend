@@ -27,7 +27,9 @@ const AsidebarMember: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className="grid items-center  p-4 border-b  ">
         <button
           onClick={onClose}
+
           className="text-black  ml-45 font-extrabold hover:text-secondary-300">
+
           <X size={30} />
         </button>
         <div className="flex items-center gap-2  mt-20 ml-12 ">

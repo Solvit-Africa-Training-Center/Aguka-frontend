@@ -72,9 +72,40 @@ export default function Login() {
     }
 
 
-    // Navigate to dashboard
-    navigate("/memberdashboard");
-  };
+    try {
+    const response = await fetch("/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        identifier: form.emailOrPhone,
+        password: form.password,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Login failed");
+    }
+
+    const data = await response.json();
+    console.log("Login success:", data);
+
+    
+    localStorage.setItem("token", data.token);
+
+    
+
+    navigate("/presidentdashboard");
+
+  } catch (error: any) {
+  const message = error?.message || "Unknown error";
+  console.error("Error logging in:", message);
+  setErrors({ emailOrPhone: message });
+}
+};
+
 
   return (
     <div className="min-h-screen w-full flex font-poppins">

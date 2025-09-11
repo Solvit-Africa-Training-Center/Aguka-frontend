@@ -45,6 +45,7 @@ export default function RegisterMember() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+
     const formErrors = validateRegisterForm(form);
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -80,6 +81,7 @@ export default function RegisterMember() {
       console.error("Error registering:", error.message);
       setErrors({ email: error.message });
     }
+
   };
 
   return (
