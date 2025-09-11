@@ -51,18 +51,18 @@ export default function RegisterMember() {
       return;
     }
 
-    try {
-      const response = await fetch("https://aguka.onrender.com/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.fullName,
-          email: form.email,
-          password: form.password,
-        }),
-      });
+  try {
+    const response = await fetch("https://aguka.onrender.com/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+     body: JSON.stringify({
+        name: form.fullName,
+        email: form.email,
+        password: form.password,
+      }),
+    });
 
       if (!response.ok) {
         const errorData = await response.json();
