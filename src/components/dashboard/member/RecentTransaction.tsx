@@ -63,15 +63,15 @@ const RecentTransactions: React.FC = () => {
           Recent Transactions
         </h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse">
+          <table className="min-w-full border-collapse border border-gray-400">
             <thead>
-              <tr className="text-left text-gray-300 border-b border-gray-600">
-                <th className="p-3">Date</th>
-                <th className="p-3">Transaction Id</th>
-                <th className="p-3">Type</th>
-                <th className="p-3">Amount</th>
-                <th className="p-3">Status</th>
-                <th className="p-3">Balance</th>
+              <tr className="text-left text-gray-300  border-gray-600">
+                <th className="p-3 border border-gray-400  text-left">Date</th>
+                <th className="p-3 border border-gray-400">Transaction Id</th>
+                <th className="p-3 border border-gray-400">Type</th>
+                <th className="p-3 border border-gray-400">Amount</th>
+                <th className="p-3 border border-gray-400">Status</th>
+                <th className="p-3 border border-gray-400">Balance</th>
               </tr>
             </thead>
             <tbody>
@@ -79,19 +79,19 @@ const RecentTransactions: React.FC = () => {
                 <tr
                   key={tx.id}
                   className="text-white border-b border-gray-700 hover:bg-[#014d54]">
-                  <td className="p-3">{tx.date}</td>
-                  <td className="p-3">#{tx.id}</td>
-                  <td className="p-3">
+                  <td className="p-3 border border-gray-400">{tx.date}</td>
+                  <td className="p-3 border border-gray-400">#{tx.id}</td>
+                  <td className="p-3 border border-gray-400">
                     <span className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm">
                       {tx.type}
                     </span>
                   </td>
-                  <td className="p-3">{formatAmount(tx.amount)}</td>
+                  <td className="p-3 border border-gray-400">{formatAmount(tx.amount)}</td>
                   <td
-                    className={`p-3 font-semibold ${statusColors[tx.status]}`}>
+                    className={`p-3 font-semibold border border-gray-400 ${statusColors[tx.status]}`}>
                     {tx.status}
                   </td>
-                  <td className="p-3">Rwf {tx.balance.toLocaleString()}</td>
+                  <td className="p-3 border border-gray-400">Rwf {tx.balance.toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>

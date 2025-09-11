@@ -13,8 +13,7 @@ import FillBeforeRegister from "@features/auth/FillBeforeRegister";
 import RegisterGroup from "@features/auth/RegisterGroup";
 import LoanProfile from "@components/LoanProfile";
 import MemberDashboard from "@features/dashboard/MemberDashboard";
-import AsidebarMember from "@components/dashboard/member/AsidebarMember";
-import DashboardNavbar from "@components/dashboard/member/DashboardNavbar";
+
 
 const AppRoutes = () => {
   return (

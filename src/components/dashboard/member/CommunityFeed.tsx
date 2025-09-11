@@ -135,7 +135,7 @@ const CommunityFeed: React.FC = () => {
           <div className="flex justify-end">
             <button
               onClick={handleCreatePost}
-              className="bg-secondary-400 hover:bg-secondary-500 text-white p-6 text-2xl h-20 rounded-xl transition">
+              className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-6 text-2xl h-20 rounded-xl transition-all">
               Post
             </button>
           </div>
@@ -237,7 +237,6 @@ const CommunityFeed: React.FC = () => {
           </div>
         ))}
       </div>
-     
     </div>
   );
 };

@@ -25,11 +25,13 @@ interface LineChartDashboardProps {
 // Custom Y-axis tick component
 const CustomYAxisTick = ({ x, y, payload }: any) => (
   <text
-    x={x - 10}
+    x={x - 20} // ✅ move further left for padding
     y={y + 5}
     textAnchor="end"
-    className="text-white text-sm font-medium">
-    {payload.value.toLocaleString()} {/* adds comma separators */}
+    fill="#fff" // white text
+    fontSize={14}
+    fontWeight={500}>
+    {payload.value.toLocaleString()}
   </text>
 );
 
@@ -40,13 +42,18 @@ const LineChartDashboard: React.FC<LineChartDashboardProps> = ({
   lineColor = "#fff",
 }) => {
   return (
-    <div className={`w-200 h-180 p-4 rounded-lg`}>
-      <h2 className="text-4xl font-bold text-white mb-1 ">{title}</h2>
+    <div
+      className="w-200 h-180 p-4 rounded-lg"
+      tabIndex={-1} // prevents focus
+      style={{ outline: "none", WebkitTapHighlightColor: "transparent" }}>
+      <h2 className="text-4xl font-bold text-white mb-1">{title}</h2>
       <p className="text-sm text-gray-200 mb-4">{subtitle}</p>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart
           data={data}
-          margin={{ top: 10, right: 20, bottom: 5, left: 0 }}>
+          margin={{ top: 10, right: 20, bottom: 5, left: 50 }}
+          style={{ outline: "none" }} // remove focus on LineChart SVG
+        >
           <CartesianGrid stroke="#ccc" strokeDasharray="1 3" />
           <XAxis
             dataKey="month"
@@ -55,16 +62,15 @@ const LineChartDashboard: React.FC<LineChartDashboardProps> = ({
           />
           <YAxis
             stroke="#fff"
-            
             tick={<CustomYAxisTick />}
-            domain={[500, 300000]} // min: 500, max: 300,000
-            ticks={[500, 5000, 10000, 50000, 100000, 200000, 300000]} // custom tick numbers
+            domain={[500, 300000]}
+            ticks={[500, 5000, 10000, 50000, 100000, 200000, 300000]}
           />
           <Tooltip
             contentStyle={{
               backgroundColor: "#1a374d",
               border: "none",
-              padding:"10px",
+              padding: "10px",
               color: "#fff",
             }}
             labelStyle={{ color: "#fff" }}
@@ -74,7 +80,6 @@ const LineChartDashboard: React.FC<LineChartDashboardProps> = ({
             dataKey="contribution"
             stroke={lineColor}
             strokeWidth={2}
-            
           />
         </LineChart>
       </ResponsiveContainer>
