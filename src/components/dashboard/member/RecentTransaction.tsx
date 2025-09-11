@@ -63,7 +63,10 @@ const RecentTransactions: React.FC = () => {
           Recent Transactions
         </h2>
         <div className="overflow-x-auto">
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4c8f63c (commited dashboard)
           <table className="min-w-full border-collapse border border-gray-400">
             <thead>
               <tr className="text-left text-gray-300  border-gray-600">
@@ -73,8 +76,11 @@ const RecentTransactions: React.FC = () => {
                 <th className="p-3 border border-gray-400">Amount</th>
                 <th className="p-3 border border-gray-400">Status</th>
                 <th className="p-3 border border-gray-400">Balance</th>
+<<<<<<< HEAD
 
           
+=======
+>>>>>>> 4c8f63c (commited dashboard)
               </tr>
             </thead>
             <tbody>
@@ -82,24 +88,36 @@ const RecentTransactions: React.FC = () => {
                 <tr
                   key={tx.id}
                   className="text-white border-b border-gray-700 hover:bg-[#014d54]">
+<<<<<<< HEAD
 
                   <td className="p-3 border border-gray-400">{tx.date}</td>
                   <td className="p-3 border border-gray-400">#{tx.id}</td>
                   <td className="p-3 border border-gray-400">
 
             
+=======
+                  <td className="p-3 border border-gray-400">{tx.date}</td>
+                  <td className="p-3 border border-gray-400">#{tx.id}</td>
+                  <td className="p-3 border border-gray-400">
+>>>>>>> 4c8f63c (commited dashboard)
                     <span className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm">
                       {tx.type}
                     </span>
                   </td>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4c8f63c (commited dashboard)
                   <td className="p-3 border border-gray-400">{formatAmount(tx.amount)}</td>
                   <td
                     className={`p-3 font-semibold border border-gray-400 ${statusColors[tx.status]}`}>
                     {tx.status}
                   </td>
                   <td className="p-3 border border-gray-400">Rwf {tx.balance.toLocaleString()}</td>
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 4c8f63c (commited dashboard)
                 </tr>
               ))}
             </tbody>
