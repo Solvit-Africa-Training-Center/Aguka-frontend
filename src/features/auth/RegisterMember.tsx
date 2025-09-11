@@ -46,6 +46,12 @@ export default function RegisterMember() {
     e.preventDefault();
 
 
+    const formErrors = validateRegisterForm(form);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+
     try {
       const response = await fetch("https://aguka.onrender.com/api/users", {
         method: "POST",
@@ -75,6 +81,7 @@ export default function RegisterMember() {
       console.error("Error registering:", error.message);
       setErrors({ email: error.message });
     }
+
   };
 
   return (

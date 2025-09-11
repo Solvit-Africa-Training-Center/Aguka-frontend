@@ -7,11 +7,13 @@ import AsidebarMember from "./AsidebarMember";
 
 const DashboardNavbar: React.FC = () => {
   const { name, email } = useUser();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const firstChar =
     name
       ?.split(" ")
+
       .map((n) => n[0])
       .join("")
       .toUpperCase() ||
@@ -32,6 +34,8 @@ const DashboardNavbar: React.FC = () => {
             <img src={logo} alt="logo" className="w-25 h-25 rounded-full" />
             <span className="text-2xl text-white font-bold">Dashboard</span>
           </div>
+
+          <span className="text-sm">{name || email}</span>
         </div>
         <div className="flex gap-10 items-center text-2xl text-white relative right-30">
           <Bell className="size-10 absolute" />
@@ -50,8 +54,8 @@ const DashboardNavbar: React.FC = () => {
 
       {/* Sidebar Component */}
       <AsidebarMember
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
+      // // isOpen={isSidebarOpen}
+      // onClose={() => setIsSidebarOpen(false)}
       />
     </>
   );
