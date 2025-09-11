@@ -3,7 +3,8 @@ import type { ChangeEvent, FormEvent } from "react";
 import { Upload, ImagePlus } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import type { GroupCreation } from "types/auth";
-import { useCreateGroupMutation } from "@features/api/groupApi";
+import { useCreateGroupMutation } from "@services/api/groupApi";
+
 
 const RegisterGroup: React.FC = () => {
   const [formData, setFormData] = useState<GroupCreation>({
@@ -78,7 +79,7 @@ const RegisterGroup: React.FC = () => {
       <div className="relative max-w-6xl mx-auto bg-[#003B42] rounded-3xl p-10 shadow-lg top-30">
         <h1 className="text-4xl font-bold text-center ">Register your Group</h1>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6 p-4">
+        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6 p-4 ">
           <div>
             <label className="block mb-2 text-xl">Full Name</label>
             <input
@@ -87,7 +88,7 @@ const RegisterGroup: React.FC = () => {
               placeholder="Aguka Developers"
               value={formData.name}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 placeholder:text-neutral-400  text-white text-xl border-2 border-gray-400 outline-none"
             />
           </div>
 
@@ -100,7 +101,7 @@ const RegisterGroup: React.FC = () => {
               placeholder="5.7"
               value={formData.interestRate ?? ""}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 placeholder:text-neutral-400 not-visited:text-white text-xl border-2 border-gray-400 outline-none"
             />
           </div>
 
@@ -112,7 +113,7 @@ const RegisterGroup: React.FC = () => {
               placeholder="Collaboration group for developers."
               value={formData.description}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 placeholder:text-neutral-400 text-white text-xl border-2 border-gray-400 outline-none"
             />
           </div>
 
@@ -124,7 +125,7 @@ const RegisterGroup: React.FC = () => {
               placeholder="0788800000"
               value={formData.contact}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 placeholder:text-neutral-400  text-white text-xl border-2 border-gray-400 outline-none"
             />
           </div>
 
@@ -137,7 +138,7 @@ const RegisterGroup: React.FC = () => {
               placeholder="Kigali,Gasabo,Ndera"
               value={formData.location}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 placeholder:text-neutral-400 text-white text-xl  border-2 border-gray-400 outline-none"
             />
           </div>
 
@@ -150,7 +151,7 @@ const RegisterGroup: React.FC = () => {
               placeholder="group@example.com"
               value={formData.email}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 placeholder:text-neutral-400 text-white text-xl border-2 border-gray-400 outline-none"
             />
           </div>
 
@@ -163,9 +164,9 @@ const RegisterGroup: React.FC = () => {
                 name="profilePicture"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none pr-10"
+                className="w-full rounded-md p-3  text-neutral-200 border-2 border-gray-400 outline-none pr-10 placeholder:text-neutral-400"
               />
-              <ImagePlus className="absolute right-3 top-3 text-gray-600" />
+              <ImagePlus className="absolute right-3 top-3 text-secondary-600" />
             </div>
           </div>
 
@@ -178,7 +179,7 @@ const RegisterGroup: React.FC = () => {
               placeholder="500"
               value={formData.minContribution}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 placeholder:text-neutral-400 text-white text-xl border-2 border-gray-400 outline-none"
             />
           </div>
 
@@ -191,7 +192,7 @@ const RegisterGroup: React.FC = () => {
               placeholder="Ndera"
               value={formData.meetingLocation}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 placeholder:text-neutral-400 text-white text-xl border-2 border-gray-400 outline-none"
             />
           </div>
 
@@ -203,23 +204,21 @@ const RegisterGroup: React.FC = () => {
                 name="agreementTerms"
                 accept=".pdf,.doc,.docx"
                 onChange={handleFileChange}
-                className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none pr-10"
+                className="w-full rounded-md p-3   text-neutral-400 text-xl border-2 border-gray-400 outline-none pr-10"
               />
-              <Upload className="absolute right-3 top-3 text-gray-600" />
+              <Upload className="absolute right-3 top-3 text-secondary-600  " />
             </div>
           </div>
-        
 
-        <div className="flex justify-center mt-8">
-          <button
-            type="submit" disabled={isLoading}
-            className="px-10 py-4 text-xl capitalize bg-[#F9A825] text-black font-bold rounded-md border-none">
-           
-             {isLoading ? "Creating..." : "Create Group"}
-          </button>
-          
-        </div>
-</form>
+          <div className="flex justify-center pt-2 pb-4 w-full relative">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="px-25 py-4 text-xl capitalize bg-[#F9A825] text-black  font-bold rounded-md border-none absolute -right-40 ">
+              {isLoading ? "Creating..." : "Create Group"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
