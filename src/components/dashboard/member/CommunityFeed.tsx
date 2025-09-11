@@ -1,228 +1,243 @@
-import React, { useState, useEffect } from "react";
-
-// Type definitions
-interface User {
-  id: string;
-  name: string;
-  avatar?: string;
-}
-
-interface Comment {
-  id: string;
-  userId: string;
-  content: string;
-  timestamp: Date;
-}
+import React, { useState } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { useUser } from "hooks/useUser";
+import { Heart, MessageCircle } from "lucide-react";
 
 interface Post {
   id: string;
   userId: string;
+  userName: string; // ✅ display name
   content: string;
   timestamp: Date;
   likes: number;
   comments: Comment[];
 }
 
-interface Group {
+interface Comment {
   id: string;
-  name: string;
-  members: User[];
-  nextContributionDeadline: Date;
+  userId: string;
+  userName: string; // ✅ display name
+  content: string;
+  timestamp: Date;
 }
 
-// Mock Data
-const mockUsers: User[] = [
-  {
-    id: "1",
-    name: "MDMUHOZA Diane",
-    avatar: "https://example.com/avatar1.jpg",
-  },
-  { id: "2", name: "Rwema Gilbert" }, // no avatar, will show initials
-];
-
-const mockPosts: Post[] = [
-  {
-    id: "1",
-    userId: "1",
-    content:
-      "Just received my quarterly payout. Thanks to all group members\n\nReminder: our next contribution deadline is December 29th.\n\nLet's keep up the great work everyone!",
-    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    likes: 5,
-    comments: [],
-  },
-  {
-    id: "2",
-    userId: "2",
-    content:
-      "New member joining our group next month! Welcome to\n\nThanks to our Agatha savings, I was able to pay for my child's fees.",
-    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
-    likes: 3,
-    comments: [],
-  },
-];
-
-const mockGroup: Group = {
-  id: "1",
-  name: "Community Savings Group",
-  members: mockUsers,
-  nextContributionDeadline: new Date("2023-12-29"),
-};
-
-// API Simulation
-const fetchPosts = async (): Promise<Post[]> =>
-  new Promise((resolve) => setTimeout(() => resolve(mockPosts), 1000));
-
-const createPost = async (content: string): Promise<Post> =>
-  new Promise((resolve) =>
-    setTimeout(() => {
-      const newPost: Post = {
-        id: Math.random().toString(36).substr(2, 9),
-        userId: "1",
-        content,
-        timestamp: new Date(),
-        likes: 0,
-        comments: [],
-      };
-      resolve(newPost);
-    }, 500)
-  );
-
-// Helper to get initials
-const getInitials = (name: string) => {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
-};
-
-// Component
 const CommunityFeed: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { name, email } = useUser();
+
+  const [posts, setPosts] = useState<Post[]>([
+    {
+      id: "1",
+      userId: "alice@example.com",
+      userName: "Alice",
+      content: "Excited to join this community! 🚀",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60),
+      likes: 3,
+      comments: [
+        {
+          id: "c1",
+          userId: "bob@example.com",
+          userName: "Bob",
+          content: "Welcome Alice! 🎉",
+          timestamp: new Date(Date.now() - 1000 * 60 * 30),
+        },
+      ],
+    },
+    {
+      id: "2",
+      userId: "charlie@example.com",
+      userName: "Charlie",
+      content: "Anyone working on React projects? Let's connect!",
+      timestamp: new Date(Date.now() - 1000 * 60 * 120),
+      likes: 5,
+      comments: [],
+    },
+  ]);
+
   const [newPostContent, setNewPostContent] = useState("");
+  const [visibleComments, setVisibleComments] = useState<
+    Record<string, boolean>
+  >({});
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyContent, setReplyContent] = useState("");
 
-  useEffect(() => {
-    loadPosts();
-  }, []);
+  const formatDate = (date: Date) =>
+    formatDistanceToNow(date, { addSuffix: true });
 
-  const loadPosts = async () => {
-    setLoading(true);
-    try {
-      const postsData = await fetchPosts();
-      setPosts(postsData);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  const getInitials = (fullName: string) => {
+    if (!fullName) return "?";
+    const parts = fullName.trim().split(" ");
+    if (parts.length === 1) return parts[0][0].toUpperCase();
+    return parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
   };
 
-  const handleCreatePost = async () => {
+  // ✅ Create Post
+  const handleCreatePost = () => {
     if (!newPostContent.trim()) return;
-    try {
-      const newPost = await createPost(newPostContent);
-      setPosts([newPost, ...posts]);
-      setNewPostContent("");
-    } catch (err) {
-      console.error(err);
-    }
+
+    const newPost: Post = {
+      id: Math.random().toString(36).substr(2, 9),
+      userId: email,
+      userName: name || email,
+      content: newPostContent,
+      timestamp: new Date(),
+      likes: 0,
+      comments: [],
+    };
+
+    setPosts([newPost, ...posts]);
+    setNewPostContent("");
   };
 
-  const formatDate = (date: Date) => {
-    const diffHours = Math.floor(
-      (Date.now() - date.getTime()) / (1000 * 60 * 60)
+  // ✅ Like Post
+  const handleLike = (postId: string) => {
+    setPosts(
+      posts.map((post) =>
+        post.id === postId ? { ...post, likes: post.likes + 1 } : post
+      )
     );
-    return diffHours <= 0
-      ? "Just now"
-      : `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
   };
 
-  if (loading)
-    return (
-      <div className="text-center text-secondary-300 p-5">Loading posts...</div>
+  // ✅ Add Comment
+  const handleAddComment = (postId: string) => {
+    if (!replyContent.trim()) return;
+
+    const newComment: Comment = {
+      id: Math.random().toString(36).substr(2, 9),
+      userId: email,
+      userName: name || email,
+      content: replyContent,
+      timestamp: new Date(),
+    };
+
+    setPosts(
+      posts.map((post) =>
+        post.id === postId
+          ? { ...post, comments: [...post.comments, newComment] }
+          : post
+      )
     );
+
+    setReplyingTo(null);
+    setReplyContent("");
+  };
 
   return (
-    <div className="font-poppins p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-semibold text-secondary-300 mb-4">
-        Updates and discussions from your groups
-      </h1>
+    <div className="min-h-screen bg-[#00353B] p-6">
+      <div className="max-w-3xl mx-auto space-y-6">
+        {/* Create Post */}
+        <div className="rounded-2xl p-5 flex gap-3 justify-center">
+          <textarea
+            value={newPostContent}
+            onChange={(e) => setNewPostContent(e.target.value)}
+            placeholder={`What's on your mind, ${name || "member"}?`}
+            className="w-full h-20 border border-secondary-400 rounded-lg p-3 resize-none focus:ring-2 focus:ring-secondary-400 focus:outline-none"
+          />
+          <div className="flex justify-end">
+            <button
+              onClick={handleCreatePost}
+              className="bg-secondary-400 hover:bg-secondary-500 text-white p-6 text-2xl h-20 rounded-xl transition">
+              Post
+            </button>
+          </div>
+        </div>
 
-      {/* New Post */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <textarea
-          value={newPostContent}
-          onChange={(e) => setNewPostContent(e.target.value)}
-          placeholder="Share an update with the group..."
-          className="flex-1 p-3 rounded-xl border-2 border-secondary-300 focus:ring-2 focus:ring-secondary-600 focus:outline-none resize-none h-24"
-        />
-        <button
-          onClick={handleCreatePost}
-          disabled={!newPostContent.trim()}
-          className="bg-gradient-to-r from-secondary-600 to-secondary-300 text-white font-semibold rounded-xl px-6 py-3 hover:opacity-90 transition disabled:opacity-50">
-          Post
-        </button>
-      </div>
-
-      {/* Posts */}
-      <div className="space-y-6">
-        {posts.map((post) => {
-          const user = mockUsers.find((u) => u.id === post.userId);
-          return (
-            <div
-              key={post.id}
-              className="bg-white rounded-2xl shadow-md p-5 border border-gray-100">
-              {/* Header */}
-              <div className="flex items-center gap-3">
-                {user?.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-12 h-12 rounded-full border border-gray-200 object-cover"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-secondary-300 flex items-center justify-center text-white font-semibold border border-gray-200">
-                    {getInitials(user?.name || "")}
-                  </div>
-                )}
-
-                <div>
-                  <div className="font-semibold text-gray-800">
-                    {user?.name}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {formatDate(post.timestamp)}
-                  </div>
+        {/* Posts Feed */}
+        {posts.map((post) => (
+          <div key={post.id} className="rounded-2xl shadow-md p-5 text-white">
+            {/* Header */}
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-secondary-300 flex items-center justify-center text-white font-semibold">
+                {getInitials(post.userName)}
+              </div>
+              <div>
+                <div className="font-semibold text-white">{post.userName}</div>
+                <div className="text-sm text-gray-400">
+                  {formatDate(post.timestamp)}
                 </div>
               </div>
-
-              {/* Content */}
-              <div className="mt-4 text-gray-700 leading-relaxed">
-                {post.content.split("\n").map((p, i) => (
-                  <p key={i} className="mb-2">
-                    {p}
-                  </p>
-                ))}
-              </div>
-
-              {/* Actions */}
-              <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-100 text-gray-600">
-                <button className="flex items-center gap-2 hover:text-secondary-600 transition">
-                  👍 Like{" "}
-                  <span className="text-sm text-gray-400">({post.likes})</span>
-                </button>
-                <button className="flex items-center gap-2 hover:text-secondary-500 transition">
-                  💬 Comment
-                </button>
-                <button className="flex items-center gap-2 hover:text-secondary-400 transition">
-                  🔗 Share
-                </button>
-              </div>
             </div>
-          );
-        })}
+
+            {/* Content */}
+            <p className="mt-4">{post.content}</p>
+
+            {/* Actions */}
+            <div className="flex items-center gap-6 mt-4 text-gray-400">
+              <button
+                onClick={() => handleLike(post.id)}
+                className="flex items-center gap-1 hover:text-secondary-400 transition">
+                <Heart size={18} /> {post.likes}
+              </button>
+              <button
+                onClick={() =>
+                  setVisibleComments({
+                    ...visibleComments,
+                    [post.id]: !visibleComments[post.id],
+                  })
+                }
+                className="flex items-center gap-1 hover:text-secondary-400 transition">
+                <MessageCircle size={18} /> {post.comments.length} Reply
+              </button>
+            </div>
+
+            {/* Comments */}
+            {visibleComments[post.id] && (
+              <div className="mt-4 space-y-3">
+                {post.comments.map((comment) => (
+                  <div
+                    key={comment.id}
+                    className="flex items-start gap-3 text-sm">
+                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold">
+                      {getInitials(comment.userName)}
+                    </div>
+                    <div>
+                      <div className="bg-gray-100 text-black rounded-lg p-2">
+                        <span className="font-medium">{comment.userName}</span>:{" "}
+                        {comment.content}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {formatDate(comment.timestamp)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+                {/* Reply Box */}
+                {replyingTo !== post.id ? (
+                  <button
+                    onClick={() => setReplyingTo(post.id)}
+                    className="text-sm text-secondary-400 hover:underline">
+                    Write a reply...
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2 mt-2">
+                    <input
+                      type="text"
+                      value={replyContent}
+                      onChange={(e) => setReplyContent(e.target.value)}
+                      placeholder="Write a reply..."
+                      className="flex-1 border border-secondary-400 rounded-lg px-3 py-1 focus:ring-2 focus:ring-secondary-400 focus:outline-none"
+                    />
+                    <button
+                      onClick={() => handleAddComment(post.id)}
+                      className="bg-secondary-400 hover:bg-secondary-500 text-white px-3 py-1 rounded-lg text-sm">
+                      Reply
+                    </button>
+                    <button
+                      onClick={() => {
+                        setReplyingTo(null);
+                        setReplyContent("");
+                      }}
+                      className="text-xs text-gray-400 hover:underline">
+                      Cancel
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
+     
     </div>
   );
 };

@@ -5,8 +5,18 @@ import { Link, Outlet } from "react-router-dom";
 import { useUser } from "hooks/useUser";
 
 const DashboardNavbar: React.FC = () => {
-  const { email } = useUser();
-  const firstChar = email ? email[0].toUpperCase() : "";
+  const { name, email } = useUser();
+  const firstChar =
+    name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase() ||
+    email
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
 
   return (
     <div className="w-full bg-[#003B42] flex justify-between font-poppins p-4 fixed z-10">
@@ -31,7 +41,7 @@ const DashboardNavbar: React.FC = () => {
           <div className="bg-secondary-400 text-white rounded-full w-15 h-15 flex items-center justify-center text-4xl">
             {firstChar}
           </div>
-          <span className="text-sm">{email.toLowerCase()}</span>
+          <span className="text-sm">{name || email}</span>
         </div>
       </div>
       <Outlet />

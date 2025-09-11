@@ -93,11 +93,20 @@ const MemberDashboard: React.FC = () => {
         <div className="w-230 font-poppins">
           <RecentTransactions />
         </div>
-        <div className="font-poppins text-white h-100 border overflow-y-scroll shadow-lg rounded-md w-180">
+        <div className="font-poppins text-white h-150 border overflow-y-scroll shadow-lg rounded-md w-180 scroll-smooth">
           <h2 className="text-center text-2xl capitalize">community feed</h2>
           <div>
-            <CommunityFeed/>
+            <CommunityFeed />
           </div>
+        </div>
+      </div>
+      <div className="place-items-center">
+        <hr className="w-300  text-[#D4D4D4] p-5" />
+        <div className="text-sm text-center pt-15 capitalize text-[#D4D4D4] p-4 ">
+          <span>
+            &copy; 2025 Aguka.all rights reserved.Building Wealth through
+            community.
+          </span>
         </div>
       </div>
     </div>

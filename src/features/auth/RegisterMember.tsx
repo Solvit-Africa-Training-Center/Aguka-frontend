@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import type { RegisterForm } from "types/auth";
+import { useUser } from "hooks/useUser";
 import logo from "assets/logo/agukalogo.png";
 interface ValidationErrors {
   fullName?: string;
@@ -10,6 +11,7 @@ interface ValidationErrors {
 
 const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
   const errors: ValidationErrors = {};
+  
 
   if (!form.fullName.trim()) errors.fullName = "Full Name is required";
   if (!form.email.trim()) errors.email = "Email is required";
@@ -23,6 +25,7 @@ const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
 };
 
 export default function RegisterMember() {
+  const { setUser } = useUser();
   const [form, setForm] = useState<RegisterForm>({
     fullName: "",
     email: "",
@@ -39,46 +42,45 @@ export default function RegisterMember() {
     setSuccess("");
   };
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const formErrors = validateRegisterForm(form);
-  if (Object.keys(formErrors).length > 0) {
-    setErrors(formErrors);
-    return;
-  }
-
-  try {
-    const response = await fetch("https://aguka.onrender.com/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-     body: JSON.stringify({
-        name: form.fullName,
-        email: form.email,
-        password: form.password,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Registration failed");
+    const formErrors = validateRegisterForm(form);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
     }
 
-    const data = await response.json();
-    console.log("Registered successfully:", data);
+    try {
+      const response = await fetch("https://aguka.onrender.com/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.fullName,
+          email: form.email,
+          password: form.password,
+        }),
+      });
 
-    setSuccess("Your account has been created successfully!");
-    setForm({ fullName: "", email: "", password: "" });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Registration failed");
+      }
 
-    setTimeout(() => navigate("/FillBeforeRegister"), 1000);
-  } catch (error: any) {
-    console.error("Error registering:", error.message);
-    setErrors({ email: error.message }); 
-  }
-};
+      const data = await response.json();
+      console.log("Registered successfully:", data);
+      setUser(form.email, form.fullName);
+      setSuccess("Your account has been created successfully!");
+      setForm({ fullName: "", email: "", password: "" });
 
+      setTimeout(() => navigate("/FillBeforeRegister"), 1000);
+    } catch (error: any) {
+      console.error("Error registering:", error.message);
+      setErrors({ email: error.message });
+    }
+  };
 
   return (
     <div className="w-full flex font-poppins h-screen">

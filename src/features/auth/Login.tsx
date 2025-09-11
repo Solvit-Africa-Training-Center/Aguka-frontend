@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "assets/logo/agukalogo.png";
-import { useUser } from "hooks/useUser"; // custom hook
 
 interface LoginForm {
   emailOrPhone: string;
@@ -52,7 +51,6 @@ export default function Login() {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [success, setSuccess] = useState<string>("");
   const navigate = useNavigate();
-  const { setEmail } = useUser(); // <-- use the custom hook
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -73,8 +71,6 @@ export default function Login() {
       return;
     }
 
-    // Save email to context (and localStorage inside hook)
-    setEmail(form.emailOrPhone);
 
     // Navigate to dashboard
     navigate("/memberdashboard");
