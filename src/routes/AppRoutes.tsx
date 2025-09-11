@@ -12,6 +12,8 @@ import ForgotPassword from "@features/auth/ForgotPassword";
 import FillBeforeRegister from "@features/auth/FillBeforeRegister";
 import RegisterGroup from "@features/auth/RegisterGroup";
 import LoanProfile from "@components/LoanProfile";
+import PresidentDashboard from "@pages/PresidentDashboard";
+
 
 const AppRoutes = () => {
   return (
@@ -31,6 +33,8 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorPage />}></Route>
         <Route path="/loan" element={<LoanProfile />} />
+        <Route path="/presidentdashboard" element={<PresidentDashboard />} />
+       
       </Routes>
     </div>
   );

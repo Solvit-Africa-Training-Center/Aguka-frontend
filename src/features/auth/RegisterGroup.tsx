@@ -3,6 +3,7 @@ import type { ChangeEvent, FormEvent } from "react";
 import { Upload, ImagePlus } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import type { GroupCreation } from "types/auth";
+import { useCreateGroupMutation } from "@features/api/groupApi";
 
 const RegisterGroup: React.FC = () => {
   const [formData, setFormData] = useState<GroupCreation>({
@@ -18,14 +19,15 @@ const RegisterGroup: React.FC = () => {
     agreementTerms: null,
   });
 
+  const [createGroup, { isLoading }] = useCreateGroupMutation();
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        type === "number" ? (value === "" ? undefined : Number(value)) : value,
+      [name]: type === "number" ? value : value,
     }));
   };
 
@@ -39,9 +41,22 @@ const RegisterGroup: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Submitted Data:", formData);
+
+    const data = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        data.append(key, value as any);
+      }
+    });
+
+    try {
+      await createGroup(data).unwrap();
+      alert("Group created!");
+    } catch (err) {
+      console.error("Error creating group:", err);
+    }
   };
 
   return (
@@ -193,15 +208,18 @@ const RegisterGroup: React.FC = () => {
               <Upload className="absolute right-3 top-3 text-gray-600" />
             </div>
           </div>
-        </form>
+        
 
         <div className="flex justify-center mt-8">
           <button
-            type="submit"
+            type="submit" disabled={isLoading}
             className="px-10 py-4 text-xl capitalize bg-[#F9A825] text-black font-bold rounded-md border-none">
-            Create Group
+           
+             {isLoading ? "Creating..." : "Create Group"}
           </button>
+          
         </div>
+</form>
       </div>
     </div>
   );
