@@ -135,13 +135,7 @@ const CommunityFeed: React.FC = () => {
           <div className="flex justify-end">
             <button
               onClick={handleCreatePost}
-<<<<<<< HEAD
-
               className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-6 text-2xl h-20 rounded-xl transition-all">
-
-=======
-              className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-6 text-2xl h-20 rounded-xl transition-all">
->>>>>>> 4c8f63c (commited dashboard)
               Post
             </button>
           </div>
