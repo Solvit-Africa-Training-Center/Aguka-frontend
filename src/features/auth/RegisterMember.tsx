@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import type { RegisterForm } from "types/auth";
 import { useUser } from "hooks/useUser";
 import logo from "assets/logo/agukalogo.png";
+import { useRegisterUserMutation } from "@services/api/authApi";
+
 interface ValidationErrors {
   fullName?: string;
   email?: string;
@@ -11,8 +13,6 @@ interface ValidationErrors {
 
 const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
   const errors: ValidationErrors = {};
-  
-
   if (!form.fullName.trim()) errors.fullName = "Full Name is required";
   if (!form.email.trim()) errors.email = "Email is required";
   else if (!/\S+@\S+\.\S+/.test(form.email))
@@ -20,7 +20,6 @@ const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
   if (!form.password.trim()) errors.password = "Password is required";
   else if (form.password.length < 6)
     errors.password = "Password must be at least 6 characters";
-
   return errors;
 };
 
@@ -35,6 +34,8 @@ export default function RegisterMember() {
   const [success, setSuccess] = useState<string>("");
   const navigate = useNavigate();
 
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -44,8 +45,6 @@ export default function RegisterMember() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-
     const formErrors = validateRegisterForm(form);
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -53,35 +52,29 @@ export default function RegisterMember() {
     }
 
     try {
-      const response = await fetch("https://aguka.onrender.com/api/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.fullName,
-          email: form.email,
-          password: form.password,
-        }),
-      });
+      const result = await registerUser({
+        name: form.fullName,
+        email: form.email,
+        password: form.password,
+      }).unwrap();
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Registration failed");
-      }
-
-      const data = await response.json();
-      console.log("Registered successfully:", data);
+      console.log("Registered successfully:", result);
       setUser(form.email, form.fullName);
       setSuccess("Your account has been created successfully!");
       setForm({ fullName: "", email: "", password: "" });
 
-      setTimeout(() => navigate("/FillBeforeRegister"), 1000);
+      navigate("/FillBeforeRegister");
     } catch (error: any) {
-      console.error("Error registering:", error.message);
-      setErrors({ email: error.message });
+      console.error("Error registering:", error);
+      const message =
+        error?.data?.message || "Failed to register. Please try again.";
+      setErrors({ email: message });
     }
+  };
 
+  const handleGoogleLogin = () => {
+    // ✅ Redirect directly to backend Google OAuth
+    window.location.href = "http://localhost:3000/api/auth/google";
   };
 
   return (
@@ -92,7 +85,7 @@ export default function RegisterMember() {
           <img
             src="/photos/registermember.jpg"
             alt="Register"
-            className="w-full h-screen "
+            className="w-full h-screen"
           />
           <div className="absolute inset-0 bg-black opacity-70"></div>
           <div className="absolute top-1/4 left-16 w-[600px] grid gap-6 text-center text-white">
@@ -102,9 +95,7 @@ export default function RegisterMember() {
               className="w-36 h-36 rounded-full mx-auto"
             />
             <h1 className="text-6xl font-bold">Save Together,</h1>
-            <h1 className="text-6xl font-bold  text-[#F9A825] ">
-              Grow Together
-            </h1>
+            <h1 className="text-6xl font-bold text-[#F9A825]">Grow Together</h1>
             <p className="text-sm mt-2 w-200">
               Aguka empowers communities to build financial strength through
               collective savings. By pooling resources, members access
@@ -121,6 +112,7 @@ export default function RegisterMember() {
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
+            {/* Full Name */}
             <div>
               <label htmlFor="fullName" className="text-2xl text-white mb-1">
                 Full Name
@@ -139,6 +131,7 @@ export default function RegisterMember() {
               )}
             </div>
 
+            {/* Email */}
             <div>
               <label htmlFor="email" className="text-2xl text-white mb-1">
                 Email
@@ -151,12 +144,14 @@ export default function RegisterMember() {
                 onChange={handleChange}
                 placeholder="Enter your email"
                 className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                autoComplete="email"
               />
               {errors.email && (
                 <p className="text-red-400 text-sm mt-1">{errors.email}</p>
               )}
             </div>
 
+            {/* Password */}
             <div>
               <label htmlFor="password" className="text-2xl text-white mb-1">
                 Password
@@ -169,16 +164,19 @@ export default function RegisterMember() {
                 onChange={handleChange}
                 placeholder="Enter your password"
                 className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                autoComplete="current-password"
               />
               {errors.password && (
                 <p className="text-red-400 text-sm mt-1">{errors.password}</p>
               )}
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
+              disabled={isLoading}
               className="w-full py-4 rounded-lg font-semibold text-black bg-[#F9A825] hover:bg-secondary-600 transition">
-              Sign Up
+              {isLoading ? "Registering..." : "Sign Up"}
             </button>
 
             {success && (
@@ -188,20 +186,26 @@ export default function RegisterMember() {
             )}
           </form>
 
+          {/* Divider */}
           <div className="flex items-center my-6 text-gray-400 w-full max-w-md">
             <hr className="flex-grow border-gray-400" />
             <span className="mx-2 text-[#F9A825]">Or continue with</span>
             <hr className="flex-grow border-gray-400" />
           </div>
-          <div className=" w-100 justify-center place-items-center">
-            <button className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3  mb-6">
+
+          {/* Google Login */}
+          <div className="w-100 justify-center place-items-center">
+            <button
+              onClick={handleGoogleLogin}
+              className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6">
               <img
                 src="/image/gmail.png"
                 alt="Google login"
-                className="w-10 h-10 "
+                className="w-10 h-10"
               />
             </button>
           </div>
+
           <p className="text-center text-gray-300 w-150">
             Already have an account?{" "}
             <Link to="/login" className="text-[#F9A825] hover:underline">

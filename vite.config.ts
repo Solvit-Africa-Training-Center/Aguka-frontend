@@ -1,16 +1,17 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
-import tailwindcss from '@tailwindcss/vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), tsconfigPaths()],
-   server: {
+  server: {
     proxy: {
-      '/api': 'https://aguka.onrender.com'
-    }
-  }
-  
-})
-
-
+      "/api": {
+        target: "https://aguka.onrender.com",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+});

@@ -1,6 +1,9 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "assets/logo/agukalogo.png";
+import { useLoginMutation } from "@services/api/authApi";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@services/api/authSlice";
 
 interface LoginForm {
   emailOrPhone: string;
@@ -32,6 +35,7 @@ const validateLoginForm = (form: LoginForm): ValidationErrors => {
       }
     }
   }
+
   if (!form.password.trim()) {
     errors.password = "Password is required";
   } else if (form.password.length < 6) {
@@ -50,7 +54,12 @@ export default function Login() {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [success, setSuccess] = useState<string>("");
+
+  const [login, { isLoading: isLoggingIn }] = useLoginMutation();
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -62,8 +71,10 @@ export default function Login() {
     setSuccess("");
   };
 
+  // Email / Password login
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const formErrors = validateLoginForm(form);
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -71,41 +82,37 @@ export default function Login() {
       return;
     }
 
-
     try {
-    const response = await fetch("/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        identifier: form.emailOrPhone,
+      const result: any = await login({
+        emailOrPhone: form.emailOrPhone,
         password: form.password,
-      }),
-    });
+      }).unwrap();
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Login failed");
+      dispatch(setCredentials({ user: result.user, token: result.token }));
+      localStorage.setItem("token", result.token);
+      setSuccess("Login successful!");
+      navigate("/presidentdashboard");
+    } catch (err: any) {
+      console.error("Error logging in:", err);
+      setErrors({ emailOrPhone: err?.message || "Login failed" });
     }
+  };
 
-    const data = await response.json();
-    console.log("Login success:", data);
+  // Google login redirect
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+  };
 
-    
-    localStorage.setItem("token", data.token);
-
-    
-
-    navigate("/presidentdashboard");
-
-  } catch (error: any) {
-  const message = error?.message || "Unknown error";
-  console.error("Error logging in:", message);
-  setErrors({ emailOrPhone: message });
-}
-};
-
+  // Handle Google login callback token
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+    if (token) {
+      localStorage.setItem("token", token);
+      // Optionally fetch user info or set Redux state
+      navigate("/presidentdashboard");
+    }
+  }, [location.search, navigate]);
 
   return (
     <div className="min-h-screen w-full flex font-poppins">
@@ -134,7 +141,7 @@ export default function Login() {
                 Grow Together
               </h1>
             </div>
-            <div className="text-center w-180  text-sm">
+            <div className="text-center w-180 text-sm">
               <p>
                 Aguka empowers communities to build financial strength through
                 collective savings. By pooling resources, members access
@@ -147,14 +154,14 @@ export default function Login() {
 
         {/* Right Section */}
         <div className="flex flex-col justify-center bg-[#003B42] min-h-screen relative">
-          <div className="absolute  ml-[126px] w-[590px] ">
-            <h2 className="text-6xl font-poppins text-[#FAFEFFFC] text-left  mb-15">
+          <div className="absolute ml-[126px] w-[590px] ">
+            <h2 className="text-6xl font-poppins text-[#FAFEFFFC] text-left mb-15">
               Join Aguka!
             </h2>
 
             {/* Form */}
             <div className="w-120">
-              <form onSubmit={handleSubmit} className=" space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Email / Phone */}
                 <div className="flex flex-col w-full ">
                   <label
@@ -214,7 +221,9 @@ export default function Login() {
                       name="rememberMe"
                       checked={form.rememberMe}
                       onChange={handleChange}
-                      className="peer h-6 w-6 rounded-lg border border-[#F4F4F4]  bg-transparent checked:bg-none checked:border-[#F4F4F4] focus:outline-none"
+                      className="peer h-6 w-6 rounded-lg border border-[#F4F4F4]  
+                               bg-transparent checked:bg-none checked:border-[#F4F4F4] 
+                               focus:outline-none"
                     />
                     <label
                       htmlFor="rememberMe"
@@ -232,9 +241,10 @@ export default function Login() {
                 {/* Submit */}
                 <button
                   type="submit"
+                  disabled={isLoggingIn}
                   className="py-2 rounded-lg font-semibold w-full h-[60px] mt-2 
                            bg-[#F9A825] text-[24px] text-black">
-                  Login
+                  {isLoggingIn ? "Logging in..." : "Login"}
                 </button>
 
                 {success && (
@@ -255,8 +265,11 @@ export default function Login() {
             </div>
 
             {/* Google Button */}
-            <div className=" w-120 justify-center place-items-center">
-              <button className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3  mb-6">
+            <div className="w-120 justify-center place-items-center">
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6">
                 <img
                   src="/image/gmail.png"
                   alt="Google login"
@@ -270,7 +283,7 @@ export default function Login() {
               Don&apos;t have an account?{" "}
               <Link
                 to="/registermember"
-                className="text-[#F9A825]  hover:underline">
+                className="text-[#F9A825] hover:underline">
                 Sign Up
               </Link>
             </p>
