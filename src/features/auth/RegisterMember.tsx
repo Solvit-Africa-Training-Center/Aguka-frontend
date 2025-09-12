@@ -73,8 +73,8 @@ export default function RegisterMember() {
   };
 
   const handleGoogleLogin = () => {
-    // ✅ Redirect directly to backend Google OAuth
-    window.location.href = "http://localhost:3000/api/auth/google";
+    // Redirect directly to backend Google OAuth
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
   };
 
   return (

@@ -6,32 +6,32 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "@services/api/authSlice";
 
 interface LoginForm {
-  emailOrPhone: string;
+  identifier: string;
   password: string;
   rememberMe: boolean;
 }
 
 interface ValidationErrors {
-  emailOrPhone?: string;
+  identifier?: string;
   password?: string;
 }
 
 const validateLoginForm = (form: LoginForm): ValidationErrors => {
   const errors: ValidationErrors = {};
 
-  if (!form.emailOrPhone.trim()) {
-    errors.emailOrPhone = "Email or phone is required";
+  if (!form.identifier.trim()) {
+    errors.identifier = "Email or phone is required";
   } else {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10,15}$/;
 
-    if (/^\d+$/.test(form.emailOrPhone)) {
-      if (!phoneRegex.test(form.emailOrPhone)) {
-        errors.emailOrPhone = "Enter a valid phone number (10-15 digits)";
+    if (/^\d+$/.test(form.identifier)) {
+      if (!phoneRegex.test(form.identifier)) {
+        errors.identifier = "Enter a valid phone number (10-15 digits)";
       }
     } else {
-      if (!emailRegex.test(form.emailOrPhone)) {
-        errors.emailOrPhone = "Enter a valid email address";
+      if (!emailRegex.test(form.identifier)) {
+        errors.identifier = "Enter a valid email address";
       }
     }
   }
@@ -47,7 +47,7 @@ const validateLoginForm = (form: LoginForm): ValidationErrors => {
 
 export default function Login() {
   const [form, setForm] = useState<LoginForm>({
-    emailOrPhone: "",
+    identifier: "",
     password: "",
     rememberMe: false,
   });
@@ -84,7 +84,7 @@ export default function Login() {
 
     try {
       const result: any = await login({
-        emailOrPhone: form.emailOrPhone,
+        identifier: form.identifier,
         password: form.password,
       }).unwrap();
 
@@ -94,7 +94,7 @@ export default function Login() {
       navigate("/presidentdashboard");
     } catch (err: any) {
       console.error("Error logging in:", err);
-      setErrors({ emailOrPhone: err?.message || "Login failed" });
+      setErrors({ identifier: err?.message || "Login failed" });
     }
   };
 
@@ -173,7 +173,7 @@ export default function Login() {
                     type="text"
                     id="emailOrPhone"
                     name="emailOrPhone"
-                    value={form.emailOrPhone}
+                    value={form.identifier}
                     onChange={handleChange}
                     placeholder="Enter Your Email/Phone number"
                     className="w-full p-4 rounded-[15px] border-2 placeholder:text-xl 
@@ -181,10 +181,8 @@ export default function Login() {
                              text-[var(--color-secondary-50)] placeholder-gray-400 
                              focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
                   />
-                  {errors.emailOrPhone && (
-                    <p className="text-red-400 text-sm">
-                      {errors.emailOrPhone}
-                    </p>
+                  {errors.identifier && (
+                    <p className="text-red-400 text-sm">{errors.identifier}</p>
                   )}
                 </div>
 
