@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import type { RegisterForm } from "types/auth";
 import { useUser } from "hooks/useUser";
 import logo from "assets/logo/agukalogo.png";
@@ -33,8 +33,28 @@ export default function RegisterMember() {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [success, setSuccess] = useState<string>("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [registerUser, { isLoading }] = useRegisterUserMutation();
+
+  // 🔹 Handle Google redirect callback
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
+    const email = queryParams.get("email");
+    const name = queryParams.get("name");
+
+    if (token && email) {
+      // Save token
+      localStorage.setItem("token", token);
+
+      // Save user info in context
+      setUser(email, name || "");
+
+      // Redirect to FillBeforeRegister
+      navigate("/FillBeforeRegister", { replace: true });
+    }
+  }, [location.search, navigate, setUser]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,7 +79,10 @@ export default function RegisterMember() {
       }).unwrap();
 
       console.log("Registered successfully:", result);
-      setUser(form.email, form.fullName);
+
+      localStorage.setItem("token", result.token);
+      setUser(result.email, result.name);
+
       setSuccess("Your account has been created successfully!");
       setForm({ fullName: "", email: "", password: "" });
 
@@ -73,14 +96,13 @@ export default function RegisterMember() {
   };
 
   const handleGoogleLogin = () => {
-    // Redirect directly to backend Google OAuth
     window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
   };
 
   return (
     <div className="w-full flex font-poppins h-screen">
       <div className="grid md:grid-cols-2 w-full h-screen">
-        {/* Left Section */}
+        {/* Left Side (Image + Text) */}
         <div className="w-full relative h-screen">
           <img
             src="/photos/registermember.jpg"
@@ -105,12 +127,13 @@ export default function RegisterMember() {
           </div>
         </div>
 
-        {/* Right Section */}
+        {/* Right Side (Form) */}
         <div className="flex flex-col bg-[#003B42] h-screen w-full justify-center px-32 py-10 relative">
           <h2 className="text-5xl text-white font-bold mb-8">
             Create an Account
           </h2>
 
+          {/* Register Form */}
           <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
             {/* Full Name */}
             <div>
@@ -171,7 +194,7 @@ export default function RegisterMember() {
               )}
             </div>
 
-            {/* Submit */}
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}

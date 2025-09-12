@@ -1,22 +1,18 @@
+// src/services/api/apiSlice.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-// Detect if we’re running locally
-const isDev = import.meta.env.DEV;
-
-// If dev => use proxy `/api`, else => use the real API
-const baseUrl = isDev ? "/api" : import.meta.env.VITE_API_BASE_URL;
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl,
+    baseUrl: import.meta.env.VITE_API_BASE_URL || "/api",
     prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token"); // get token from localStorage
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
+  tagTypes: ["Groups", "GroupMembers"],
   endpoints: () => ({}),
 });

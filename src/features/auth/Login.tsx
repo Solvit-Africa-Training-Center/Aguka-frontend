@@ -1,3 +1,4 @@
+// src/components/Login.tsx
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "assets/logo/agukalogo.png";
@@ -56,7 +57,6 @@ export default function Login() {
   const [success, setSuccess] = useState<string>("");
 
   const [login, { isLoading: isLoggingIn }] = useLoginMutation();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -71,7 +71,7 @@ export default function Login() {
     setSuccess("");
   };
 
-  // Email / Password login
+  // --- Email / Password login ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -88,31 +88,81 @@ export default function Login() {
         password: form.password,
       }).unwrap();
 
-      dispatch(setCredentials({ user: result.user, token: result.token }));
+      dispatch(setCredentials({ token: result.token, role: result.role }));
       localStorage.setItem("token", result.token);
+      localStorage.setItem("role", result.role);
+
       setSuccess("Login successful!");
-      navigate("/presidentdashboard");
+      redirectByRole(result.role);
     } catch (err: any) {
       console.error("Error logging in:", err);
-      setErrors({ identifier: err?.message || "Login failed" });
+      setErrors({ identifier: err?.message || "Invalid credentials" });
     }
   };
 
-  // Google login redirect
+  // --- Google login redirect ---
   const handleGoogleLogin = () => {
     window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
   };
 
-  // Handle Google login callback token
+  // --- Handle Google OAuth callback ---
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get("token");
+
     if (token) {
       localStorage.setItem("token", token);
-      // Optionally fetch user info or set Redux state
-      navigate("/presidentdashboard");
+
+      const fetchUserInfo = async () => {
+        try {
+          const res = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/auth/me`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          const user = await res.json();
+
+          // if profile incomplete, navigate to fill register
+          if (!user?.phone || !user?.groupId) {
+            navigate("/fillbeforeregister");
+          } else {
+            dispatch(setCredentials({ token, role: user.role }));
+            localStorage.setItem("role", user.role);
+            redirectByRole(user.role);
+          }
+        } catch (err) {
+          console.error("Error fetching user info:", err);
+          navigate("/login");
+        }
+      };
+
+      fetchUserInfo();
     }
-  }, [location.search, navigate]);
+  }, [location.search, navigate, dispatch]);
+
+  // --- Helper: redirect by role ---
+  const redirectByRole = (role: string) => {
+    switch (role) {
+      case "admin":
+        navigate("/admindashboard");
+        break;
+      case "president":
+        navigate("/presidentdashboard");
+        break;
+      case "secretary":
+        navigate("/secretarydashboard");
+        break;
+      case "treasurer":
+        navigate("/treasurerdashboard");
+        break;
+      case "user":
+        navigate("/memberdashboard");
+        break;
+      default:
+        navigate("/");
+    }
+  };
 
   return (
     <div className="min-h-screen w-full flex font-poppins">
@@ -165,14 +215,14 @@ export default function Login() {
                 {/* Email / Phone */}
                 <div className="flex flex-col w-full ">
                   <label
-                    htmlFor="emailOrPhone"
+                    htmlFor="identifier"
                     className="text-2xl text-[#FFFCFCFC] py-2">
                     Email/Phone number
                   </label>
                   <input
                     type="text"
-                    id="emailOrPhone"
-                    name="emailOrPhone"
+                    id="identifier"
+                    name="identifier"
                     value={form.identifier}
                     onChange={handleChange}
                     placeholder="Enter Your Email/Phone number"

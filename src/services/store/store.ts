@@ -1,11 +1,12 @@
+// src/app/store.ts
 import { configureStore } from "@reduxjs/toolkit";
+import groupReducer from "@services/api/groupSlice";
 import { apiSlice } from "@services/api/apiSlice";
-import authReducer from "@services/api/authSlice";
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer, // 👈 register auth slice here
     [apiSlice.reducerPath]: apiSlice.reducer,
+    group: groupReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
