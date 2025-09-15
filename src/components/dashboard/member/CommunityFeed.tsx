@@ -130,12 +130,12 @@ const CommunityFeed: React.FC = () => {
             value={newPostContent}
             onChange={(e) => setNewPostContent(e.target.value)}
             placeholder={`What's on your mind, ${name || "member"}?`}
-            className="w-full h-20 border border-secondary-400 rounded-lg p-3 resize-none focus:ring-2 focus:ring-secondary-400 focus:outline-none"
+            className="w-full h-15 border border-secondary-400 rounded-lg p-3 resize-none focus:ring-2 focus:ring-secondary-400 focus:outline-none"
           />
           <div className="flex justify-end">
             <button
               onClick={handleCreatePost}
-              className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-6 text-2xl h-20 rounded-xl transition-all">
+              className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-3 text-2xl h-15 rounded-xl transition-all">
               Post
             </button>
           </div>
