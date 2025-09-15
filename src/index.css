@@ -44,8 +44,15 @@
 
   /* another accent color */
 
-  /* --color-primary-300: #003b42;
 
   --color-warning: #f9a825;
-  --color-border: #948e8e; */
+  --color-border: #948e8e
+}
+
+.scrollbar-hide {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; 
 }
