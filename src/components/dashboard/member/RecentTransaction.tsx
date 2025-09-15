@@ -67,7 +67,7 @@ const RecentTransactions: React.FC = () => {
             <thead>
               <tr className="text-left text-gray-300  border-gray-600">
                 <th className="p-3 border border-gray-400  text-left">Date</th>
-                <th className="p-3 border border-gray-400">Transaction Id</th>
+                <th className="p-3 border border-gray-400">Transaction Id</th> 
                 <th className="p-3 border border-gray-400">Type</th>
                 <th className="p-3 border border-gray-400">Amount</th>
                 <th className="p-3 border border-gray-400">Status</th>
@@ -76,9 +76,7 @@ const RecentTransactions: React.FC = () => {
             </thead>
             <tbody>
               {transactions.map((tx) => (
-                <tr
-                  key={tx.id}
-                  className="text-white hover:bg-[#014d54]">
+                <tr key={tx.id} className="text-white hover:bg-[#014d54]">
                   <td className="p-3 border-r border-gray-400">{tx.date}</td>
                   <td className="p-3 border-r border-gray-400">#{tx.id}</td>
                   <td className="p-3 border-r border-gray-400">
@@ -86,12 +84,18 @@ const RecentTransactions: React.FC = () => {
                       {tx.type}
                     </span>
                   </td>
-                  <td className="p-3 border-r border-gray-400">{formatAmount(tx.amount)}</td>
+                  <td className="p-3 border-r border-gray-400">
+                    {formatAmount(tx.amount)}
+                  </td>
                   <td
-                    className={`p-3 font-semibold border-r border-gray-400 ${statusColors[tx.status]}`}>
+                    className={`p-3 font-semibold border-r border-gray-400 ${
+                      statusColors[tx.status]
+                    }`}>
                     {tx.status}
                   </td>
-                  <td className="p-3 border-r border-gray-400">Rwf {tx.balance.toLocaleString()}</td>
+                  <td className="p-3 border-r border-gray-400">
+                    Rwf {tx.balance.toLocaleString()}
+                  </td>
                 </tr>
               ))}
             </tbody>

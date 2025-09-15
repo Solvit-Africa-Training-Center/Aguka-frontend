@@ -81,7 +81,7 @@ const MemberDashboard: React.FC = () => {
                 rwf 5000
               </span>
               <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                8 dec
+                dec 28
               </span>
               <span>Next expected Payout</span>
             </div>
@@ -94,7 +94,7 @@ const MemberDashboard: React.FC = () => {
                 rwf 5000
               </span>
               <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                8 dec
+                 dec 25
               </span>
               <span>pay your debt properly</span>
             </div>
