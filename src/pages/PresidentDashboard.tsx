@@ -1,12 +1,12 @@
 
 // import Sidebar from "@components/PresidentComponents/Sidebar";
-import Header from "@components/PresidentComponents/Header";
-import StatsCard from "@components/PresidentComponents/StatsCard";
-import LineChart from "@components/PresidentComponents/LineChart";
-import BarChart from "@components/PresidentComponents/BarChart";
-import GroupPerformance from "@components/PresidentComponents/GroupPerformance";
-import ApprovalCard from "@components/PresidentComponents/ApprovalCard";
-import Notifications from "@components/PresidentComponents/Notifications";
+import Header from "@components/dashboard/PresidentComponents/Header";
+import StatsCard from "@components/dashboard/PresidentComponents/StatsCard";
+import LineChart from "@components/dashboard/PresidentComponents/LineChart";
+import BarChart from "@components/dashboard/PresidentComponents/BarChart";
+import GroupPerformance from "@components/dashboard/PresidentComponents/GroupPerformance";
+import ApprovalCard from "@components/dashboard/PresidentComponents/ApprovalCard";
+import Notifications from "@components/dashboard/PresidentComponents/Notifications";
 import { Clock, DollarSign, Users, ArrowUpCircle  } from "lucide-react";
 
 const PresidentDashboard = () => {

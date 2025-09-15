@@ -46,13 +46,13 @@
 
 
   --color-warning: #f9a825;
-  --color-border: #948e8e
+  --color-border: #948e8e; */
 }
 
 .scrollbar-hide {
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 .scrollbar-hide::-webkit-scrollbar {
-  display: none; 
+  display: none; /* Chrome, Safari, Opera */
 }
