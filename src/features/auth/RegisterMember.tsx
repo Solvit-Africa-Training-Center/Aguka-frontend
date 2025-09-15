@@ -43,16 +43,30 @@ export default function RegisterMember() {
     const token = queryParams.get("token");
     const email = queryParams.get("email");
     const name = queryParams.get("name");
+    const groupId = queryParams.get("groupId");
+    const isApproved = queryParams.get("isApproved");
 
     if (token && email) {
       // Save token
       localStorage.setItem("token", token);
 
-      // Save user info in context
-      setUser(email, name || "");
+      // Build user object from query params
+      const user = {
+        email,
+        name: name || "",
+        groupId: groupId || null,
+        isApproved: isApproved === "true", // query params are strings
+      };
 
-      // Redirect to FillBeforeRegister
-      navigate("/FillBeforeRegister", { replace: true });
+      // Save user info in context
+      setUser(user.email, user.name);
+
+      // ✅ Conditional navigation
+      if (!user.groupId || !user.isApproved) {
+        navigate("/FillBeforeRegister", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     }
   }, [location.search, navigate, setUser]);
 
@@ -80,13 +94,21 @@ export default function RegisterMember() {
 
       console.log("Registered successfully:", result);
 
+      const user = result.user; // Assuming backend returns { token, user }
+
       localStorage.setItem("token", result.token);
-      setUser(result.email, result.name);
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user.email, user.name);
 
       setSuccess("Your account has been created successfully!");
       setForm({ fullName: "", email: "", password: "" });
 
-      navigate("/FillBeforeRegister");
+      // ✅ Conditional navigation
+      if (!user.groupId || !user.isApproved) {
+        navigate("/FillBeforeRegister");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (error: any) {
       console.error("Error registering:", error);
       const message =
@@ -96,7 +118,9 @@ export default function RegisterMember() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+    window.location.href = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/auth/google`;
   };
 
   return (

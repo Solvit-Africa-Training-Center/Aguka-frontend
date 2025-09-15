@@ -1,4 +1,3 @@
-// src/components/Login.tsx
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "assets/logo/agukalogo.png";
@@ -71,7 +70,6 @@ export default function Login() {
     setSuccess("");
   };
 
-  // --- Email / Password login ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -88,24 +86,40 @@ export default function Login() {
         password: form.password,
       }).unwrap();
 
-      dispatch(setCredentials({ token: result.token, role: result.role }));
-      localStorage.setItem("token", result.token);
-      localStorage.setItem("role", result.role);
+      console.log("Login result:", result);
 
-      setSuccess("Login successful!");
-      redirectByRole(result.role);
+      if (result.token && result.user) {
+        // ✅ Always store token + role for authorization
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("role", result.user.role);
+        dispatch(
+          setCredentials({ token: result.token, role: result.user.role })
+        );
+
+        setSuccess("Login successful!");
+
+        if (!result.user.groupId || result.user.isApproved === false) {
+          navigate("/fillbeforeregister");
+        } else {
+          redirectByRole(result.user.role);
+        }
+
+        redirectByRole(result.user.role);
+      } else {
+        console.error("Token or user missing in login response.");
+      }
     } catch (err: any) {
       console.error("Error logging in:", err);
       setErrors({ identifier: err?.message || "Invalid credentials" });
     }
   };
 
-  // --- Google login redirect ---
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+    window.location.href = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/auth/google`;
   };
 
-  // --- Handle Google OAuth callback ---
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const token = params.get("token");
@@ -113,35 +127,27 @@ export default function Login() {
     if (token) {
       localStorage.setItem("token", token);
 
-      const fetchUserInfo = async () => {
-        try {
-          const res = await fetch(
-            `${import.meta.env.VITE_API_BASE_URL}/auth/me`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
-          const user = await res.json();
+      login({ identifier: token, password: "fetch-user-info" })
+        .unwrap()
+        .then((user) => {
+          dispatch(setCredentials({ token, role: user.role }));
+          localStorage.setItem("role", user.role);
+          localStorage.setItem("groupId", user.groupId || "");
 
-          // if profile incomplete, navigate to fill register
-          if (!user?.phone || !user?.groupId) {
+          if (!user.isApproved) {
             navigate("/fillbeforeregister");
+          } else if (user.groupId) {
+            navigate(`/group/${user.groupId}`);
           } else {
-            dispatch(setCredentials({ token, role: user.role }));
-            localStorage.setItem("role", user.role);
-            redirectByRole(user.role);
+            navigate("/registergroup");
           }
-        } catch (err) {
-          console.error("Error fetching user info:", err);
+        })
+        .catch(() => {
           navigate("/login");
-        }
-      };
-
-      fetchUserInfo();
+        });
     }
-  }, [location.search, navigate, dispatch]);
+  }, [location.search, navigate, dispatch, login]);
 
-  // --- Helper: redirect by role ---
   const redirectByRole = (role: string) => {
     switch (role) {
       case "admin":

@@ -9,7 +9,7 @@ const RegisterGroup: React.FC = () => {
   const [formData, setFormData] = useState<GroupCreation>({
     name: "",
     description: "",
-    location: "",
+    location: [],
     profilePicture: null,
     meetingLocation: "",
     interestRate: undefined,
@@ -28,7 +28,7 @@ const RegisterGroup: React.FC = () => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "number" ? value : value,
+      [name]: type === "number" ? Number(value) : value,
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
@@ -78,7 +78,7 @@ const RegisterGroup: React.FC = () => {
       setFormData({
         name: "",
         description: "",
-        location: "",
+        location: [],
         profilePicture: null,
         meetingLocation: "",
         interestRate: undefined,
@@ -94,91 +94,142 @@ const RegisterGroup: React.FC = () => {
   };
 
   return (
-    <div className=" w-full min-h-screen font-poppins text-white relative">
+    <div className="relative w-full min-h-screen font-poppins flex items-center justify-center">
+      {/* Background Image */}
       <img
-        src="image/ibiceri  aguka.jpg "
+        src="image/ibiceri  aguka.jpg"
         alt="background"
-        className="absolute w-400 h-screen "
+        className="absolute inset-0 w-400 h-full "
       />
-      <div className="absolute inset-0 bg-[#CED6D8] opacity-90 left-280"></div>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-[#CED6D8] opacity-90 ml-300"></div>
+
+      {/* Logo */}
       <img
         src={logo}
         alt="logo"
-        className="absolute w-25 h-25 rounded-full left-10 top-10"
+        className="absolute w-25 h-25 rounded-full left-6 top-2 z-20"
       />
 
-      <div className="relative max-w-6xl mx-auto bg-[#003B42] rounded-3xl p-10 shadow-lg top-30">
-        <h1 className="text-4xl font-bold text-center ">Register your Group</h1>
+      {/* Form container */}
+      <div className="relative z-10 w-300 mx-auto bg-[#003B42] rounded-2xl p-8 shadow-lg mt-10">
+        <h1 className="text-3xl font-bold text-center mb-8 text-white">
+          Register your Group
+        </h1>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6 p-4 ">
-          {/* Name */}
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
+          {/* Full Name */}
           <div>
-            <label className="block mb-2 text-xl">Full Name</label>
+            <label className="block mb-2 text-lg">Full Name</label>
             <input
               type="text"
               name="name"
-              placeholder="Aguka Developers"
+              placeholder="Enter your Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full rounded-md p-3 placeholder:text-neutral-400  text-white text-xl border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
             {errors.name && <p className="text-red-400">{errors.name}</p>}
           </div>
 
           {/* Interest Rate */}
           <div>
-            <label className="block mb-2 text-xl">Interest Rate</label>
+            <label className="block mb-2 text-lg">Interest Rate</label>
             <input
               type="number"
               name="interestRate"
               placeholder="5.7"
               value={formData.interestRate ?? ""}
               onChange={handleChange}
-              className="w-full rounded-md p-3 placeholder:text-neutral-400 not-visited:text-white text-xl border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
           </div>
 
-          {/* Other fields remain unchanged */}
-          {/* ...Copy all fields from your original form here... */}
+          {/* Description */}
+          <div>
+            <label className="block mb-2 text-lg">Description</label>
+            <textarea
+              name="description"
+              placeholder="Enter your Description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={2}
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+            />
+          </div>
+
+          {/* Contact */}
+          <div>
+            <label className="block mb-2 text-lg">Contact</label>
+            <input
+              type="tel"
+              name="contact"
+              placeholder="Input Your Telephone Number"
+              value={formData.contact}
+              onChange={handleChange}
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+            />
+          </div>
+
+          {/* Location */}
+          <div>
+            <label className="block mb-2 text-lg">Location</label>
+            <input
+              type="text"
+              name="location"
+              placeholder="Enter your Province"
+              value={formData.location[0] ?? ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  location: [e.target.value],
+                }))
+              }
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+            />
+          </div>
+
           {/* Email */}
           <div>
-            <label className="block mb-2 text-xl">Email</label>
+            <label className="block mb-2 text-lg">Email</label>
             <input
               type="email"
               name="email"
               placeholder="group@example.com"
               value={formData.email}
               onChange={handleChange}
-              className="w-full rounded-md p-3 placeholder:text-neutral-400 text-white text-xl border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
             {errors.email && <p className="text-red-400">{errors.email}</p>}
           </div>
 
           {/* Profile Picture */}
           <div>
-            <label className="block mb-2 text-xl">Profile Picture</label>
+            <label className="block mb-2 text-lg">Profile Picture</label>
             <div className="relative">
               <input
                 type="file"
                 name="profilePicture"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="w-full rounded-md p-3  text-neutral-200 border-2 border-gray-400 outline-none pr-10 placeholder:text-neutral-400"
+                className="w-full rounded-md p-3 text-white border-1 border-[#948E8E] bg-transparent outline-none pr-10"
               />
-              <ImagePlus className="absolute right-3 top-3 text-secondary-600" />
+              <ImagePlus className="absolute right-3 top-3 text-gray-300" />
             </div>
           </div>
 
           {/* Min Contribution */}
           <div>
-            <label className="block mb-2 text-xl">Min Contribution</label>
+            <label className="block mb-2 text-lg">Min Contribution</label>
             <input
               type="number"
               name="minContribution"
               placeholder="500"
               value={formData.minContribution}
               onChange={handleChange}
-              className="w-full rounded-md p-3 placeholder:text-neutral-400 text-white text-xl border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
             {errors.minContribution && (
               <p className="text-red-400">{errors.minContribution}</p>
@@ -187,37 +238,38 @@ const RegisterGroup: React.FC = () => {
 
           {/* Meeting Location */}
           <div>
-            <label className="block mb-2 text-xl">Meeting Location</label>
+            <label className="block mb-2 text-lg">Meeting Location</label>
             <input
               type="text"
               name="meetingLocation"
               placeholder="Ndera"
               value={formData.meetingLocation}
               onChange={handleChange}
-              className="w-full rounded-md p-3 placeholder:text-neutral-400 text-white text-xl border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
           </div>
 
           {/* Agreement Terms */}
           <div>
-            <label className="block mb-2 text-xl">Agreement Terms</label>
+            <label className="block mb-2 text-lg">Agreement Terms</label>
             <div className="relative">
               <input
                 type="file"
                 name="agreementTerms"
                 accept=".pdf,.doc,.docx"
                 onChange={handleFileChange}
-                className="w-full rounded-md p-3   text-neutral-400 text-xl border-2 border-gray-400 outline-none pr-10"
+                className="w-full rounded-md p-3 text-white border-1 border-[#948E8E] bg-transparent outline-none pr-10"
               />
-              <Upload className="absolute right-3 top-3 text-secondary-600  " />
+              <Upload className="absolute right-3 top-3 text-gray-300" />
             </div>
           </div>
 
-          <div className="flex justify-center pt-2 pb-4 w-full relative">
+          {/* Submit button */}
+          <div className="md:col-span-2 flex justify-center mt-6">
             <button
               type="submit"
               disabled={isLoading}
-              className="px-25 py-4 text-xl capitalize bg-[#F9A825] text-black  font-bold rounded-md border-none absolute -right-40 ">
+              className="px-10 py-4 text-xl bg-[#F9A825] text-black font-bold rounded-lg hover:bg-yellow-500 transition w-100">
               {isLoading ? "Creating..." : "Create Group"}
             </button>
           </div>
