@@ -94,9 +94,8 @@ export default function RegisterMember() {
 
       console.log("Registered successfully:", result);
 
-      const user = result.user; // Assuming backend returns { token, user }
+      const user = result.data; // Use result.data for user info
 
-      localStorage.setItem("token", result.token);
       localStorage.setItem("user", JSON.stringify(user));
       setUser(user.email, user.name);
 

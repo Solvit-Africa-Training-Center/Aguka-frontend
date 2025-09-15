@@ -4,30 +4,30 @@ export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials: { identifier: string; password: string }) => ({
-        url: "/api/users/login",
+        url: "/users/login",
         method: "POST",
         body: credentials,
       }),
     }),
     registerUser: builder.mutation({
       query: (user: { name: string; email: string; password: string }) => ({
-        url: "/api/users",
+        url: "/users",
         method: "POST",
         body: user,
       }),
     }),
     initiateGoogleLogin: builder.query<string, void>({
-      query: () => ({ url: "/api/auth/google", method: "GET" }),
+      query: () => ({ url: "/auth/google", method: "GET" }),
     }),
     handleGoogleCallback: builder.mutation({
       query: (code: string) => ({
-        url: `/api/auth/google/callback?code=${code}`,
+        url: `/auth/google/callback?code=${code}`,
         method: "GET",
       }),
     }),
     completeProfile: builder.mutation({
       query: (profile: { phone: string; groupId: string }) => ({
-        url: "/api/users/complete-profile",
+        url: "/users/complete-profile",
         method: "POST",
         body: profile,
       }),

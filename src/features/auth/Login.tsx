@@ -86,30 +86,24 @@ export default function Login() {
         password: form.password,
       }).unwrap();
 
-      console.log("Login result:", result);
+      const token = result.data?.token;
+      const user = result.data?.user;
 
-      if (result.token && result.user) {
-        // ✅ Always store token + role for authorization
-        localStorage.setItem("token", result.token);
-        localStorage.setItem("role", result.user.role);
-        dispatch(
-          setCredentials({ token: result.token, role: result.user.role })
-        );
-
+      if (token && user) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", user.role);
+        dispatch(setCredentials({ token, role: user.role }));
         setSuccess("Login successful!");
 
-        if (!result.user.groupId || result.user.isApproved === false) {
+        if (!user.groupId || user.isApproved === false) {
           navigate("/fillbeforeregister");
         } else {
-          redirectByRole(result.user.role);
+          redirectByRole(user.role);
         }
-
-        redirectByRole(result.user.role);
       } else {
-        console.error("Token or user missing in login response.");
+        setErrors({ identifier: "Token or user missing in login response." });
       }
     } catch (err: any) {
-      console.error("Error logging in:", err);
       setErrors({ identifier: err?.message || "Invalid credentials" });
     }
   };
@@ -126,11 +120,13 @@ export default function Login() {
 
     if (token) {
       localStorage.setItem("token", token);
-
+      // Use the token to fetch user info from the backend
       login({ identifier: token, password: "fetch-user-info" })
         .unwrap()
-        .then((user) => {
-          dispatch(setCredentials({ token, role: user.role }));
+        .then((result: any) => {
+          const user = result.data?.user || result.user || result;
+          const authToken = result.data?.token || result.token || token;
+          dispatch(setCredentials({ token: authToken, role: user.role }));
           localStorage.setItem("role", user.role);
           localStorage.setItem("groupId", user.groupId || "");
 
@@ -143,6 +139,7 @@ export default function Login() {
           }
         })
         .catch(() => {
+          setErrors({ identifier: "Google login failed. Please try again." });
           navigate("/login");
         });
     }
