@@ -79,19 +79,19 @@ const RecentTransactions: React.FC = () => {
                 <tr
                   key={tx.id}
                   className="text-white hover:bg-[#014d54]">
-                  <td className="p-3 border-r">{tx.date}</td>
-                  <td className="p-3 border-r">#{tx.id}</td>
-                  <td className="p-3 border-r">
+                  <td className="p-3 border-r border-gray-400">{tx.date}</td>
+                  <td className="p-3 border-r border-gray-400">#{tx.id}</td>
+                  <td className="p-3 border-r border-gray-400">
                     <span className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm">
                       {tx.type}
                     </span>
                   </td>
-                  <td className="p-3 border border-gray-400">{formatAmount(tx.amount)}</td>
+                  <td className="p-3 border-r border-gray-400">{formatAmount(tx.amount)}</td>
                   <td
-                    className={`p-3 font-semibold border border-gray-400 ${statusColors[tx.status]}`}>
+                    className={`p-3 font-semibold border-r border-gray-400 ${statusColors[tx.status]}`}>
                     {tx.status}
                   </td>
-                  <td className="p-3 border border-gray-400">Rwf {tx.balance.toLocaleString()}</td>
+                  <td className="p-3 border-r border-gray-400">Rwf {tx.balance.toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
