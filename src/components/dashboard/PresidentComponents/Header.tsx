@@ -1,7 +1,7 @@
 
 import { FaUserCircle, FaBars } from "react-icons/fa";
 import { useState } from "react";
-import Sidebar from "@components/PresidentComponents/Sidebar";
+import Sidebar from "@components/dashboard/PresidentComponents/Sidebar";
 
 const Header = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

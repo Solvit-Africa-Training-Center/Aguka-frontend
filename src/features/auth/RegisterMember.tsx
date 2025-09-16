@@ -55,7 +55,7 @@ export default function RegisterMember() {
         email,
         name: name || "",
         groupId: groupId || null,
-        isApproved: isApproved === "true", // query params are strings
+        isApproved: isApproved === "true", 
       };
 
       // Save user info in context
@@ -125,7 +125,6 @@ export default function RegisterMember() {
   return (
     <div className="w-full flex font-poppins h-screen">
       <div className="grid md:grid-cols-2 w-full h-screen">
-        {/* Left Side (Image + Text) */}
         <div className="w-full relative h-screen">
           <img
             src="/photos/registermember.jpg"

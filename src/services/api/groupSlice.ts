@@ -1,4 +1,3 @@
-// src/slices/groupSlice.ts
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface GroupState {
