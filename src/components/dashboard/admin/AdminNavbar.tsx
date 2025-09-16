@@ -1,60 +1,48 @@
 import React, { useState } from "react";
-import { Menu, Bell } from "lucide-react";
+import { Menu, Settings, CircleUserRound } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import { Outlet } from "react-router-dom";
 import { useUser } from "hooks/useUser";
-import AsidebarMember from "./AsidebarAdmin";
+import AsidebarAdmin from "./AsidebarAdmin";
 
 const AdminNavbar: React.FC = () => {
   const { name, email } = useUser();
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const firstChar =
-    name
-      ?.split(" ")
-
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase() ||
-    email
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
 
   return (
     <>
-      <div className="w-full bg-[#003B42] flex justify-between font-poppins p-4 fixed z-10">
-        <div className="w-full p-2 flex items-center gap-10">
-          <button onClick={() => setIsSidebarOpen(true)}>
-            <Menu className="text-white size-10 hover:text-secondary-300" />
+      <div className="w-full bg-[#003B42] flex justify-between items-center font-poppins p-4 fixed z-10 shadow-lg">
+        <div className="flex items-center gap-6">
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            aria-label="Open sidebar"
+            className="focus:outline-none">
+            <Menu className="text-white size-10 hover:text-secondary-300 transition" />
           </button>
-          <div className="flex gap-4 items-center">
-            <img src={logo} alt="logo" className="w-25 h-25 rounded-full" />
-            <span className="text-2xl text-white font-bold">Dashboard</span>
-          </div>
+          <img src={logo} alt="logo" className="w-25 h-25 rounded-full" />
+          <span className="text-2xl text-white font-bold">Dashboard</span>
         </div>
-        <div className="flex gap-10 items-center text-2xl text-white relative right-30">
-          <Bell className="size-10 absolute" />
-          <span className="bg-red-500 rounded-full text-sm h-5 w-5 items-center mb-13 ml-5 pl-1 pb-5">
-            2
-          </span>
-          <div className="font-poppins flex items-center">
-            <div className="bg-secondary-400 text-white rounded-full w-15 h-15 flex items-center justify-center text-2xl">
-              {firstChar}
-            </div>
-            <span className="text-sm">{name || email}</span>
+
+        <div className="flex items-center gap-3">
+          
+          <div className="text-xl text-white capitalize">
+            welcome,<span className="text-sm text-secondary-300">{name || email}</span>
           </div>
+          <CircleUserRound className="size-8 text-secondary-400" />
         </div>
-        <Outlet />
+        <div className="flex items-center gap-2 px-4 py-2 border border-[#948E8E] rounded-lg bg-[#003B42]  transition cursor-pointer">
+          <Settings className="size-6 text-secondary-400" />
+          <span className="text-sm text-white">Settings</span>
+        </div>
       </div>
 
-      {/* Sidebar Component */}
-      <AsidebarMember
+      <AsidebarAdmin
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
+      <div className="pt-24">
+        <Outlet />
+      </div>
     </>
   );
 };
