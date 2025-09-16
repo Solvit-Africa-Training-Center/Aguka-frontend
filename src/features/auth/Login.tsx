@@ -114,7 +114,7 @@ export default function Login() {
         setErrors({ identifier: "Token missing in login response." });
       }
     } catch (err: any) {
-      setErrors({ identifier: err?.message || "Invalid credentials" });
+      setErrors({ identifier: err?.message || "user is not found" });
     }
   };
 
