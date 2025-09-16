@@ -51,7 +51,7 @@ export default function FillBeforeRegister() {
   };
 
   return (
-    <div className="min-h-screen w-full flex pt-10 justify-center font-poppins bg-white">
+    <div className="min-h-screen w-full flex pt-10 justify-center font-poppins bg-primary-500">
       <div className="w-full max-w-xl p-8">
         {/* Logo */}
         <div className="flex justify-center">
@@ -118,6 +118,17 @@ export default function FillBeforeRegister() {
               {isLoading ? "Processing..." : "Continue"}
             </button>
           </form>
+
+          {/* Link to Register Group */}
+          <div className="text-center mt-6 text-xl">
+            <span className="text-white">Create a Group</span>
+            <button
+              type="button"
+              onClick={() => navigate("/registergroup")}
+              className="ml-2 text-[#F9A825] underline hover:text-yellow-600 font-bold ">
+              here
+            </button>
+          </div>
         </div>
       </div>
     </div>

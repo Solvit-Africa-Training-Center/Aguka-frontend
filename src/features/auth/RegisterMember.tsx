@@ -4,6 +4,8 @@ import type { RegisterForm } from "types/auth";
 import { useUser } from "hooks/useUser";
 import logo from "assets/logo/agukalogo.png";
 import { useRegisterUserMutation } from "@services/api/authApi";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@services/api/authSlice";
 
 interface ValidationErrors {
   fullName?: string;
@@ -25,6 +27,7 @@ const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
 
 export default function RegisterMember() {
   const { setUser } = useUser();
+  const dispatch = useDispatch();
   const [form, setForm] = useState<RegisterForm>({
     fullName: "",
     email: "",
@@ -47,18 +50,15 @@ export default function RegisterMember() {
     const isApproved = queryParams.get("isApproved");
 
     if (token && email) {
-      // Save token
       localStorage.setItem("token", token);
 
-      // Build user object from query params
       const user = {
         email,
         name: name || "",
         groupId: groupId || null,
-        isApproved: isApproved === "true", 
+        isApproved: isApproved === "true",
       };
 
-      // Save user info in context
       setUser(user.email, user.name);
 
       // ✅ Conditional navigation
@@ -92,11 +92,15 @@ export default function RegisterMember() {
         password: form.password,
       }).unwrap();
 
-      console.log("Registered successfully:", result);
+      // Try to get token and role from result.data or result.token
+      const user = result.data || result.user || {};
+      const token = result.data?.token || result.token || "";
+      const role = user.role || result.data?.role || "";
 
-      const user = result.data; // Use result.data for user info
-
+      if (token) localStorage.setItem("token", token);
+      if (role) localStorage.setItem("role", role);
       localStorage.setItem("user", JSON.stringify(user));
+      dispatch(setCredentials({ token, role, user }));
       setUser(user.email, user.name);
 
       setSuccess("Your account has been created successfully!");
@@ -104,12 +108,11 @@ export default function RegisterMember() {
 
       // ✅ Conditional navigation
       if (!user.groupId || !user.isApproved) {
-        navigate("/FillBeforeRegister");
+        navigate("/login");
       } else {
         navigate("/dashboard");
       }
     } catch (error: any) {
-      console.error("Error registering:", error);
       const message =
         error?.data?.message || "Failed to register. Please try again.";
       setErrors({ email: message });

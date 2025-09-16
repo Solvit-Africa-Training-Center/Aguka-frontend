@@ -4,6 +4,7 @@ import logo from "assets/logo/agukalogo.png";
 import { useLoginMutation } from "@services/api/authApi";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@services/api/authSlice";
+import { jwtDecode } from "jwt-decode";
 
 interface LoginForm {
   identifier: string;
@@ -72,7 +73,6 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const formErrors = validateLoginForm(form);
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -87,21 +87,30 @@ export default function Login() {
       }).unwrap();
 
       const token = result.data?.token;
-      const user = result.data?.user;
-
-      if (token && user) {
+      if (token) {
         localStorage.setItem("token", token);
-        localStorage.setItem("role", user.role);
-        dispatch(setCredentials({ token, role: user.role }));
+        // Decode token to get user info
+        const decoded: any = jwtDecode(token);
+        const role = decoded.role || "user";
+        const groupId = decoded.groupId;
+        const isApproved = decoded.isApproved;
+        dispatch(setCredentials({ token, role }));
         setSuccess("Login successful!");
-
-        if (!user.groupId || user.isApproved === false) {
+        if (!groupId) {
           navigate("/fillbeforeregister");
+        } else if (role === "president") {
+          navigate("/presidentdashboard");
+        } else if (role === "admin") {
+          navigate("/admindashboard");
+        } else if (role === "secretary") {
+          navigate("/secretarydashboard");
+        } else if (role === "treasurer") {
+          navigate("/treasurerdashboard");
         } else {
-          redirectByRole(user.role);
+          navigate("/memberdashboard");
         }
       } else {
-        setErrors({ identifier: "Token or user missing in login response." });
+        setErrors({ identifier: "Token missing in login response." });
       }
     } catch (err: any) {
       setErrors({ identifier: err?.message || "Invalid credentials" });
@@ -120,30 +129,26 @@ export default function Login() {
 
     if (token) {
       localStorage.setItem("token", token);
-      // Use the token to fetch user info from the backend
-      login({ identifier: token, password: "fetch-user-info" })
-        .unwrap()
-        .then((result: any) => {
-          const user = result.data?.user || result.user || result;
-          const authToken = result.data?.token || result.token || token;
-          dispatch(setCredentials({ token: authToken, role: user.role }));
-          localStorage.setItem("role", user.role);
-          localStorage.setItem("groupId", user.groupId || "");
-
-          if (!user.isApproved) {
-            navigate("/fillbeforeregister");
-          } else if (user.groupId) {
-            navigate(`/group/${user.groupId}`);
-          } else {
-            navigate("/registergroup");
-          }
-        })
-        .catch(() => {
-          setErrors({ identifier: "Google login failed. Please try again." });
-          navigate("/login");
-        });
+      const decoded: any = jwtDecode(token);
+      const role = decoded.role || "user";
+      const groupId = decoded.groupId;
+      const isApproved = decoded.isApproved;
+      dispatch(setCredentials({ token, role }));
+      if (!groupId) {
+        navigate("/fillbeforeregister");
+      } else if (role === "president") {
+        navigate("/presidentdashboard");
+      } else if (role === "admin") {
+        navigate("/admindashboard");
+      } else if (role === "secretary") {
+        navigate("/secretarydashboard");
+      } else if (role === "treasurer") {
+        navigate("/treasurerdashboard");
+      } else {
+        navigate("/memberdashboard");
+      }
     }
-  }, [location.search, navigate, dispatch, login]);
+  }, [location.search, navigate, dispatch]);
 
   const redirectByRole = (role: string) => {
     switch (role) {
