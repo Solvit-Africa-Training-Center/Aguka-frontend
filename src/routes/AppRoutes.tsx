@@ -16,6 +16,7 @@ import LoanProfile from "@components/LoanProfile";
 import MemberDashboard from "@features/dashboard/MemberDashboard";
 
 import PresidentDashboard from "@pages/PresidentDashboard";
+import AdminDashboard from "@features/dashboard/AdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -37,7 +38,7 @@ const AppRoutes = () => {
         <Route path="/loan" element={<LoanProfile />} />
 
         <Route path="/memberdashboard" element={<MemberDashboard />}></Route>
-
+        <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/presidentdashboard" element={<PresidentDashboard />} />
       </Routes>
     </div>
