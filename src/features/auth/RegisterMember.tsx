@@ -3,13 +3,10 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import type { RegisterForm } from "types/auth";
 import { useUser } from "hooks/useUser";
 import logo from "assets/logo/agukalogo.png";
-<<<<<<< HEAD
-import { useRegisterUserMutation } from "@features/api/userApi";
-=======
+
 import { useRegisterUserMutation } from "@services/api/authApi";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@services/api/authSlice";
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 
 interface ValidationErrors {
   fullName?: string;
@@ -41,9 +38,7 @@ export default function RegisterMember() {
   const [success, setSuccess] = useState<string>("");
 
   const navigate = useNavigate();
-<<<<<<< HEAD
-  const [registerUser, { isLoading }] = useRegisterUserMutation();
-=======
+
   const location = useLocation();
 
   const [registerUser, { isLoading }] = useRegisterUserMutation();
@@ -77,7 +72,6 @@ export default function RegisterMember() {
       }
     }
   }, [location.search, navigate, setUser]);
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -86,18 +80,7 @@ export default function RegisterMember() {
     setSuccess("");
   };
 
-<<<<<<< HEAD
-const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
 
-    const formErrors = validateRegisterForm(form);
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-      return;
-    }
-
-     try {
-=======
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formErrors = validateRegisterForm(form);
@@ -107,17 +90,16 @@ const handleSubmit = async (e: React.FormEvent) => {
     }
 
     try {
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
       const result = await registerUser({
         name: form.fullName,
         email: form.email,
         password: form.password,
-<<<<<<< HEAD
+
       }).unwrap(); 
 
       console.log("Registered successfully:", result);
-=======
-      }).unwrap();
+
+     
 
       // Try to get token and role from result.data or result.token
       const user = result.data || result.user || {};
@@ -129,19 +111,11 @@ const handleSubmit = async (e: React.FormEvent) => {
       localStorage.setItem("user", JSON.stringify(user));
       dispatch(setCredentials({ token, role, user }));
       setUser(user.email, user.name);
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 
       setSuccess("Your account has been created successfully!");
       setForm({ fullName: "", email: "", password: "" });
 
-<<<<<<< HEAD
-      setTimeout(() => navigate("/FillBeforeRegister"), 1000);
-    } catch (err: any) {
-      console.error("Error registering:", err);
-      setErrors({ email: err.data?.message || err.error || "Registration failed" });
-    }
-  };
-=======
+
       // ✅ Conditional navigation
       if (!user.groupId || !user.isApproved) {
         navigate("/login");
@@ -160,7 +134,6 @@ const handleSubmit = async (e: React.FormEvent) => {
       import.meta.env.VITE_API_BASE_URL
     }/api/auth/google`;
   };
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 
   return (
     <div className="w-full flex font-poppins h-screen">
@@ -261,11 +234,8 @@ const handleSubmit = async (e: React.FormEvent) => {
               type="submit"
               disabled={isLoading}
               className="w-full py-4 rounded-lg font-semibold text-black bg-[#F9A825] hover:bg-secondary-600 transition">
-<<<<<<< HEAD
-                {isLoading ? "Registering..." : "Sign up"}
-=======
+
               {isLoading ? "Registering..." : "Sign Up"}
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
             </button>
 
             {success && (

@@ -1,15 +1,6 @@
 
 // import Sidebar from "@components/PresidentComponents/Sidebar";
-<<<<<<< HEAD
-import Header from "@components/PresidentComponents/Header";
-import StatsCard from "@components/PresidentComponents/StatsCard";
-import LineChart from "@components/PresidentComponents/LineChart";
-import BarChart from "@components/PresidentComponents/BarChart";
-import GroupPerformance from "@components/PresidentComponents/GroupPerformance";
-//import ApprovalCard from "@components/PresidentComponents/ApprovalCard";
-import Notifications from "@components/PresidentComponents/Notifications";
-import MeetingAgenda from "@components/PresidentComponents/MeetingAgenda";
-=======
+
 import Header from "@components/dashboard/PresidentComponents/Header";
 import StatsCard from "@components/dashboard/PresidentComponents/StatsCard";
 import LineChart from "@components/dashboard/PresidentComponents/LineChart";
@@ -17,18 +8,15 @@ import BarChart from "@components/dashboard/PresidentComponents/BarChart";
 import GroupPerformance from "@components/dashboard/PresidentComponents/GroupPerformance";
 import ApprovalCard from "@components/dashboard/PresidentComponents/ApprovalCard";
 import Notifications from "@components/dashboard/PresidentComponents/Notifications";
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 import { Clock, DollarSign, Users, ArrowUpCircle  } from "lucide-react";
+import MeetingAgenda from "@components/PresidentComponents/MeetingAgenda";
 
 const PresidentDashboard = () => {
   return (
     <div className="flex bg-[#003B42] min-h-screen text-white">
       {/* <Sidebar /> */}
-<<<<<<< HEAD
       <div className="flex-1 p-4 space-y-6 mt-19">
-=======
       <div className="flex-1 p-4 space-y-6">
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
         <Header />
       <div className=" pt-15 px-10 grid gap-6 p-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
          <StatsCard title="Total Members" value="247" icon={Users} />
@@ -38,7 +26,6 @@ const PresidentDashboard = () => {
     </div>
 
 
-<<<<<<< HEAD
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-15">
           <LineChart />
           <BarChart />
@@ -49,7 +36,6 @@ const PresidentDashboard = () => {
         </div>
 
         {/* <div>
-=======
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <LineChart />
           <BarChart />
@@ -64,11 +50,8 @@ const PresidentDashboard = () => {
           <ApprovalCard name="Alice Mukamana" type="Application to join saving circle" time="15 Jun 12:45" />
           <ApprovalCard name="Devid Rwigema" type="Emergency medical expenses loan" amount="50,000" time="15 Jun 12:30" />
           <ApprovalCard name="Beatrice Nyirahabimana" type="Application to join saving circle" time="15 Jun 11:15" />
-<<<<<<< HEAD
         </div> */}
-=======
         </div>
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 
         <Notifications />
       </div>

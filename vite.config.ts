@@ -5,17 +5,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), tsconfigPaths()],
-<<<<<<< HEAD
-   server: {
-    proxy: {
-      '/api': 'https://aguka.onrender.com'
-    }
-  }
-  
-})
 
-
-=======
   server: {
     proxy: {
       "/api": {
@@ -26,4 +16,3 @@ export default defineConfig({
     },
   },
 });
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb

@@ -3,14 +3,11 @@ import type { ChangeEvent, FormEvent } from "react";
 import { Upload, ImagePlus } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import type { GroupCreation } from "types/auth";
-<<<<<<< HEAD
-import { useCreateGroupMutation } from "@features/api/groupApi";
-=======
+
 import { useCreateGroupMutation } from "@services/api/groupApi";
-import { useDispatch } from 'react-redux';
-import { setCredentials } from '@services/api/authSlice';
-import { useNavigate } from 'react-router-dom';
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@services/api/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const RegisterGroup: React.FC = () => {
   const [formData, setFormData] = useState<GroupCreation>({
@@ -26,14 +23,10 @@ const RegisterGroup: React.FC = () => {
     agreementTerms: null,
   });
 
-<<<<<<< HEAD
-  const [createGroup, { isLoading }] = useCreateGroupMutation();
-=======
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [createGroup, { isLoading }] = useCreateGroupMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -41,11 +34,8 @@ const RegisterGroup: React.FC = () => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-<<<<<<< HEAD
-      [name]: type === "number" ? value : value,
-=======
+
       [name]: type === "number" ? Number(value) : value,
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
@@ -60,15 +50,6 @@ const RegisterGroup: React.FC = () => {
     }
   };
 
-<<<<<<< HEAD
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        data.append(key, value as any);
-=======
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.name.trim()) newErrors.name = "Group name is required";
@@ -96,27 +77,22 @@ const RegisterGroup: React.FC = () => {
           appendValue = value.toString();
         }
         data.append(key, appendValue as any);
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
       }
     });
 
     try {
-<<<<<<< HEAD
-      await createGroup(data).unwrap();
-      alert("Group created!");
-    } catch (err) {
-      console.error("Error creating group:", err);
-=======
       const result = await createGroup(data).unwrap();
       // Store token if present in response and update Redux auth state
       if (result.token) {
-        localStorage.setItem('token', result.token);
-        dispatch(setCredentials({
-          token: result.token,
-          role: result.role || 'member',
-          user: result.user || null,
-        }));
-        navigate('/memberdashboard');
+        localStorage.setItem("token", result.token);
+        dispatch(
+          setCredentials({
+            token: result.token,
+            role: result.role || "member",
+            user: result.user || null,
+          })
+        );
+        navigate("/memberdashboard");
       }
       alert(`Group created successfully! Group ID: ${result.id}`);
       setFormData({
@@ -134,7 +110,6 @@ const RegisterGroup: React.FC = () => {
     } catch (err: any) {
       console.error("Error creating group:", err);
       alert(err?.data?.message || "Failed to create group.");
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
     }
   };
 
@@ -306,20 +281,6 @@ const RegisterGroup: React.FC = () => {
               <Upload className="absolute right-3 top-3 text-gray-300" />
             </div>
           </div>
-<<<<<<< HEAD
-        
-
-        <div className="flex justify-center mt-8">
-          <button
-            type="submit" disabled={isLoading}
-            className="px-10 py-4 text-xl capitalize bg-[#F9A825] text-black font-bold rounded-md border-none">
-           
-             {isLoading ? "Creating..." : "Create Group"}
-          </button>
-          
-        </div>
-</form>
-=======
 
           {/* Submit button */}
           <div className="md:col-span-2 flex justify-center mt-6">
@@ -331,7 +292,6 @@ const RegisterGroup: React.FC = () => {
             </button>
           </div>
         </form>
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
       </div>
     </div>
   );

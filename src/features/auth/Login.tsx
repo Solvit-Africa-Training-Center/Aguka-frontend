@@ -81,18 +81,9 @@ export default function Login() {
     }
 
     try {
-<<<<<<< HEAD
-    const response = await fetch("/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        identifier: form.emailOrPhone,
-=======
+
       const result: any = await login({
         identifier: form.identifier,
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
         password: form.password,
       }).unwrap();
 
@@ -127,20 +118,6 @@ export default function Login() {
     }
   };
 
-<<<<<<< HEAD
-    const data = await response.json();
-    console.log("Login success:", data);
-
-    
-    localStorage.setItem("token", data.token);
-    navigate("/presidentdashboard");
-  } catch (error: any) {
-  const message = error?.message || "Unknown error";
-  console.error("Error logging in:", message);
-  setErrors({ emailOrPhone: message });
-}
-};
-=======
   const handleGoogleLogin = () => {
     window.location.href = `${
       import.meta.env.VITE_API_BASE_URL
@@ -195,7 +172,6 @@ export default function Login() {
         navigate("/");
     }
   };
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 
   return (
     <div className="min-h-screen w-full flex font-poppins">
@@ -364,11 +340,8 @@ export default function Login() {
               Don&apos;t have an account?{" "}
               <Link
                 to="/registermember"
-<<<<<<< HEAD
-                className="text-[#F9A825]  hover:underline">
-=======
+
                 className="text-[#F9A825] hover:underline">
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
                 Sign Up
               </Link>
             </p>
