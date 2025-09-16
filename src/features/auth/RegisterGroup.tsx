@@ -4,6 +4,9 @@ import { Upload, ImagePlus } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import type { GroupCreation } from "types/auth";
 import { useCreateGroupMutation } from "@services/api/groupApi";
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '@services/api/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterGroup: React.FC = () => {
   const [formData, setFormData] = useState<GroupCreation>({
@@ -21,6 +24,8 @@ const RegisterGroup: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [createGroup, { isLoading }] = useCreateGroupMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -65,15 +70,26 @@ const RegisterGroup: React.FC = () => {
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== "") {
-        data.append(
-          key,
-          typeof value === "number" ? value.toString() : (value as any)
-        );
+        let appendValue = value;
+        if (typeof value === "number") {
+          appendValue = value.toString();
+        }
+        data.append(key, appendValue as any);
       }
     });
 
     try {
       const result = await createGroup(data).unwrap();
+      // Store token if present in response and update Redux auth state
+      if (result.token) {
+        localStorage.setItem('token', result.token);
+        dispatch(setCredentials({
+          token: result.token,
+          role: result.role || 'member',
+          user: result.user || null,
+        }));
+        navigate('/memberdashboard');
+      }
       alert(`Group created successfully! Group ID: ${result.id}`);
       setFormData({
         name: "",
@@ -95,13 +111,11 @@ const RegisterGroup: React.FC = () => {
 
   return (
     <div className="relative w-full min-h-screen font-poppins flex items-center justify-center">
-      {/* Background Image */}
       <img
         src="image/ibiceri  aguka.jpg"
         alt="background"
         className="absolute inset-0 w-400 h-full "
       />
-      {/* Overlay */}
       <div className="absolute inset-0 bg-[#CED6D8] opacity-90 ml-300"></div>
 
       {/* Logo */}

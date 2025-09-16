@@ -46,4 +46,7 @@ export interface Group {
   email?: string;
   minContribution?: number;
   createdAt?: string;
+  token?: string;
+  role?: string;
+  user?: any;
 }
