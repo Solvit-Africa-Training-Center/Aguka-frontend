@@ -8,7 +8,7 @@ import { useCompleteProfileMutation } from "@services/api/authApi";
 
 export default function FillBeforeRegister() {
   const [form, setForm] = useState<ResetPasswordForm>({
-    phone: "",
+    phoneNumber: "",
     groupId: "",
   });
   const [errors, setErrors] = useState<ResetPasswordErrors>({});
@@ -18,10 +18,10 @@ export default function FillBeforeRegister() {
   // Validate form fields
   const validate = (): boolean => {
     const newErrors: ResetPasswordErrors = {};
-    if (!form.phone.trim()) {
-      newErrors.phone = "Phone is required";
-    } else if (!/^[0-9]{10,15}$/.test(form.phone)) {
-      newErrors.phone = "Enter a valid phone number (10-15 digits)";
+    if (!form.phoneNumber.trim()) {
+      newErrors.phoneNumber = "Phone is required";
+    } else if (!/^[0-9]{10,15}$/.test(form.phoneNumber)) {
+      newErrors.phoneNumber = "Enter a valid phone number (10-15 digits)";
     }
     if (!form.groupId.trim()) {
       newErrors.groupId = "Group ID is required";
@@ -39,21 +39,24 @@ export default function FillBeforeRegister() {
   const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
 
-
     if (!validate()) return;
 
     try {
-      const res = await completeProfile(form).unwrap();
+      // map phoneNumber -> phone for API
+      const res = await completeProfile({
+        phone: form.phoneNumber,
+        groupId: form.groupId,
+      }).unwrap();
+
       console.log("Profile completed:", res);
-      navigate("/memberdashboard"); // navigate after success
+      navigate("/memberdashboard");
     } catch (error: any) {
       console.error("Error completing profile:", error);
-      setErrors({ phone: "Failed to complete profile. Try again." });
+      setErrors({ phoneNumber: "Failed to complete profile. Try again." });
     }
   };
 
   return (
-
     <div className="min-h-screen w-full flex pt-10 justify-center font-poppins bg-primary-500">
       <div className="w-full max-w-xl p-8">
         {/* Logo */}
@@ -81,23 +84,23 @@ export default function FillBeforeRegister() {
               />
               <input
                 type="tel"
-                name="phone"
+                name="phoneNumber"
                 placeholder="Input your Telephone Number"
-                value={form.phone}
+                value={form.phoneNumber}
                 onChange={handleChange}
-
                 className="w-full pl-10 pr-4 py-3 border-2 border-[#948E8E] rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-[#003B42] outline-none transition bg-transparent"
                 autoComplete="tel"
               />
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+              {errors.phoneNumber && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.phoneNumber}
+                </p>
               )}
             </div>
 
             {/* Group ID */}
             <div className="relative">
               <Users
-
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-[#F9A825]"
                 size={20}
               />
@@ -107,7 +110,6 @@ export default function FillBeforeRegister() {
                 placeholder="Input Your Group ID"
                 value={form.groupId}
                 onChange={handleChange}
-
                 className="w-full pl-10 pr-4 py-3 border-2 border-[#948E8E] rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-[#003B42] outline-none transition bg-transparent"
                 autoComplete="off"
               />
@@ -115,7 +117,6 @@ export default function FillBeforeRegister() {
                 <p className="text-red-500 text-sm mt-1">{errors.groupId}</p>
               )}
             </div>
-
 
             {/* Submit Button */}
             <button

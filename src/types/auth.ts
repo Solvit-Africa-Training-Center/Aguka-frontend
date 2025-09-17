@@ -6,12 +6,12 @@ export interface ForgotPasswordState {
   isLoading: boolean;
 }
 export interface ResetPasswordForm {
-  phone: string;
+  phoneNumber: string;
   groupId: string;
 }
 
 export interface ResetPasswordErrors {
-  phone?: string;
+  phoneNumber?: string;
   groupId?: string;
 }
 
