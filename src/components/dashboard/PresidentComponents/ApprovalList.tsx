@@ -1,5 +1,6 @@
 import React from "react";
-import ApprovalCard from "@components/PresidentComponents/ApprovalCard";
+import ApprovalCard from "./ApprovalCard";
+
 
 const ApprovalList: React.FC = () => {
   return (

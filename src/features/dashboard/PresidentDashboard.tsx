@@ -1,6 +1,9 @@
 
 // import Sidebar from "@components/PresidentComponents/Sidebar";
+<<<<<<< HEAD:src/features/dashboard/PresidentDashboard.tsx
 
+=======
+>>>>>>> dashboard:src/pages/PresidentDashboard.tsx
 import Header from "@components/dashboard/PresidentComponents/Header";
 import StatsCard from "@components/dashboard/PresidentComponents/StatsCard";
 import LineChart from "@components/dashboard/PresidentComponents/LineChart";

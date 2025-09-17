@@ -41,7 +41,8 @@ const DashboardNavbar: React.FC = () => {
             2
           </span>
           <div className="font-poppins flex items-center">
-            <div className="bg-secondary-400 text-white rounded-full w-15 h-15 flex items-center justify-center text-3xl">
+
+            <div className="bg-secondary-400 text-white rounded-full w-15 h-15 flex items-center justify-center text-2xl">
               {firstChar}
             </div>
             <span className="text-sm">{name || email}</span>
