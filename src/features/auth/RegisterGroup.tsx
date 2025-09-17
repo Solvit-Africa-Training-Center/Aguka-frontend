@@ -82,6 +82,8 @@ const RegisterGroup: React.FC = () => {
 
     try {
       const result = await createGroup(data).unwrap();
+      alert(`Group created successfully! Group ID: ${(result as any).data.id}`);
+      navigate("/presidentdashboard");
       // Store token if present in response and update Redux auth state
       if (result.token) {
         localStorage.setItem("token", result.token);
@@ -92,9 +94,8 @@ const RegisterGroup: React.FC = () => {
             user: result.user || null,
           })
         );
-        navigate("/memberdashboard");
       }
-      alert(`Group created successfully! Group ID: ${result.id}`);
+
       setFormData({
         name: "",
         description: "",

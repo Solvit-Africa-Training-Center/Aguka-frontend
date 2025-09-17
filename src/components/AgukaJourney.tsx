@@ -26,12 +26,14 @@ const AgukaJourney = () => {
                     <ArrowRight />
                   </span>
                 </button> */}
-<Link to="/registergroup" className="p-4 flex gap-2 bg-[#003B42] hover:bg-secondary-300 w-50 h-16 capitalize rounded-md items-center text-xl">
-  create group
-  <span>
-    <ArrowRight />
-  </span>
-</Link>
+                <Link
+                  to="/login"
+                  className="p-4 flex gap-2 bg-[#003B42] hover:bg-secondary-300 w-50 h-16 capitalize rounded-md items-center text-xl">
+                  create group
+                  <span>
+                    <ArrowRight />
+                  </span>
+                </Link>
               </div>
               <div className="w-[377px] h-[119px] pt-[30px] pr-[15px]  pb-[30px]">
                 <button className="p-4 flex gap-2 border-1 border-#D4D4D4 rounded-md w-65 h-16 bg-[#D4D4D4] capitalize items-center">
