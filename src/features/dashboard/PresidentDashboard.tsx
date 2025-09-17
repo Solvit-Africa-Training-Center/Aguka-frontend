@@ -1,9 +1,6 @@
 
 // import Sidebar from "@components/PresidentComponents/Sidebar";
-<<<<<<< HEAD:src/features/dashboard/PresidentDashboard.tsx
 
-=======
->>>>>>> dashboard:src/pages/PresidentDashboard.tsx
 import Header from "@components/dashboard/PresidentComponents/Header";
 import StatsCard from "@components/dashboard/PresidentComponents/StatsCard";
 import LineChart from "@components/dashboard/PresidentComponents/LineChart";
@@ -12,7 +9,7 @@ import GroupPerformance from "@components/dashboard/PresidentComponents/GroupPer
 import ApprovalCard from "@components/dashboard/PresidentComponents/ApprovalCard";
 import Notifications from "@components/dashboard/PresidentComponents/Notifications";
 import { Clock, DollarSign, Users, ArrowUpCircle  } from "lucide-react";
-import MeetingAgenda from "@components/PresidentComponents/MeetingAgenda";
+import MeetingAgenda from "@components/dashboard/PresidentComponents/MeetingAgenda";
 
 const PresidentDashboard = () => {
   return (
@@ -47,7 +44,6 @@ const PresidentDashboard = () => {
         <GroupPerformance />
 
         <div>
->>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
           <h3 className="text-2xl font-bold mb-2">Approval & Decisions</h3>
           <ApprovalCard name="Samuel Nkurunziza" type="Business expansion loan" amount="50,000" time="15 Jun 13:00" />
           <ApprovalCard name="Alice Mukamana" type="Application to join saving circle" time="15 Jun 12:45" />
