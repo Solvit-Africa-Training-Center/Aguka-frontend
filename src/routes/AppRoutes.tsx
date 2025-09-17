@@ -13,6 +13,7 @@ import FillBeforeRegister from "@features/auth/FillBeforeRegister";
 import RegisterGroup from "@features/auth/RegisterGroup";
 import LoanProfile from "@components/LoanProfile";
 import PresidentDashboard from "@pages/PresidentDashboard";
+import ApprovalList from "@components/PresidentComponents/ApprovalList";
 
 
 const AppRoutes = () => {
@@ -34,6 +35,7 @@ const AppRoutes = () => {
         <Route path="*" element={<ErrorPage />}></Route>
         <Route path="/loan" element={<LoanProfile />} />
         <Route path="/presidentdashboard" element={<PresidentDashboard />} />
+        <Route path="/approvals" element={<ApprovalList />} />
        
       </Routes>
     </div>

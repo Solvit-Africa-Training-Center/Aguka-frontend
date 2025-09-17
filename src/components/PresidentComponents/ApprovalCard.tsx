@@ -9,7 +9,7 @@ interface ApprovalCardProps {
 
 const ApprovalCard: React.FC<ApprovalCardProps> = ({ name, type, amount, time }) => {
   return (
-    <div className="flex justify-between items-center bg-teal-700 text-white p-4 rounded mb-2 shadow">
+    <div className="flex justify-between items-center bg-[#003B42] text-white p-4 rounded mb-2 shadow">
       <div>
         <p className="font-bold">{name}</p>
         <p>{type} {amount && `- ${amount}`}</p>
