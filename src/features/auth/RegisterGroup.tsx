@@ -243,7 +243,7 @@ const RegisterGroup: React.FC = () => {
           <div>
             <label className="block mb-2 text-lg">Min Contribution</label>
             <input
-              type="number"
+              type="text"
               name="minContribution"
               placeholder="500"
               value={formData.minContribution}
