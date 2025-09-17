@@ -16,6 +16,10 @@ import PresidentDashboard from "@pages/PresidentDashboard";
 import ApprovalList from "@components/PresidentComponents/ApprovalList";
 
 
+import MemberDashboard from "@features/dashboard/MemberDashboard";
+
+import PresidentDashboard from "@pages/PresidentDashboard";
+
 const AppRoutes = () => {
   return (
     <div>
@@ -30,16 +34,22 @@ const AppRoutes = () => {
         <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/fillbeforeregister" element={<FillBeforeRegister />} />
-        <Route path='/registergroup' element={<RegisterGroup/>}/>
+        <Route path="/registergroup" element={<RegisterGroup />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorPage />}></Route>
         <Route path="/loan" element={<LoanProfile />} />
+<<<<<<< HEAD
         <Route path="/presidentdashboard" element={<PresidentDashboard />} />
         <Route path="/approvals" element={<ApprovalList />} />
        
+=======
+
+        <Route path="/memberdashboard" element={<MemberDashboard />}></Route>
+
+        <Route path="/presidentdashboard" element={<PresidentDashboard />} />
+>>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
       </Routes>
     </div>
   );
 };
-
 export default AppRoutes;

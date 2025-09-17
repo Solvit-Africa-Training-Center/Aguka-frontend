@@ -1,37 +1,42 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "assets/logo/agukalogo.png";
+import { useLoginMutation } from "@services/api/authApi";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@services/api/authSlice";
+import { jwtDecode } from "jwt-decode";
 
 interface LoginForm {
-  emailOrPhone: string;
+  identifier: string;
   password: string;
   rememberMe: boolean;
 }
 
 interface ValidationErrors {
-  emailOrPhone?: string;
+  identifier?: string;
   password?: string;
 }
 
 const validateLoginForm = (form: LoginForm): ValidationErrors => {
   const errors: ValidationErrors = {};
 
-  if (!form.emailOrPhone.trim()) {
-    errors.emailOrPhone = "Email or phone is required";
+  if (!form.identifier.trim()) {
+    errors.identifier = "Email or phone is required";
   } else {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{10,15}$/;
 
-    if (/^\d+$/.test(form.emailOrPhone)) {
-      if (!phoneRegex.test(form.emailOrPhone)) {
-        errors.emailOrPhone = "Enter a valid phone number (10-15 digits)";
+    if (/^\d+$/.test(form.identifier)) {
+      if (!phoneRegex.test(form.identifier)) {
+        errors.identifier = "Enter a valid phone number (10-15 digits)";
       }
     } else {
-      if (!emailRegex.test(form.emailOrPhone)) {
-        errors.emailOrPhone = "Enter a valid email address";
+      if (!emailRegex.test(form.identifier)) {
+        errors.identifier = "Enter a valid email address";
       }
     }
   }
+
   if (!form.password.trim()) {
     errors.password = "Password is required";
   } else if (form.password.length < 6) {
@@ -43,14 +48,18 @@ const validateLoginForm = (form: LoginForm): ValidationErrors => {
 
 export default function Login() {
   const [form, setForm] = useState<LoginForm>({
-    emailOrPhone: "",
+    identifier: "",
     password: "",
     rememberMe: false,
   });
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [success, setSuccess] = useState<string>("");
+
+  const [login, { isLoading: isLoggingIn }] = useLoginMutation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -62,11 +71,9 @@ export default function Login() {
     setSuccess("");
   };
 
-  // Handle submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formErrors = validateLoginForm(form);
-
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       setSuccess("");
@@ -74,6 +81,7 @@ export default function Login() {
     }
 
     try {
+<<<<<<< HEAD
     const response = await fetch("/api/users/login", {
       method: "POST",
       headers: {
@@ -81,15 +89,45 @@ export default function Login() {
       },
       body: JSON.stringify({
         identifier: form.emailOrPhone,
+=======
+      const result: any = await login({
+        identifier: form.identifier,
+>>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
         password: form.password,
-      }),
-    });
+      }).unwrap();
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Login failed");
+      const token = result.data?.token;
+      if (token) {
+        localStorage.setItem("token", token);
+        // Decode token to get user info
+        const decoded: any = jwtDecode(token);
+        const role = decoded.role || "user";
+        const groupId = decoded.groupId;
+        const isApproved = decoded.isApproved;
+        dispatch(setCredentials({ token, role }));
+        setSuccess("Login successful!");
+        if (!groupId) {
+          navigate("/fillbeforeregister");
+        } else if (role === "president") {
+          navigate("/presidentdashboard");
+        } else if (role === "admin") {
+          navigate("/admindashboard");
+        } else if (role === "secretary") {
+          navigate("/secretarydashboard");
+        } else if (role === "treasurer") {
+          navigate("/treasurerdashboard");
+        } else {
+          navigate("/memberdashboard");
+        }
+      } else {
+        setErrors({ identifier: "Token missing in login response." });
+      }
+    } catch (err: any) {
+      setErrors({ identifier: err?.message || "Invalid credentials" });
     }
+  };
 
+<<<<<<< HEAD
     const data = await response.json();
     console.log("Login success:", data);
 
@@ -102,6 +140,62 @@ export default function Login() {
   setErrors({ emailOrPhone: message });
 }
 };
+=======
+  const handleGoogleLogin = () => {
+    window.location.href = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/auth/google`;
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+
+    if (token) {
+      localStorage.setItem("token", token);
+      const decoded: any = jwtDecode(token);
+      const role = decoded.role || "user";
+      const groupId = decoded.groupId;
+      const isApproved = decoded.isApproved;
+      dispatch(setCredentials({ token, role }));
+      if (!groupId) {
+        navigate("/fillbeforeregister");
+      } else if (role === "president") {
+        navigate("/presidentdashboard");
+      } else if (role === "admin") {
+        navigate("/admindashboard");
+      } else if (role === "secretary") {
+        navigate("/secretarydashboard");
+      } else if (role === "treasurer") {
+        navigate("/treasurerdashboard");
+      } else {
+        navigate("/memberdashboard");
+      }
+    }
+  }, [location.search, navigate, dispatch]);
+
+  const redirectByRole = (role: string) => {
+    switch (role) {
+      case "admin":
+        navigate("/admindashboard");
+        break;
+      case "president":
+        navigate("/presidentdashboard");
+        break;
+      case "secretary":
+        navigate("/secretarydashboard");
+        break;
+      case "treasurer":
+        navigate("/treasurerdashboard");
+        break;
+      case "user":
+        navigate("/memberdashboard");
+        break;
+      default:
+        navigate("/");
+    }
+  };
+>>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
 
   return (
     <div className="min-h-screen w-full flex font-poppins">
@@ -130,7 +224,7 @@ export default function Login() {
                 Grow Together
               </h1>
             </div>
-            <div className="text-center w-180  text-sm">
+            <div className="text-center w-180 text-sm">
               <p>
                 Aguka empowers communities to build financial strength through
                 collective savings. By pooling resources, members access
@@ -143,26 +237,26 @@ export default function Login() {
 
         {/* Right Section */}
         <div className="flex flex-col justify-center bg-[#003B42] min-h-screen relative">
-          <div className="absolute  ml-[126px] w-[590px] ">
-            <h2 className="text-6xl font-poppins text-[#FAFEFFFC] text-left  mb-15">
+          <div className="absolute ml-[126px] w-[590px] ">
+            <h2 className="text-6xl font-poppins text-[#FAFEFFFC] text-left mb-15">
               Join Aguka!
             </h2>
 
             {/* Form */}
             <div className="w-120">
-              <form onSubmit={handleSubmit} className=" space-y-8">
+              <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Email / Phone */}
                 <div className="flex flex-col w-full ">
                   <label
-                    htmlFor="emailOrPhone"
+                    htmlFor="identifier"
                     className="text-2xl text-[#FFFCFCFC] py-2">
                     Email/Phone number
                   </label>
                   <input
                     type="text"
-                    id="emailOrPhone"
-                    name="emailOrPhone"
-                    value={form.emailOrPhone}
+                    id="identifier"
+                    name="identifier"
+                    value={form.identifier}
                     onChange={handleChange}
                     placeholder="Enter Your Email/Phone number"
                     className="w-full p-4 rounded-[15px] border-2 placeholder:text-xl 
@@ -170,10 +264,8 @@ export default function Login() {
                              text-[var(--color-secondary-50)] placeholder-gray-400 
                              focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
                   />
-                  {errors.emailOrPhone && (
-                    <p className="text-red-400 text-sm">
-                      {errors.emailOrPhone}
-                    </p>
+                  {errors.identifier && (
+                    <p className="text-red-400 text-sm">{errors.identifier}</p>
                   )}
                 </div>
 
@@ -210,7 +302,9 @@ export default function Login() {
                       name="rememberMe"
                       checked={form.rememberMe}
                       onChange={handleChange}
-                      className="peer h-6 w-6 rounded-lg border border-[#F4F4F4]  bg-transparent checked:bg-none checked:border-[#F4F4F4] focus:outline-none"
+                      className="peer h-6 w-6 rounded-lg border border-[#F4F4F4]  
+                               bg-transparent checked:bg-none checked:border-[#F4F4F4] 
+                               focus:outline-none"
                     />
                     <label
                       htmlFor="rememberMe"
@@ -228,9 +322,10 @@ export default function Login() {
                 {/* Submit */}
                 <button
                   type="submit"
+                  disabled={isLoggingIn}
                   className="py-2 rounded-lg font-semibold w-full h-[60px] mt-2 
                            bg-[#F9A825] text-[24px] text-black">
-                  Login
+                  {isLoggingIn ? "Logging in..." : "Login"}
                 </button>
 
                 {success && (
@@ -251,8 +346,11 @@ export default function Login() {
             </div>
 
             {/* Google Button */}
-            <div className=" w-120 justify-center place-items-center">
-              <button className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3  mb-6">
+            <div className="w-120 justify-center place-items-center">
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6">
                 <img
                   src="/image/gmail.png"
                   alt="Google login"
@@ -266,7 +364,11 @@ export default function Login() {
               Don&apos;t have an account?{" "}
               <Link
                 to="/registermember"
+<<<<<<< HEAD
                 className="text-[#F9A825]  hover:underline">
+=======
+                className="text-[#F9A825] hover:underline">
+>>>>>>> a2d6b72c08253f6f5cb5a67b019bc5a47f9fefeb
                 Sign Up
               </Link>
             </p>
