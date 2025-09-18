@@ -26,10 +26,13 @@ export const authApi = apiSlice.injectEndpoints({
       }),
     }),
     completeProfile: builder.mutation({
-      query: (profile: { phone: string; groupId: string }) => ({
+      query: (profile: { phoneNumber: string; groupId: string }) => ({
         url: "/users/complete-profile",
-        method: "POST",
+        method: "PUT",
         body: profile,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }),
     }),
   }),

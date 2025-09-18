@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { useUser } from "hooks/useUser";
+import { useSelector } from "react-redux";
 import { Heart, MessageCircle } from "lucide-react";
+import type { RootState } from "@services/store/store"; // Make sure path is correct
 
 interface Post {
   id: string;
   userId: string;
-  userName: string; // ✅ display name
+  userName: string;
   content: string;
   timestamp: Date;
   likes: number;
@@ -16,13 +17,15 @@ interface Post {
 interface Comment {
   id: string;
   userId: string;
-  userName: string; // ✅ display name
+  userName: string;
   content: string;
   timestamp: Date;
 }
 
 const CommunityFeed: React.FC = () => {
-  const { name, email } = useUser();
+  const { user } = useSelector((state: RootState) => state.auth); // ✅ get user from Redux
+  const name = user?.name;
+  const email = user?.email;
 
   const [posts, setPosts] = useState<Post[]>([
     {
@@ -70,14 +73,13 @@ const CommunityFeed: React.FC = () => {
     return parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
   };
 
-  // ✅ Create Post
   const handleCreatePost = () => {
     if (!newPostContent.trim()) return;
 
     const newPost: Post = {
       id: Math.random().toString(36).substr(2, 9),
-      userId: email,
-      userName: name || email,
+      userId: email || "unknown",
+      userName: name || email || "Anonymous",
       content: newPostContent,
       timestamp: new Date(),
       likes: 0,
@@ -88,7 +90,6 @@ const CommunityFeed: React.FC = () => {
     setNewPostContent("");
   };
 
-  // ✅ Like Post
   const handleLike = (postId: string) => {
     setPosts(
       posts.map((post) =>
@@ -97,14 +98,13 @@ const CommunityFeed: React.FC = () => {
     );
   };
 
-  // ✅ Add Comment
   const handleAddComment = (postId: string) => {
     if (!replyContent.trim()) return;
 
     const newComment: Comment = {
       id: Math.random().toString(36).substr(2, 9),
-      userId: email,
-      userName: name || email,
+      userId: email || "unknown",
+      userName: name || email || "Anonymous",
       content: replyContent,
       timestamp: new Date(),
     };

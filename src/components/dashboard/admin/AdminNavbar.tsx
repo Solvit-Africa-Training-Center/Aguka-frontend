@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { Menu, Settings, CircleUserRound } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import { Outlet } from "react-router-dom";
-import { useUser } from "hooks/useUser";
 import AsidebarAdmin from "./AsidebarAdmin";
 
 const AdminNavbar: React.FC = () => {
-  const { name, email } = useUser();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -26,7 +24,7 @@ const AdminNavbar: React.FC = () => {
         <div className="flex items-center gap-3">
           
           <div className="text-xl text-white capitalize">
-            welcome,<span className="text-sm text-secondary-300">{name || email}</span>
+            welcome,<span className="text-sm text-secondary-300">{}</span>
           </div>
           <CircleUserRound className="size-8 text-secondary-400" />
         </div>
