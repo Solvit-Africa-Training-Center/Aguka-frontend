@@ -9,7 +9,6 @@ const DashboardNavbar: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const user = useSelector((state: RootState) => state.auth.user);
-  
 
   // Compute initials safely
   const firstChar = user
