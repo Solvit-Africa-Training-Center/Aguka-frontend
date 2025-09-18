@@ -110,7 +110,7 @@ const AdminDashboard = () => {
         <AdminTrendChart />
         <RecentActivities />
       </div>
-      <div className="place-items-left p-15">
+      <div className="place-items-center p-15">
         <CurrentStatistics />
       </div>
       <div className=" w-full text-accent-100 p-5 relative">
