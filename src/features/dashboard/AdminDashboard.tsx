@@ -3,6 +3,10 @@ import { HiUsers } from "react-icons/hi";
 import { TbWaveSawTool } from "react-icons/tb";
 import { GoAlert } from "react-icons/go";
 import { LuShield } from "react-icons/lu";
+import AdminTrendChart from "@components/dashboard/admin/AdminTrendChart";
+import RecentActivities from "@components/dashboard/admin/RecentActivities";
+import CurrentStatistics from "@components/dashboard/admin/CurrentStatics";
+
 const AdminDashboard = () => {
   return (
     <div className="font-poppons bg-[#003B42] min-h-screen ">
@@ -101,6 +105,13 @@ const AdminDashboard = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="flex gap-10 ">
+        <AdminTrendChart/>
+        <RecentActivities/>
+      </div>
+      <div>
+        <CurrentStatistics/>
       </div>
     </div>
   );
