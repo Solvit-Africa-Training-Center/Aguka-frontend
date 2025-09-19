@@ -52,7 +52,9 @@ const ContributionForm: React.FC = () => {
                 </span>
               </label>
               <div className="relative">
-                <select className="w-full px-3 py-3  border border-[#E09721] rounded-lg text-xl text-transparent bg-clip-text bg-gradient-to-b from-[#545D5E] to-[#B0C2C4] focus:outline-none text-center pl-10">
+                <select
+                  name="paymentMethod"
+                  className="w-full px-3 py-3  border border-[#E09721] rounded-lg text-xl text-transparent bg-clip-text bg-gradient-to-b from-[#545D5E] to-[#B0C2C4] focus:outline-none text-center pl-10">
                   <option value="Bank Transfer" className=" ">
                     Bank Transfer
                   </option>
@@ -61,9 +63,6 @@ const ContributionForm: React.FC = () => {
                   </option>
                   <option value="Credit Card" className=" ">
                     Credit Card
-                  </option>
-                  <option value="Cash" className=" ">
-                    Cash
                   </option>
                 </select>
 
