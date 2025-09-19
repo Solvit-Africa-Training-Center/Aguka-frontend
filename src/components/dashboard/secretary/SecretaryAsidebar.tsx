@@ -15,7 +15,7 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const AsidebarAdmin: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const HandlePage = () => {
     navigate("/");
@@ -51,13 +51,13 @@ const AsidebarAdmin: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           to="/loan"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BookMinus size={20} />
-          Contributions
+          Loan Profile
         </Link>
         <Link
           to="/payment"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
-          Calendar
+          Payment
         </Link>
         <Link
           to="/loanprofile"
@@ -80,4 +80,4 @@ const AsidebarAdmin: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default AsidebarAdmin;
+export default SecretaryAsidebar;

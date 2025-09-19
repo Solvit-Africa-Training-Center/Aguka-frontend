@@ -32,7 +32,7 @@ const AdminDashboard = () => {
           {
             title: "System Health",
             icon: (
-              <TbWaveSawTool  className="w-11 h-11  p-2 rounded-full text-[#006D75]" />
+              <TbWaveSawTool className="w-11 h-11  p-2 rounded-full text-[#006D75]" />
             ),
             value: "98.5",
             subtitle: "Uptime this month",
@@ -106,12 +106,21 @@ const AdminDashboard = () => {
           </div>
         ))}
       </div>
-      <div className="flex gap-10 ">
-        <AdminTrendChart/>
-        <RecentActivities/>
+      <div className="flex gap-20 ">
+        <AdminTrendChart />
+        <RecentActivities />
       </div>
-      <div>
-        <CurrentStatistics/>
+      <div className="place-items-left p-15">
+        <CurrentStatistics />
+      </div>
+      <div className=" w-full text-accent-100 p-5 relative">
+        <hr className="w-300 text-center absolute left-70 " />
+        <div className="text-sm text-center pt-15 capitalize">
+          <span>
+            &copy; 2025 Aguka.all rights reserved.Building Wealth through
+            community.
+          </span>
+        </div>
       </div>
     </div>
   );

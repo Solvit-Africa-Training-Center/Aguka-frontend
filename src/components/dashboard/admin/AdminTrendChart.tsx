@@ -21,12 +21,12 @@ const data = [
 
 const AdminTrendChart: React.FC = () => {
   return (
-    <div className=" p-6 text-white w-200  mt-10 font-poppins">
+    <div className=" p-6 text-white w-200  mt-10 ml-10 font-poppins">
         <div className="ml-15">
       <h2 className="text-4xl font-bold">System usage Trends</h2>
       <p className="text-gray-300">Daily active users and transaction</p>
 </div>
-      <div className="mt-6 h-100 w-full">
+      <div className="mt-6 h-100 w-full border border-neutral-400 rounded-lg outline-none p-10">
         <ResponsiveContainer>
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#8884d8" />

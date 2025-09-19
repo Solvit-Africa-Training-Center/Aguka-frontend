@@ -73,7 +73,7 @@ const MemberDashboard: React.FC = () => {
             <div className="w-70 h-80 border-0 border-[#F9A825] rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
               <div className="flex space-x-5 ">
                 <h2 className="capitalize text-xl font-bold ">
-                  minimum contribution
+                 dividend payout
                 </h2>
                 <WalletMinimal className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
               </div>

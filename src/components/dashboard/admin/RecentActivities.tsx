@@ -45,22 +45,24 @@ const activities: Activity[] = [
 
 const RecentActivities: React.FC = () => {
   return (
-    <div className=" p-6 rounded-lg  text-white border border-secondary-400 w-150 mt-25 ">
-      <h2 className="text-2xl font-bold mb-4">Recent Activities</h2>
-      <div className="space-y-6">
+    <div className=" p-6 rounded-lg  text-white border border-secondary-400 w-150 h-115 mt-25 capitalize ">
+      <h2 className="text-2xl font-bold mb-4 ">Recent Activities</h2>
+      <div className="space-y-6 space-x-5 items-center">
         {activities.map((activity, index) => (
-          <div key={index} className="flex items-start space-x-4">
+          <div key={index} className="flex items-start space-x-10">
             <p className="text-gray-400 min-w-[90px]">{activity.time}</p>
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full ${activity.color}`}>
               {activity.icon}
             </div>
             <div>
-              <h3 className="font-semibold">{activity.title}</h3>
+              <h3 className="font-semibold text-xl">{activity.title}</h3>
               {activity.user && (
-                <p className="text-sm text-gray-300">
+                <p className="text-1xl text-[#F4F4F4]">
                   <span className="font-semibold">{activity.user}</span>{" "}
-                  {activity.description}
+                  <span className="text-sm text-[#929292]">
+                    {activity.description}
+                  </span>
                 </p>
               )}
             </div>

@@ -1,8 +1,16 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+div[role="region"]:focus,
+div[role="region"]:hover {
+  outline: none !important;
+  
+}
 
 @theme {
   --font-poppins: "Poppins", sans-serif;
-
 
   /* primary color  */
   --color-primary-50: oklch(0.9365 0.0055 211.04);
@@ -17,7 +25,6 @@
   --color-primary-900: rgb(0, 21, 23);
 
   /* secondary color */
-
   --color-secondary-50: rgb(254, 246, 233);
   --color-secondary-100: rgb(254, 242, 222);
   --color-secondary-200: rgb(253, 228, 187);
@@ -30,7 +37,6 @@
   --color-secondary-900: rgb(87, 59, 13);
 
   /* accent color */
-
   --color-accent-50: rgb(230, 240, 241);
   --color-accent-100: rgb(217, 233, 235);
   --color-accent-200: rgb(176, 209, 213);
@@ -43,8 +49,6 @@
   --color-accent-900: rgb(0, 38, 42);
 
   /* another accent color */
-
-
   --color-warning: #f9a825;
   --color-border: #948e8e; 
 }
@@ -53,6 +57,7 @@
   scrollbar-width: none;
   -ms-overflow-style: none; 
 }
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none; 
 }
