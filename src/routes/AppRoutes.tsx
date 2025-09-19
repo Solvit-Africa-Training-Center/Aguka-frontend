@@ -13,12 +13,11 @@ import FillBeforeRegister from "@features/auth/FillBeforeRegister";
 import RegisterGroup from "@features/auth/RegisterGroup";
 import LoanProfile from "@components/LoanProfile";
 import PresidentDashboard from "@features/dashboard/PresidentDashboard";
-
-
 import MemberDashboard from "@features/dashboard/MemberDashboard";
 import AdminDashboard from "@features/dashboard/AdminDashboard";
 import ApprovalList from "@components/dashboard/PresidentComponents/ApprovalList";
-
+import LoanPayment from "@components/LoanPayment";
+import LoanForm from "@components/LoanForm";
 
 const AppRoutes = () => {
   return (
@@ -39,7 +38,8 @@ const AppRoutes = () => {
         <Route path="*" element={<ErrorPage />}></Route>
         <Route path="/loan" element={<LoanProfile />} />
         <Route path="/approvals" element={<ApprovalList />} />
-
+        <Route path="/loanpayment" element={<LoanPayment />} />
+        <Route path="/loanform" element={<LoanForm />} />
         <Route path="/memberdashboard" element={<MemberDashboard />}></Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/presidentdashboard" element={<PresidentDashboard />} />

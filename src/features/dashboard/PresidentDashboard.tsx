@@ -1,12 +1,12 @@
 
 // import Sidebar from "@components/PresidentComponents/Sidebar";
-
+//import DashboardNavbar from "@components/dashboard/member/DashboardNavbar";
+//import ApprovalCard from "@components/dashboard/PresidentComponents/ApprovalCard";
 import Header from "@components/dashboard/PresidentComponents/Header";
 import StatsCard from "@components/dashboard/PresidentComponents/StatsCard";
 import LineChart from "@components/dashboard/PresidentComponents/LineChart";
 import BarChart from "@components/dashboard/PresidentComponents/BarChart";
 import GroupPerformance from "@components/dashboard/PresidentComponents/GroupPerformance";
-import ApprovalCard from "@components/dashboard/PresidentComponents/ApprovalCard";
 import Notifications from "@components/dashboard/PresidentComponents/Notifications";
 import { Clock, DollarSign, Users, ArrowUpCircle  } from "lucide-react";
 import MeetingAgenda from "@components/dashboard/PresidentComponents/MeetingAgenda";

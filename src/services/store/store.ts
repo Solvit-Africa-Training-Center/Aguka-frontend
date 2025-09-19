@@ -2,11 +2,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import groupReducer from "@services/api/groupSlice";
 import { apiSlice } from "@services/api/apiSlice";
+import loanReducer from "@services/api/loanSlice";
 
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
     group: groupReducer,
+     loan: loanReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

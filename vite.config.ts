@@ -12,6 +12,7 @@ export default defineConfig({
         target: "https://aguka.onrender.com",
         changeOrigin: true,
         secure: false,
+         rewrite: (path) => path.replace(/^\/api/, ""), // <-- add this line
       },
     },
   },
