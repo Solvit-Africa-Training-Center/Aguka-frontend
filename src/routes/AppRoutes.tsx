@@ -19,6 +19,8 @@ import ApprovalList from "@components/dashboard/PresidentComponents/ApprovalList
 import LoanPayment from "@components/LoanPayment";
 import LoanForm from "@components/LoanForm";
 import ContributionForm from "@components/ContributionForm";
+import SuccessContribution from "@components/SuccessContribution";
+
 const AppRoutes = () => {
   return (
     <div>
@@ -43,7 +45,8 @@ const AppRoutes = () => {
         <Route path="/memberdashboard" element={<MemberDashboard />}></Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/presidentdashboard" element={<PresidentDashboard />} />
-        <Route path ="/contribution" element={<ContributionForm/>}/>
+        <Route path="/contribution" element={<ContributionForm />} />
+        <Route path="/success" element={<SuccessContribution />} />
       </Routes>
     </div>
   );

@@ -1,11 +1,14 @@
 import React from "react";
 import logo from "assets/logo/agukalogo.png";
 import { BsCreditCardFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const ContributionForm: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for your contribution!");
+    navigate("/success");
   };
 
   return (
@@ -35,7 +38,7 @@ const ContributionForm: React.FC = () => {
               <input
                 type="text"
                 className="w-full text-xl text-center text-white font-bold focus:outline-none px-4 py-3 rounded-lg border border-[#E09721] placeholder:text-center text-transparent bg-clip-text bg-gradient-to-b from-[#545D5E] to-[#B0C2C4]"
-                placeholder="0 Frw "
+                placeholder="Frw 0"
                 required
               />
             </div>

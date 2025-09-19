@@ -8,6 +8,7 @@ import {
   LogOut,
 } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
+import { FaMoneyCheck } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 
 interface SidebarProps {
@@ -27,9 +28,7 @@ const AsidebarMember: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className="grid items-center  p-4 border-b  ">
         <button
           onClick={onClose}
-
           className="text-black  ml-45 font-extrabold hover:text-secondary-300">
-
           <X size={30} />
         </button>
         <div className="flex items-center gap-2  mt-20 ml-12 ">
@@ -55,6 +54,12 @@ const AsidebarMember: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         </Link>
         <Link
           to="/contribution"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <FaMoneyCheck size={20} />
+          Contribution
+        </Link>
+        <Link
+          to="/payment"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
           Payment
