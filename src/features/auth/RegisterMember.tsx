@@ -60,7 +60,6 @@ export default function RegisterMember() {
         isApproved: isApproved === "true",
       };
 
-
       // ✅ Conditional navigation
       if (!user.groupId || !user.isApproved) {
         navigate("/FillBeforeRegister", { replace: true });
@@ -116,7 +115,7 @@ export default function RegisterMember() {
       setSuccess("Your account has been created successfully!");
       setForm({ fullName: "", email: "", password: "" });
       // ✅ Conditional navigation
-        navigate("/login");
+      navigate("/login");
     } catch (error: any) {
       const message =
         error?.data?.message || "Failed to register. Please try again.";
@@ -125,9 +124,7 @@ export default function RegisterMember() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/auth/google`;
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
   };
 
   return (

@@ -4,7 +4,7 @@ import logo from "assets/logo/agukalogo.png";
 import { useLoginMutation } from "@services/api/authApi";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@services/api/authSlice";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 interface LoginForm {
   identifier: string;
@@ -160,9 +160,7 @@ export default function Login() {
   }, [location.search, navigate, dispatch]);
 
   const handleGoogleLogin = () => {
-    window.location.href = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/auth/google`;
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
   };
 
   return (

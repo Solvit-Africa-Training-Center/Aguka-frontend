@@ -21,6 +21,10 @@ import LoanForm from "@components/LoanForm";
 import ContributionForm from "@components/ContributionForm";
 import SuccessContribution from "@components/SuccessContribution";
 import SecretaryDashboard from "@features/dashboard/SecretaryDashboard";
+import SecretaryDashboardLayout from "@components/dashboardLayout/SecretaryDashboardLayout";
+import MemberDashboardLayout from "@components/dashboardLayout/MemberDashboardLayout";
+import PresidentLayout from "@components/dashboardLayout/PresidentLayout";
+
 
 const AppRoutes = () => {
   return (
@@ -38,19 +42,33 @@ const AppRoutes = () => {
         <Route path="/fillbeforeregister" element={<FillBeforeRegister />} />
         <Route path="/registergroup" element={<RegisterGroup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="*" element={<ErrorPage />}></Route>
-        <Route path="/loan" element={<LoanProfile />} />
+        <Route path="*" element={<ErrorPage />} />
         <Route path="/approvals" element={<ApprovalList />} />
-        <Route path="/loanpayment" element={<LoanPayment />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="/loan" element={<LoanProfile />} />
         <Route path="/loanform" element={<LoanForm />} />
-        <Route path="/memberdashboard" element={<MemberDashboard />}></Route>
-        <Route path="/admindashboard" element={<AdminDashboard />}></Route>
-        <Route path="/presidentdashboard" element={<PresidentDashboard />} />
-        <Route path="/contribution" element={<ContributionForm />} />
-        <Route path="/success" element={<SuccessContribution />} />
-        <Route path="/secretarydashboard" element={<SecretaryDashboard />} />
+
+
+        <Route path="/presidentdashboard" element={<PresidentLayout />}>
+          <Route index element={<PresidentDashboard />} />
+         
+        </Route>
+
+        <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
+          <Route index element={<MemberDashboard />} />
+          <Route path="contribution" element={<ContributionForm />} />
+          <Route path="payment" element={<LoanPayment />} />
+          <Route path="success" element={<SuccessContribution />} />
+        </Route>
+
+        <Route
+          path="/secretarydashboard"
+          element={<SecretaryDashboardLayout />}>
+          <Route index element={<SecretaryDashboard />} />
+        </Route>
       </Routes>
     </div>
   );
 };
+
 export default AppRoutes;

@@ -1,59 +1,44 @@
-
-// import Sidebar from "@components/PresidentComponents/Sidebar";
-//import DashboardNavbar from "@components/dashboard/member/DashboardNavbar";
-//import ApprovalCard from "@components/dashboard/PresidentComponents/ApprovalCard";
-import Header from "@components/dashboard/PresidentComponents/Header";
 import StatsCard from "@components/dashboard/PresidentComponents/StatsCard";
 import LineChart from "@components/dashboard/PresidentComponents/LineChart";
 import BarChart from "@components/dashboard/PresidentComponents/BarChart";
 import GroupPerformance from "@components/dashboard/PresidentComponents/GroupPerformance";
 import Notifications from "@components/dashboard/PresidentComponents/Notifications";
-import { Clock, DollarSign, Users, ArrowUpCircle  } from "lucide-react";
+import { Clock, DollarSign, Users, ArrowUpCircle } from "lucide-react";
 import MeetingAgenda from "@components/dashboard/PresidentComponents/MeetingAgenda";
 
 const PresidentDashboard = () => {
   return (
-    <div className="flex bg-[#003B42] min-h-screen text-white">
-      {/* <Sidebar /> */}
-      <div className="flex-1 p-4 space-y-6 mt-19">
-      <div className="flex-1 p-4 space-y-6">
-        <Header />
-      <div className=" pt-15 px-10 grid gap-6 p-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-         <StatsCard title="Total Members" value="247" icon={Users} />
-      <StatsCard title="Total Savings" value="Frw 12,500,000" icon={DollarSign} />
-      <StatsCard title="Total loan disbursed" value="Frw 8,750" icon={ArrowUpCircle} />
-      <StatsCard title="Pending Request" value="12" icon={Clock}/>
-    </div>
+    <div className="space-y-6 p-6">
+      {/* Stats Cards */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <StatsCard title="Total Members" value="247" icon={Users} />
+        <StatsCard
+          title="Total Savings"
+          value="Frw 12,500,000"
+          icon={DollarSign}
+        />
+        <StatsCard
+          title="Total Loan Disbursed"
+          value="Frw 8,750"
+          icon={ArrowUpCircle}
+        />
+        <StatsCard title="Pending Requests" value="12" icon={Clock} />
+      </div>
 
+      {/* Charts */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <LineChart />
+        <BarChart />
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-15">
-          <LineChart />
-          <BarChart />
-        </div>
- <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-15">
+      {/* Group + Agenda */}
+      <div className="grid md:grid-cols-2 gap-6">
         <GroupPerformance />
         <MeetingAgenda />
-        </div>
-
-        {/* <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <LineChart />
-          <BarChart />
-        </div>
-
-        <GroupPerformance />
-
-        <div>
-          <h3 className="text-2xl font-bold mb-2">Approval & Decisions</h3>
-          <ApprovalCard name="Samuel Nkurunziza" type="Business expansion loan" amount="50,000" time="15 Jun 13:00" />
-          <ApprovalCard name="Alice Mukamana" type="Application to join saving circle" time="15 Jun 12:45" />
-          <ApprovalCard name="Devid Rwigema" type="Emergency medical expenses loan" amount="50,000" time="15 Jun 12:30" />
-          <ApprovalCard name="Beatrice Nyirahabimana" type="Application to join saving circle" time="15 Jun 11:15" />
-        </div> */}
-        </div>
-
-        <Notifications />
       </div>
+
+      {/* Notifications */}
+      <Notifications />
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import CommunityFeed from "@components/dashboard/member/CommunityFeed";
-import DashboardNavbar from "@components/dashboard/member/DashboardNavbar";
 import LineChartDashboard from "@components/dashboard/member/LineChartDashboard";
 import RecentTransactions from "@components/dashboard/member/RecentTransaction";
 import { Percent } from "lucide-react";
@@ -26,7 +25,6 @@ const MemberDashboard: React.FC = () => {
   return (
     <div className="w-full min-h-screen bg-[#00353B] font-poppins">
       <div>
-        <DashboardNavbar />
       </div>
       <div className="p-10 grid grid-cols-2 w-full gap-10 pt-45">
         <div>

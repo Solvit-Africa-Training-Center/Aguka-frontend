@@ -53,19 +53,19 @@ const AsidebarMember: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Loan Profile
         </Link>
         <Link
-          to="/contribution"
+          to="contribution"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <FaMoneyCheck size={20} />
           Contribution
         </Link>
         <Link
-          to="/payment"
+          to="payment"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
           Payment
         </Link>
         <Link
-          to="/loanprofile"
+          to="userprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <UserPen size={20} />
           User Profile

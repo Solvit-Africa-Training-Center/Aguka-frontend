@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  X,
-  LayoutDashboard,
-  BookMinus,
-  BadgeDollarSign,
-  UserPen,
-  LogOut,
-} from "lucide-react";
+import { X, LayoutDashboard, Users, BookMinus, LogOut } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -15,11 +8,11 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate("/"); // Redirect to the landing page after logout
+    navigate("/");
   };
 
   return (
@@ -29,42 +22,39 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className="grid items-center p-4 border-b">
         <button
           onClick={onClose}
-          className="text-black font-extrabold hover:text-secondary-300">
+          className="ml-40 text-black hover:text-secondary-300">
           <X size={30} />
         </button>
-        <div className="flex items-center gap-2 mt-20 ml-12">
-          <img src={logo} alt="Logo" className="w-12 h-12 rounded-full" />
+        <div className="flex items-center justify-center mt-6">
+          <img src={logo} alt="Logo" className="w-20 h-20 rounded-full" />
         </div>
       </div>
+
       <h1 className="text-2xl pt-4 text-center font-bold text-[#003B42]">
-        QuickAction
+        President Panel
       </h1>
-      <nav className="flex flex-col gap-2 p-4 font-poppins text-center font-bold">
+
+      <nav className="flex flex-col gap-2 p-4 font-poppins font-bold">
         <Link
-          to="/memberdashboard"
+          to="/presidentdashboard"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <LayoutDashboard size={20} />
           Dashboard
         </Link>
         <Link
-          to="/loan"
+          to="members"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <Users size={20} />
+          Members
+        </Link>
+        <Link
+          to="loans"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BookMinus size={20} />
-          Loan Profile
-        </Link>
-        <Link
-          to="/payment"
-          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
-          <BadgeDollarSign size={20} />
-          Payment
-        </Link>
-        <Link
-          to="/loanprofile"
-          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
-          <UserPen size={20} />
-          User Profile
+          Loans
         </Link>
       </nav>
+
       <div className="absolute bottom-0 w-full p-4 border-t">
         <button
           onClick={handleLogout}
@@ -77,4 +67,4 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default SecretaryAsidebar;
+export default AsidebarPresident;
