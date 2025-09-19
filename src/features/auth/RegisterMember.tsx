@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import type { RegisterForm } from "types/auth";
-import { useUser } from "hooks/useUser";
 import logo from "assets/logo/agukalogo.png";
 
 import { useRegisterUserMutation } from "@services/api/authApi";
@@ -27,7 +26,6 @@ const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
 };
 
 export default function RegisterMember() {
-  const { setUser } = useUser();
   const dispatch = useDispatch();
   const [form, setForm] = useState<RegisterForm>({
     fullName: "",
@@ -62,7 +60,6 @@ export default function RegisterMember() {
         isApproved: isApproved === "true",
       };
 
-      setUser(user.email, user.name);
 
       // ✅ Conditional navigation
       if (!user.groupId || !user.isApproved) {
@@ -71,7 +68,7 @@ export default function RegisterMember() {
         navigate("/dashboard", { replace: true });
       }
     }
-  }, [location.search, navigate, setUser]);
+  }, [location.search, navigate, dispatch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -79,7 +76,6 @@ export default function RegisterMember() {
     setErrors((prev) => ({ ...prev, [name]: "" }));
     setSuccess("");
   };
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,12 +90,9 @@ export default function RegisterMember() {
         name: form.fullName,
         email: form.email,
         password: form.password,
-
-      }).unwrap(); 
+      }).unwrap();
 
       console.log("Registered successfully:", result);
-
-     
 
       // Try to get token and role from result.data or result.token
       const user = result.data || result.user || {};
@@ -109,19 +102,21 @@ export default function RegisterMember() {
       if (token) localStorage.setItem("token", token);
       if (role) localStorage.setItem("role", role);
       localStorage.setItem("user", JSON.stringify(user));
-      dispatch(setCredentials({ token, role, user }));
-      setUser(user.email, user.name);
+      dispatch(
+        setCredentials({
+          token: result.data.token,
+          role: result.data.role,
+          user: {
+            name: result.data.name,
+            email: result.data.email,
+          },
+        })
+      );
 
       setSuccess("Your account has been created successfully!");
       setForm({ fullName: "", email: "", password: "" });
-
-
       // ✅ Conditional navigation
-      if (!user.groupId || !user.isApproved) {
         navigate("/login");
-      } else {
-        navigate("/dashboard");
-      }
     } catch (error: any) {
       const message =
         error?.data?.message || "Failed to register. Please try again.";
@@ -234,7 +229,6 @@ export default function RegisterMember() {
               type="submit"
               disabled={isLoading}
               className="w-full py-4 rounded-lg font-semibold text-black bg-[#F9A825] hover:bg-secondary-600 transition">
-
               {isLoading ? "Registering..." : "Sign Up"}
             </button>
 

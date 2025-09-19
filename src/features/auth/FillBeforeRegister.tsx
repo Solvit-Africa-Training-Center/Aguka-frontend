@@ -44,7 +44,7 @@ export default function FillBeforeRegister() {
     try {
       // map phoneNumber -> phone for API
       const res = await completeProfile({
-        phone: form.phoneNumber,
+        phoneNumber: form.phoneNumber,
         groupId: form.groupId,
       }).unwrap();
 

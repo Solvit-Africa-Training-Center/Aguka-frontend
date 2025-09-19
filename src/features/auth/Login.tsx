@@ -4,7 +4,7 @@ import logo from "assets/logo/agukalogo.png";
 import { useLoginMutation } from "@services/api/authApi";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@services/api/authSlice";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 interface LoginForm {
   identifier: string;
@@ -52,7 +52,6 @@ export default function Login() {
     password: "",
     rememberMe: false,
   });
-
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [success, setSuccess] = useState<string>("");
 
@@ -60,6 +59,26 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const redirectByRole = (role: string) => {
+    switch (role) {
+      case "admin":
+        navigate("/admindashboard");
+        break;
+      case "president":
+        navigate("/presidentdashboard");
+        break;
+      case "secretary":
+        navigate("/secretarydashboard");
+        break;
+      case "treasurer":
+        navigate("/treasurerdashboard");
+        break;
+      case "user":
+      default:
+        navigate("/memberdashboard");
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -81,47 +100,39 @@ export default function Login() {
     }
 
     try {
-
       const result: any = await login({
         identifier: form.identifier,
         password: form.password,
       }).unwrap();
 
-      const token = result.data?.token;
-      if (token) {
-        localStorage.setItem("token", token);
-        // Decode token to get user info
-        const decoded: any = jwtDecode(token);
-        const role = decoded.role || "user";
-        const groupId = decoded.groupId;
-        const isApproved = decoded.isApproved;
-        dispatch(setCredentials({ token, role }));
-        setSuccess("Login successful!");
-        if (!groupId) {
-          navigate("/fillbeforeregister");
-        } else if (role === "president") {
-          navigate("/presidentdashboard");
-        } else if (role === "admin") {
-          navigate("/admindashboard");
-        } else if (role === "secretary") {
-          navigate("/secretarydashboard");
-        } else if (role === "treasurer") {
-          navigate("/treasurerdashboard");
-        } else {
-          navigate("/memberdashboard");
-        }
-      } else {
+      const accessToken = result.data?.accessToken;
+      if (!accessToken) {
         setErrors({ identifier: "Token missing in login response." });
+        return;
+      }
+
+      localStorage.setItem("token", accessToken);
+
+      const decoded: any = jwtDecode(accessToken);
+      const role = decoded.role || "user";
+      const groupId = decoded.groupId;
+
+      const user = {
+        name: decoded.name || decoded.email,
+        email: decoded.email,
+      };
+      dispatch(setCredentials({ token: accessToken, role, user }));
+
+      setSuccess("Login successful!");
+
+      if (!groupId) {
+        navigate("/fillbeforeregister");
+      } else {
+        redirectByRole(role);
       }
     } catch (err: any) {
-      setErrors({ identifier: err?.message || "user is not found" });
+      setErrors({ identifier: err?.message || "User not found" });
     }
-  };
-
-  const handleGoogleLogin = () => {
-    window.location.href = `${
-      import.meta.env.VITE_API_BASE_URL
-    }/api/auth/google`;
   };
 
   useEffect(() => {
@@ -133,44 +144,25 @@ export default function Login() {
       const decoded: any = jwtDecode(token);
       const role = decoded.role || "user";
       const groupId = decoded.groupId;
-      const isApproved = decoded.isApproved;
-      dispatch(setCredentials({ token, role }));
+
+      const user = {
+        name: decoded.name || decoded.email,
+        email: decoded.email,
+      };
+      dispatch(setCredentials({ token, role, user }));
+
       if (!groupId) {
         navigate("/fillbeforeregister");
-      } else if (role === "president") {
-        navigate("/presidentdashboard");
-      } else if (role === "admin") {
-        navigate("/admindashboard");
-      } else if (role === "secretary") {
-        navigate("/secretarydashboard");
-      } else if (role === "treasurer") {
-        navigate("/treasurerdashboard");
       } else {
-        navigate("/memberdashboard");
+        redirectByRole(role);
       }
     }
   }, [location.search, navigate, dispatch]);
 
-  const redirectByRole = (role: string) => {
-    switch (role) {
-      case "admin":
-        navigate("/admindashboard");
-        break;
-      case "president":
-        navigate("/presidentdashboard");
-        break;
-      case "secretary":
-        navigate("/secretarydashboard");
-        break;
-      case "treasurer":
-        navigate("/treasurerdashboard");
-        break;
-      case "user":
-        navigate("/memberdashboard");
-        break;
-      default:
-        navigate("/");
-    }
+  const handleGoogleLogin = () => {
+    window.location.href = `${
+      import.meta.env.VITE_API_BASE_URL
+    }/api/auth/google`;
   };
 
   return (
@@ -300,7 +292,7 @@ export default function Login() {
                   type="submit"
                   disabled={isLoggingIn}
                   className="py-2 rounded-lg font-semibold w-full h-[60px] mt-2 
-                           bg-[#F9A825] text-[24px] text-black">
+           bg-[#F9A825] text-[24px] text-black">
                   {isLoggingIn ? "Logging in..." : "Login"}
                 </button>
 
@@ -340,7 +332,6 @@ export default function Login() {
               Don&apos;t have an account?{" "}
               <Link
                 to="/registermember"
-
                 className="text-[#F9A825] hover:underline">
                 Sign Up
               </Link>

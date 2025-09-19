@@ -38,8 +38,11 @@ const AppRoutes = () => {
         <Route path="*" element={<ErrorPage />}></Route>
         <Route path="/loan" element={<LoanProfile />} />
         <Route path="/approvals" element={<ApprovalList />} />
+<<<<<<< HEAD
         <Route path="/loanpayment" element={<LoanPayment />} />
         <Route path="/loanform" element={<LoanForm />} />
+=======
+>>>>>>> d560c63c1bf4c75c9bd21af28c178c649bfc5179
         <Route path="/memberdashboard" element={<MemberDashboard />}></Route>
         <Route path="/admindashboard" element={<AdminDashboard />}></Route>
         <Route path="/presidentdashboard" element={<PresidentDashboard />} />
