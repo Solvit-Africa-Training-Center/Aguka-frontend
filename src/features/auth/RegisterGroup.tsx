@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { Upload, ImagePlus } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import type { GroupCreation } from "types/auth";
-
+import {
+  setGroupError,
+  setGroupSuccess,
+  clearGroupMessages,
+} from "@services/api/groupSlice";
 import { useCreateGroupMutation } from "@services/api/groupApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "@services/api/authSlice";
 import { useNavigate } from "react-router-dom";
+import type { RootState } from "@services/store/store";
 
 const RegisterGroup: React.FC = () => {
   const [formData, setFormData] = useState<GroupCreation>({
@@ -28,13 +33,27 @@ const RegisterGroup: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // NEW: Select messages from redux state
+  const { successMessage, errorMessage } = useSelector(
+    (state: RootState) => state.group
+  );
+
+  // NEW: Clear messages after 4 seconds
+  useEffect(() => {
+    if (successMessage || errorMessage) {
+      const timer = setTimeout(() => {
+        dispatch(clearGroupMessages());
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, errorMessage, dispatch]);
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-
       [name]: type === "number" ? Number(value) : value,
     }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -82,9 +101,18 @@ const RegisterGroup: React.FC = () => {
 
     try {
       const result = await createGroup(data).unwrap();
-      alert(`Group created successfully! Group ID: ${(result as any).data.id}`);
+
+      // ✅ Dispatch success message
+      dispatch(
+        setGroupSuccess({
+          groupId: result.groupId || "", // Adjust if your response differs
+          message: "Group created successfully!",
+        })
+      );
+
       navigate("/presidentdashboard");
-      // Store token if present in response and update Redux auth state
+
+      // ✅ Store token if available
       if (result.token) {
         localStorage.setItem("token", result.token);
         dispatch(
@@ -96,6 +124,7 @@ const RegisterGroup: React.FC = () => {
         );
       }
 
+      // ✅ Reset form
       setFormData({
         name: "",
         description: "",
@@ -110,12 +139,30 @@ const RegisterGroup: React.FC = () => {
       });
     } catch (err: any) {
       console.error("Error creating group:", err);
-      alert(err?.data?.message || "Failed to create group.");
+
+      // ✅ Dispatch error message
+      dispatch(
+        setGroupError({
+          message: err?.data?.message || "Failed to create group.",
+        })
+      );
     }
   };
 
   return (
     <div className="relative w-full min-h-screen font-poppins flex items-center justify-center">
+      {/* NEW: Success and Error Messages */}
+      {successMessage && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+          {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+          {errorMessage}
+        </div>
+      )}
+
       <img
         src="image/ibiceri  aguka.jpg"
         alt="background"
