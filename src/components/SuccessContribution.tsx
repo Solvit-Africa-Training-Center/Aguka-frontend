@@ -1,8 +1,7 @@
-import React from "react";
 import { FiCheckCircle } from "react-icons/fi";
 type Props = {};
 
-const SuccessContribution = (props: Props) => {
+const SuccessContribution = () => {
   return (
     <div className="bg-[#D9E9EB] min-h-screen place-items-center w-full">
       <div className="relative top-40 ">
