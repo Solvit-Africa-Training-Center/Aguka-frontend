@@ -27,7 +27,7 @@ const ContributionForm: React.FC = () => {
           Your contribution today shapes a brighter tomorrow
         </h2>
         {/* Amount Input */}
-        < div className="p-10">
+        <div className="p-10">
         <label className="block mb-4">
           <span className="text-xl ">Amount to contribute</span>
           <input
@@ -57,7 +57,6 @@ const ContributionForm: React.FC = () => {
             onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
             className="mt-1 w-full px-3 py-2 rounded-lg border border-[#E09721] text-black"
           >
-            <option value="">Select Payment Method</option>
             <option value="Bank Transfer">Bank Transfer</option>
             <option value="Mobile Money">Mobile Money</option>
             <option value="Credit Card">Credit Card</option>
@@ -67,7 +66,7 @@ const ContributionForm: React.FC = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg"
+          className="w-full py-3 bg-[#E09721] hover:bg-yellow-600 text-white font-semibold rounded-lg text-xl"
         >
           Submit
         </button>
