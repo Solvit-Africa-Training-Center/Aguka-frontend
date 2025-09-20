@@ -25,7 +25,6 @@ import SecretaryDashboardLayout from "@components/dashboardLayout/SecretaryDashb
 import MemberDashboardLayout from "@components/dashboardLayout/MemberDashboardLayout";
 import PresidentLayout from "@components/dashboardLayout/PresidentLayout";
 
-
 const AppRoutes = () => {
   return (
     <div>
@@ -48,10 +47,8 @@ const AppRoutes = () => {
         <Route path="/loan" element={<LoanProfile />} />
         <Route path="/loanform" element={<LoanForm />} />
 
-
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
           <Route index element={<PresidentDashboard />} />
-         
         </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
