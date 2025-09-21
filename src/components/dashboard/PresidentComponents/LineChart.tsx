@@ -1,5 +1,13 @@
-
-import { LineChart as ReLineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import {
+  LineChart as ReLineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const data = [
   { month: "Jan", contribution: 100000 },
@@ -15,18 +23,34 @@ const data = [
 const MyLineChart = () => {
   return (
     <div>
-        <h3 className="text-4xl font-semibold text-center mb-4">Monthly Contribution</h3>
-        <h4 className="text-xl font-semibold text-center mb-4">Contribution trends over time </h4>
-    <ResponsiveContainer width="100%" height={400}>
-      <ReLineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="month" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="contribution" stroke="#22c55e" fill="rgba(34,197,94,0.3)" />
-      </ReLineChart>
-    </ResponsiveContainer>
+      <h3 className="text-3xl text-[#F9A825] text-center mb-4 mt-5">Monthly Contribution</h3>
+      <h4 className="text-xl text-white text-center mb-4">
+        Contribution trends over time
+      </h4>
+      <ResponsiveContainer width="100%" height={300}>
+        <ReLineChart
+          data={data}
+          margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis
+            tickFormatter={(value) => `${value / 1000}K`} // format Y-axis as K
+          />
+          <Tooltip
+            formatter={(value: number) => new Intl.NumberFormat().format(value)}
+          />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="contribution"
+            stroke="#22c55e"
+            fill="rgba(34,197,94,0.3)"
+            strokeWidth={2} // slightly thinner line
+            dot={{ r: 3 }} // smaller dots
+          />
+        </ReLineChart>
+      </ResponsiveContainer>
     </div>
   );
 };

@@ -24,6 +24,7 @@ import SecretaryDashboard from "@features/dashboard/SecretaryDashboard";
 import SecretaryDashboardLayout from "@components/dashboardLayout/SecretaryDashboardLayout";
 import MemberDashboardLayout from "@components/dashboardLayout/MemberDashboardLayout";
 import PresidentLayout from "@components/dashboardLayout/PresidentLayout";
+import Notifications from "@components/dashboard/PresidentComponents/Notifications";
 
 
 const AppRoutes = () => {
@@ -45,14 +46,22 @@ const AppRoutes = () => {
         <Route path="*" element={<ErrorPage />} />
         <Route path="/approvals" element={<ApprovalList />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
-        <Route path="/loan" element={<LoanProfile />} />
+        <Route path="/loanprofile" element={<LoanProfile />} />
         <Route path="/loanform" element={<LoanForm />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/loanpayment" element={<LoanPayment />} />
 
 
-        <Route path="/presidentdashboard" element={<PresidentLayout />}>
-          <Route index element={<PresidentDashboard />} />
-         
-        </Route>
+          <Route path="/president" element={<PresidentLayout />}>
+        <Route index element={<PresidentDashboard />} /> {/* /president */}
+        <Route path="dashboard" element={<PresidentDashboard />} />
+        <Route path="loanprofile" element={<LoanProfile />} />
+        <Route path="approvals" element={<ApprovalList />} />
+        {/* <Route path="members" element={<MembersPage />} /> */}
+        <Route path="notifications" element={<Notifications />} />
+        {/* <Route path="userprofile" element={<UserProfile />} /> */}
+        
+      </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
           <Route index element={<MemberDashboard />} />

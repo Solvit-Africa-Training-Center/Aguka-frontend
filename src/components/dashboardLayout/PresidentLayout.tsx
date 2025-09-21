@@ -7,7 +7,7 @@ const PresidentLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="w-full min-h-screen bg-[#003B42] flex">
+    <div className="w-full min-h-screen bg-[#002F35] flex">
       <AsidebarPresident
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}

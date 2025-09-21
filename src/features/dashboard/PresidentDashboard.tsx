@@ -1,45 +1,45 @@
-import StatsCard from "@components/dashboard/PresidentComponents/StatsCard";
 import LineChart from "@components/dashboard/PresidentComponents/LineChart";
 import BarChart from "@components/dashboard/PresidentComponents/BarChart";
 import GroupPerformance from "@components/dashboard/PresidentComponents/GroupPerformance";
-import Notifications from "@components/dashboard/PresidentComponents/Notifications";
-import { Clock, DollarSign, Users, ArrowUpCircle } from "lucide-react";
 import MeetingAgenda from "@components/dashboard/PresidentComponents/MeetingAgenda";
+import DoughnutChart from "@components/dashboard/PresidentComponents/DoughnutChart";
+import CommunityFeedPres from "@components/dashboard/PresidentComponents/CommunityFeedPres";
+import DashboardStats from "@components/dashboard/PresidentComponents/DashboardStats";
+
 
 const PresidentDashboard = () => {
   return (
-    <div className="space-y-6 p-6">
-      {/* Stats Cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <StatsCard title="Total Members" value="247" icon={Users} />
-        <StatsCard
-          title="Total Savings"
-          value="Frw 12,500,000"
-          icon={DollarSign}
-        />
-        <StatsCard
-          title="Total Loan Disbursed"
-          value="Frw 8,750"
-          icon={ArrowUpCircle}
-        />
-        <StatsCard title="Pending Requests" value="12" icon={Clock} />
-      </div>
+   
+      <div className="p-4 sm:p-6 md:p-8 space-y-10">
+        {/* Stats + Charts Section */}
+        <section className="space-y-4">
+          <DashboardStats />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <LineChart />
+            <BarChart />
+          </div>
+        </section>
 
-      {/* Charts */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <LineChart />
-        <BarChart />
-      </div>
+        {/* Group Performance + Agenda Section */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <GroupPerformance />
+          <MeetingAgenda />
+        </section>
 
-      {/* Group + Agenda */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <GroupPerformance />
-        <MeetingAgenda />
-      </div>
+        {/* Doughnut Chart + Community Feed Section */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <DoughnutChart />
+          <CommunityFeedPres />
+        </section>
 
-      {/* Notifications */}
-      <Notifications />
-    </div>
+        {/* Footer */}
+        <footer className="w-full text-accent-100 py-6">
+          <hr className="border-[#DCE4E5] mb-4" />
+          <div className="text-sm text-center capitalize">
+            &copy; 2025 Aguka. All rights reserved. Building wealth through community.
+          </div>
+        </footer>
+      </div>
   );
 };
 
