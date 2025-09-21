@@ -12,7 +12,13 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Groups", "GroupMembers", "Loan"],
+  tagTypes: [
+    "Groups",
+    "GroupMembers",
+    "Loan",
+    "Users",
+    "Email",
+    "Contributions",
+  ],
   endpoints: () => ({}),
 });
-
