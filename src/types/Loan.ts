@@ -19,6 +19,8 @@ export interface LoanRequest {
   amount: number;
   durationMonths: number;
 }
+// src/types/loan.ts
+export type LoanResponse = Loan; // alias if you prefer
 
 // For creating a loan (same as LoanRequest in your case)
 export type LoanCreate = LoanRequest;

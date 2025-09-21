@@ -1,7 +1,10 @@
 // services/api/contributionApi.ts
 import { apiSlice } from "./apiSlice";
-import type { Contribution, ContributionCreate, ContributionUpdate } from "types/Contribution";
-
+import type {
+  Contribution,
+  ContributionCreate,
+  ContributionUpdate,
+} from "types/Contribution";
 
 export const contributionApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
