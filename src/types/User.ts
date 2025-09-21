@@ -8,21 +8,27 @@ export type UserRole =
   | "member";
 
 export interface User {
-  id: string;          // unique identifier (UUID or database id)
-  name: string;        // full name
-  email?: string;      // optional if system uses phone only
-  phone: string;       // required
-  groupId?: string;    // optional if not yet in a group
-  role: UserRole;      // role in the system
-  approved: boolean;   // whether the user is approved or not
-  createdAt: string;   // ISO date
-  updatedAt: string;   // ISO date
+  id: string;
+  name: string;
+  email: string;
+  phoneNumber: string; // add this
+  role: string;
+  groupId?: string | null;
+  isApproved: boolean; // add this
+  createdAt: string; // add this
+  updatedAt: string; // add this
+  profilePicture?: string | null; // optional if your backend sends it
 }
 
 // For creating a new user
-export type UserCreate = Omit<User, "id" | "approved" | "createdAt" | "updatedAt">;
+export type UserCreate = Omit<
+  User,
+  "id" | "approved" | "createdAt" | "updatedAt"
+>;
 
 // For updating an existing user
-export type UserUpdate = Partial<Omit<User, "id" | "createdAt" | "updatedAt">> & {
+export type UserUpdate = Partial<
+  Omit<User, "id" | "createdAt" | "updatedAt">
+> & {
   id: string;
 };
