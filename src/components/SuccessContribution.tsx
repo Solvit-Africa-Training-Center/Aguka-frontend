@@ -1,5 +1,5 @@
 import { FiCheckCircle } from "react-icons/fi";
-type Props = {};
+
 
 const SuccessContribution = () => {
   return (

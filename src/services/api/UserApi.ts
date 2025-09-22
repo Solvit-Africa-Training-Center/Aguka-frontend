@@ -4,6 +4,12 @@ import type { User } from "types/User";
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    // Get all users
+    getUsers: builder.query<User[], void>({
+      query: () => "/users",
+      providesTags: ["Users"],
+    }),
+
     // Get user by ID
     getUserById: builder.query<User, string>({
       query: (id) => `/users/${id}`,
@@ -43,8 +49,9 @@ export const userApi = apiSlice.injectEndpoints({
 
 // Export hooks
 export const {
+  useGetUsersQuery,
   useGetUserByIdQuery,
   useDeleteUserMutation,
   useApproveUserMutation,
-  useUpdateUserMutation, // Now defined properly
+  useUpdateUserMutation,
 } = userApi;
