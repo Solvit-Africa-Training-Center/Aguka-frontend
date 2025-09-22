@@ -1,8 +1,4 @@
 import { FiCheckCircle } from "react-icons/fi";
-<<<<<<< HEAD
-=======
-
->>>>>>> features/auth
 
 const SuccessContribution = () => {
   return (
