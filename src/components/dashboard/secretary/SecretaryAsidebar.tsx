@@ -49,7 +49,7 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Dashboard
         </Link>
         <Link
-          to="/loan"
+          to="members"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <TbUsersGroup size={20} />
           members

@@ -25,7 +25,7 @@ import SecretaryDashboardLayout from "@components/dashboardLayout/SecretaryDashb
 import MemberDashboardLayout from "@components/dashboardLayout/MemberDashboardLayout";
 import PresidentLayout from "@components/dashboardLayout/PresidentLayout";
 import Notifications from "@components/dashboard/PresidentComponents/Notifications";
-import MembersList from "@components/dashboard/secretary/MembersList";
+import MembersList from "@components/dashboard/secretary/MembersList"
 const AppRoutes = () => {
   return (
     <div>
