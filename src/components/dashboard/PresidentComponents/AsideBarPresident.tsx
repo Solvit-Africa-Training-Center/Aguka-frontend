@@ -1,5 +1,14 @@
 import React from "react";
-import { X, LayoutDashboard, Users, BookMinus, LogOut } from "lucide-react";
+import {
+  X,
+  LayoutDashboard,
+  UserPen,
+  Users,
+  BookMinus,
+  LogOut,
+  BadgeDollarSign,
+  Bell,
+} from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -36,22 +45,40 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       <nav className="flex flex-col gap-2 p-4 font-poppins font-bold">
         <Link
-          to="/presidentdashboard"
+          to="dashboard"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <LayoutDashboard size={20} />
           Dashboard
         </Link>
         <Link
+          to="loanprofile"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <BookMinus size={20} />
+          Loan Profile
+        </Link>
+        <Link
+          to="approvals"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <BadgeDollarSign size={20} />
+          Approval & Decisions
+        </Link>
+        <Link
           to="members"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <Users size={20} />
-          Members
+          Manage members
         </Link>
         <Link
-          to="loans"
+          to="notifications"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
-          <BookMinus size={20} />
-          Loans
+          <Bell size={20} />
+          Notifications
+        </Link>
+        <Link
+          to="userprofile"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <UserPen size={20} />
+          User Profile
         </Link>
       </nav>
 

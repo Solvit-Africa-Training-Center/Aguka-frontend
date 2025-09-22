@@ -1,6 +1,6 @@
 // src/services/api/loanSlice.ts
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { LoanResponse } from "./loanApi";
+import type { LoanResponse } from "types/Loan";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface LoanState {

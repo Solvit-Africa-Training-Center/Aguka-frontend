@@ -8,7 +8,7 @@ const ContributionForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/success");
+    navigate("/memberdashboard/successcontribution"); // 👈 correct path
   };
 
   return (
@@ -37,7 +37,7 @@ const ContributionForm: React.FC = () => {
               <label className="block mb-2 text-xl">Amount to contribute</label>
               <input
                 type="text"
-                className="w-full text-xl text-center text-white font-bold focus:outline-none px-4 py-3 rounded-lg border border-[#E09721] placeholder:text-center text-transparent bg-clip-text bg-gradient-to-b from-[#545D5E] to-[#B0C2C4]"
+                className="w-full text-xl text-center font-bold focus:outline-none px-4 py-3 rounded-lg border border-[#E09721] placeholder:text-center text-transparent bg-clip-text bg-gradient-to-b from-[#545D5E] to-[#B0C2C4]"
                 placeholder="Frw 0"
                 required
               />

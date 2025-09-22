@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import LoanNavbar from "@components/LoanNavbar";
+//import LoanNavbar from "@components/LoanNavbar";
 import { DollarSign, HandCoins, Clock,CircleCheckBig} from "lucide-react";
  import { Link } from "react-router-dom";
 
@@ -31,9 +31,9 @@ export default function LoanProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#002F35] font-poppins flex flex-col">
+    <div className="min-h-screen bg-[#002F35] p-15 font-poppins flex flex-col">
       {/* Navbar */}
-      <LoanNavbar />
+      {/* <LoanNavbar /> */}
 
       {/* Content */}
       <div className="flex-1 p-4 sm:p-8 w-full max-w-6xl mx-auto">
