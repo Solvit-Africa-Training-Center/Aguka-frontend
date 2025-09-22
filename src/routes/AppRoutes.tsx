@@ -46,7 +46,7 @@ const AppRoutes = () => {
         <Route path="*" element={<ErrorPage />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
 
-        <Route path="/president" element={<PresidentLayout />}>
+        <Route path="/presidentdashboard" element={<PresidentLayout />}>
           <Route index element={<PresidentDashboard />} /> {/* /president */}
           <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="approvals" element={<ApprovalList />} />
