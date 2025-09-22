@@ -35,6 +35,15 @@ export const authApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getUsers: builder.query<{ id: string; name: string }[], void>({
+      query: () => ({
+        url: "/users",
+        method: "GET",
+        headers: {
+          // Authorization: `Bearer ${localStorage.getItem("token")}`, // if needed
+        },
+      }),
+    }),
   }),
 });
 
@@ -44,4 +53,5 @@ export const {
   useLazyInitiateGoogleLoginQuery,
   useHandleGoogleCallbackMutation,
   useCompleteProfileMutation,
+  useGetUsersQuery,
 } = authApi;

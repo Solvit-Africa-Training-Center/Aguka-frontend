@@ -36,7 +36,7 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       <nav className="flex flex-col gap-2 p-4 font-poppins font-bold">
         <Link
-          to="dashboard"
+          to="presidentdashboard"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <LayoutDashboard size={20} />
           Dashboard
@@ -54,7 +54,7 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Approval & Decisions
         </Link>
         <Link
-          to="members"
+          to="managemembers"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <Users size={20} />
           Manage members

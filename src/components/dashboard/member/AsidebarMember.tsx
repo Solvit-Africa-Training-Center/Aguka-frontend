@@ -47,7 +47,7 @@ const AsidebarMember: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Dashboard
         </Link>
         <Link
-          to="/loan"
+          to="/loanprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BookMinus size={20} />
           Loan Profile

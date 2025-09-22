@@ -25,6 +25,7 @@ import SecretaryDashboardLayout from "@components/dashboardLayout/SecretaryDashb
 import MemberDashboardLayout from "@components/dashboardLayout/MemberDashboardLayout";
 import PresidentLayout from "@components/dashboardLayout/PresidentLayout";
 import Notifications from "@components/dashboard/PresidentComponents/Notifications";
+import ManageMembers from "@components/dashboard/PresidentComponents/ManageMembers";
 
 
 const AppRoutes = () => {
@@ -52,12 +53,12 @@ const AppRoutes = () => {
         <Route path="/loanpayment" element={<LoanPayment />} />
 
 
-          <Route path="/president" element={<PresidentLayout />}>
+          <Route path="/presidentdashboard" element={<PresidentLayout />}>
         <Route index element={<PresidentDashboard />} /> {/* /president */}
-        <Route path="dashboard" element={<PresidentDashboard />} />
+        <Route path="presidentdashboard" element={<PresidentDashboard />} />
         <Route path="loanprofile" element={<LoanProfile />} />
         <Route path="approvals" element={<ApprovalList />} />
-        {/* <Route path="members" element={<MembersPage />} /> */}
+        <Route path="managemembers" element={<ManageMembers />} />
         <Route path="notifications" element={<Notifications />} />
         {/* <Route path="userprofile" element={<UserProfile />} /> */}
         

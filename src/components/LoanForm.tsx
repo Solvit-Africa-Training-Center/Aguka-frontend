@@ -124,7 +124,7 @@ export default function LoanForm() {
         </button>
 
         {/* Success / Error messages */}
-        {data && <p className="mt-4 text-green-400">Loan Approved! ID: {data.id}</p>}
+        {data && <p className="mt-4 text-green-400">Loan Pending! ID: {data.id}</p>}
         {error && <p className="mt-4 text-red-500">Error: {(error as any)?.data?.message || "Something went wrong"}</p>}
       </form>
     </div>
