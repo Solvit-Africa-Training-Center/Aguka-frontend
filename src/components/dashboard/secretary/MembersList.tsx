@@ -1,6 +1,6 @@
 // MembersPage.tsx
 import { useState, useEffect, useRef } from "react";
-import { Crown, Pause, Trash2, Plus, Search } from "lucide-react";
+import { Crown, Pause, Trash2, Search } from "lucide-react";
 import {
   useGetUsersQuery,
   useUpdateUserMutation,
