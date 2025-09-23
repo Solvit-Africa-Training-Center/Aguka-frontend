@@ -50,11 +50,20 @@ export const authApi = apiSlice.injectEndpoints({
       updateUser: builder.mutation<User, Partial<User> & { id: string }>({
   query: ({ id, ...patch }) => ({
     url: `/users/${id}`,
-    method: "PATCH",
+    method: "PUT",
     body: patch,
   }),
   invalidatesTags: ["Users"],
 }),
+
+approveUser: builder.mutation<User, string>({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body: { isApproved: true },
+      }),
+      invalidatesTags: ["Users"],
+    }),
 
 deleteUser: builder.mutation<{ success: boolean; id: string }, string>({
   query: (id) => ({
@@ -75,5 +84,6 @@ export const {
   useCompleteProfileMutation,
   useGetUsersQuery,
   useUpdateUserMutation,
+  useApproveUserMutation,
   useDeleteUserMutation,
 } = authApi;

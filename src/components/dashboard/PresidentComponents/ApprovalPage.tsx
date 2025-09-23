@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ApprovalCard from "./ApprovalCard";
 import { useGetLoansByStatusQuery } from "@services/api/loanApi";
-import { useGetUsersQuery } from "@services/api/authApi";
+import { useGetUsersQuery, useApproveUserMutation } from "@services/api/authApi";
 import type { Loan } from "types/Loan";
 import type { User } from "types/User";
 import { useSelector } from "react-redux";
@@ -10,35 +10,33 @@ import type { RootState } from "@services/store/store";
 const ApprovalPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"loans" | "users">("loans");
 
-  // Logged-in user
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
 
-  // Fetch loans
   const { data: loans, isLoading: loadingLoans, isError: errorLoans } =
     useGetLoansByStatusQuery("pending");
 
-  // Fetch all users
   const { data: users, isLoading: loadingUsers, isError: errorUsers } =
     useGetUsersQuery();
 
-  // Filter pending users in the same group
+  const [approveUser] = useApproveUserMutation();
+
   const pendingUsers =
     users?.data?.filter(
       (u: User) => !u.isApproved && u.groupId === loggedInUser?.groupId
     ) || [];
 
- 
   const loanList =
     Array.isArray(loans)
       ? loans
       : loans && typeof loans === "object" && "data" in loans
       ? (loans as { data: Loan[] }).data
       : [];
+
   const groupLoans =
     loggedInUser && users?.data
       ? loanList.filter((loan: Loan) => {
           const loanUser = users.data.find((u: User) => u.id === loan.userId);
-          return loanUser?.groupId === loggedInUser.groupId;
+          return loanUser?.groupId === loggedInUser.groupId && loanUser?.isApproved;
         })
       : [];
 
@@ -115,6 +113,8 @@ const ApprovalPage: React.FC = () => {
                   name={user.name}
                   type={`User registration request for role: ${user.role}`}
                   time={new Date(user.createdAt).toLocaleString()}
+                  onApprove={() => approveUser(user.id)} // ✅ approve
+                  onReject={() => console.log("Reject user", user.id)}
                 />
               ))
             ) : (

@@ -71,6 +71,7 @@ const AppRoutes = () => {
           <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="loanform" element={<LoanForm />} />
           <Route path="successcontribution" element={<SuccessContribution />} />
+          <Route path="userprofile" element={<UserProfile/>} />
         </Route>
 
         <Route

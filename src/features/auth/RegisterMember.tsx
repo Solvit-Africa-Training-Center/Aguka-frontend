@@ -101,16 +101,13 @@ export default function RegisterMember() {
       if (token) localStorage.setItem("token", token);
       if (role) localStorage.setItem("role", role);
       localStorage.setItem("user", JSON.stringify(user));
-      dispatch(
-        setCredentials({
-          token: result.data.token,
-          role: result.data.role,
-          user: {
-            name: result.data.name,
-            email: result.data.email,
-          },
-        })
-      );
+    dispatch(
+  setCredentials({
+    token: result.data.token,
+    role: result.data.role,
+    user: result.data.user, 
+  })
+);
 
       setSuccess("Your account has been created successfully!");
       setForm({ fullName: "", email: "", password: "" });
