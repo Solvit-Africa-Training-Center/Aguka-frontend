@@ -1,22 +1,17 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-
-interface User {
-  name: string;
-  email: string;
-  
-}
+import type { User } from "@models/User";
 
 interface AuthState {
   token: string | null;
   role: string | null;
-  user: User | null;
+  user: User | null; // ⬅️ use the shared type here
 }
 
 const initialState: AuthState = {
   token: localStorage.getItem("token"),
   role: localStorage.getItem("role"),
   user: localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")!)
+    ? JSON.parse(localStorage.getItem("user")!) as User // ⬅️ cast as User
     : null,
 };
 
@@ -26,11 +21,7 @@ const authSlice = createSlice({
   reducers: {
     setCredentials(
       state,
-      action: PayloadAction<{
-        token: string;
-        role: string;
-        user?: User;
-      }>
+      action: PayloadAction<{ token: string; role: string; user?: User }>
     ) {
       state.token = action.payload.token;
       state.role = action.payload.role;

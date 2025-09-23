@@ -1,5 +1,14 @@
 import React from "react";
-import { X, LayoutDashboard,UserPen, Users, BookMinus, LogOut, BadgeDollarSign, Bell } from "lucide-react";
+import {
+  X,
+  LayoutDashboard,
+  UserPen,
+  Users,
+  BookMinus,
+  LogOut,
+  BadgeDollarSign,
+  Bell,
+} from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -41,13 +50,13 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <LayoutDashboard size={20} />
           Dashboard
         </Link>
-         <Link
+        <Link
           to="loanprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BookMinus size={20} />
           Loan Profile
         </Link>
-         <Link
+        <Link
           to="approvals"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
@@ -59,11 +68,11 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <Users size={20} />
           Manage members
         </Link>
-         <Link
+        <Link
           to="notifications"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <Bell size={20} />
-           Notifications
+          Notifications
         </Link>
         <Link
           to="userprofile"
@@ -71,7 +80,6 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <UserPen size={20} />
           User Profile
         </Link>
-
       </nav>
 
       <div className="absolute bottom-0 w-full p-4 border-t">

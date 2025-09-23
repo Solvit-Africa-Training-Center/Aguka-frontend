@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import type { RootState } from "services/store/store";
 import { Menu, Bell } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
-import { Outlet } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import SecretaryAsidebar from "./SecretaryAsidebar";
@@ -44,7 +43,6 @@ const SecretaryNavbar: React.FC = () => {
             <span className="text-sm">{user ? user.name : "Guest"}</span>
           </div>
         </div>
-        <Outlet />
       </div>
 
       {/* Sidebar Component */}

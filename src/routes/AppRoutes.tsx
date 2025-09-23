@@ -15,7 +15,7 @@ import LoanProfile from "@components/LoanProfile";
 import PresidentDashboard from "@features/dashboard/PresidentDashboard";
 import MemberDashboard from "@features/dashboard/MemberDashboard";
 import AdminDashboard from "@features/dashboard/AdminDashboard";
-import ApprovalList from "@components/dashboard/PresidentComponents/ApprovalList";
+// import ApprovalList from "@components/dashboard/PresidentComponents/ApprovalPage";
 import LoanPayment from "@components/LoanPayment";
 import LoanForm from "@components/LoanForm";
 import ContributionForm from "@components/ContributionForm";
@@ -25,7 +25,9 @@ import SecretaryDashboardLayout from "@components/dashboardLayout/SecretaryDashb
 import MemberDashboardLayout from "@components/dashboardLayout/MemberDashboardLayout";
 import PresidentLayout from "@components/dashboardLayout/PresidentLayout";
 import Notifications from "@components/dashboard/PresidentComponents/Notifications";
-import ManageMembers from "@components/dashboard/PresidentComponents/ManageMembers";
+import MembersPage from "@components/dashboard/PresidentComponents/MembersPage";
+import ApprovalPage from "@components/dashboard/PresidentComponents/ApprovalPage";
+import UserProfile from "@components/dashboard/PresidentComponents/UserProfile";
 
 
 const AppRoutes = () => {
@@ -45,22 +47,20 @@ const AppRoutes = () => {
         <Route path="/registergroup" element={<RegisterGroup />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorPage />} />
-        <Route path="/approvals" element={<ApprovalList />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/loanprofile" element={<LoanProfile />} />
         <Route path="/loanform" element={<LoanForm />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/loanpayment" element={<LoanPayment />} />
 
-
-          <Route path="/presidentdashboard" element={<PresidentLayout />}>
+        <Route path="/presidentdashboard" element={<PresidentLayout />}>
         <Route index element={<PresidentDashboard />} /> {/* /president */}
         <Route path="presidentdashboard" element={<PresidentDashboard />} />
         <Route path="loanprofile" element={<LoanProfile />} />
-        <Route path="approvals" element={<ApprovalList />} />
-        <Route path="managemembers" element={<ManageMembers />} />
+        <Route path="approvals" element={<ApprovalPage />} />
+        <Route path="managemembers" element={<MembersPage />} />
         <Route path="notifications" element={<Notifications />} />
-        {/* <Route path="userprofile" element={<UserProfile />} /> */}
+        <Route path="userprofile" element={<UserProfile/>} />
         
       </Route>
 
@@ -68,13 +68,16 @@ const AppRoutes = () => {
           <Route index element={<MemberDashboard />} />
           <Route path="contribution" element={<ContributionForm />} />
           <Route path="payment" element={<LoanPayment />} />
-          <Route path="success" element={<SuccessContribution />} />
+          <Route path="loanprofile" element={<LoanProfile />} />
+          <Route path="loanform" element={<LoanForm />} />
+          <Route path="successcontribution" element={<SuccessContribution />} />
         </Route>
 
         <Route
           path="/secretarydashboard"
           element={<SecretaryDashboardLayout />}>
           <Route index element={<SecretaryDashboard />} />
+          <Route path="managemembers" element={<MembersPage />} />
         </Route>
       </Routes>
     </div>

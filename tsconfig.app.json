@@ -20,9 +20,11 @@
       "@features/*": ["features/*"],
       "@pages/*": ["pages/*"],
       "@lib/*": ["lib/*"],
-      "@routes/*": ["routses/*"],
-      "@types/*": ["types/*"],
-      "@services/*": ["services/*"]
+      "@routes/*": ["routes/*"],
+      "@models/*": ["types/*"],
+      "@services/*": ["services/*"],
+       "@assets*": ["assets/*"]
+
     },
     /* Linting */
     "strict": true,
@@ -32,17 +34,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "baseUrl": "src",
-    "paths": {
-      "@components/*": ["components/*"],
-      "@features/*": ["features/*"],
-      "@pages/*": ["pages/*"],
-      "@lib/*": ["lib/*"],
-      "@routes/*": ["routes/*"],
-      "@types/*": ["types/*"],
-      "@services/*": ["services/*"],
-      "@assets*": ["assets/*"]
+   
+     
     }
-  },
+  ,
   "include": ["src"]
 }

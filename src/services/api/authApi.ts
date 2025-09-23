@@ -1,4 +1,7 @@
 import { apiSlice } from "./apiSlice";
+import type { User } from "@models/User";
+
+
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -35,16 +38,33 @@ export const authApi = apiSlice.injectEndpoints({
         },
       }),
     }),
-    getUsers: builder.query<{ id: string; name: string }[], void>({
-      query: () => ({
-        url: "/users",
-        method: "GET",
+  getUsers: builder.query<{ data: User[] }, void>({
+  query: () => ({
+    url: "/users",
+    method: "GET",
         headers: {
           // Authorization: `Bearer ${localStorage.getItem("token")}`, // if needed
         },
       }),
-    }),
+      }),
+      updateUser: builder.mutation<User, Partial<User> & { id: string }>({
+  query: ({ id, ...patch }) => ({
+    url: `/users/${id}`,
+    method: "PATCH",
+    body: patch,
   }),
+  invalidatesTags: ["Users"],
+}),
+
+deleteUser: builder.mutation<{ success: boolean; id: string }, string>({
+  query: (id) => ({
+    url: `/users/${id}`,
+    method: "DELETE",
+  }),
+  invalidatesTags: ["Users"],
+}),
+    }),
+
 });
 
 export const {
@@ -54,4 +74,6 @@ export const {
   useHandleGoogleCallbackMutation,
   useCompleteProfileMutation,
   useGetUsersQuery,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
 } = authApi;

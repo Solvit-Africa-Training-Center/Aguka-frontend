@@ -117,11 +117,8 @@ export default function Login() {
       const role = decoded.role || "user";
       const groupId = decoded.groupId;
 
-      const user = {
-        name: decoded.name || decoded.email,
-        email: decoded.email,
-      };
-      dispatch(setCredentials({ token: accessToken, role, user }));
+    const user = decoded; // store everything
+dispatch(setCredentials({ token: accessToken, role, user }));
 
       setSuccess("Login successful!");
 
@@ -145,11 +142,8 @@ export default function Login() {
       const role = decoded.role || "user";
       const groupId = decoded.groupId;
 
-      const user = {
-        name: decoded.name || decoded.email,
-        email: decoded.email,
-      };
-      dispatch(setCredentials({ token, role, user }));
+      const user = decoded; // instead of partial
+dispatch(setCredentials({ token, role, user }));
 
       if (!groupId) {
         navigate("/fillbeforeregister");
