@@ -20,6 +20,17 @@ export const apiSlice = createApi({
     "Email",
     "Contributions",
     "Policies",
+
+    // ✅ Add these for your new features
+    "Dividends",
+    "Repayments",
+    "Announcements",
+    "AdminOverview",
+    "InactiveUsers",
+    "GroupDistribution",
+    "Penalties",
+    "Feeds",
+    "Comments",
   ],
   endpoints: () => ({}),
 });
