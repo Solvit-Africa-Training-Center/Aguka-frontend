@@ -44,19 +44,22 @@ const UserProfile: React.FC = () => {
     : "?";
 
   return (
-    <div className="min-h-screen bg-[#00353B] flex flex-col items-center justify-start p-6 space-y-6">
+    <div className="min-h-screen bg-[#00353B] flex flex-col items-center justify-start p-6 space-y-6 pt-40">
       {/* Header */}
-      <div className="bg-[#00353B] text-white rounded-xl w-full max-w-md p-6 flex flex-col items-center space-y-2">
+      <div className="bg-[#00353B] text-white rounded-xl w-full max-w-md p-6 flex flex-col items-center space-y-2 ">
         <div className="bg-gray-200 text-teal-700 w-20 h-20 flex items-center justify-center rounded-full text-2xl font-bold">
           {initials}
         </div>
-        <div className="text-lg font-semibold">{userData.name || "Unknown"}</div>
+        <div className="text-lg font-semibold">
+          {userData.name || "Unknown"}
+        </div>
         <div className="text-yellow-500">{userData.id}</div>
         <span
           className={`px-3 py-1 rounded-full text-sm ${
-            userData.isApproved ? "bg-green-200 text-green-800" : "bg-gray-300 text-gray-700"
-          }`}
-        >
+            userData.isApproved
+              ? "bg-green-200 text-green-800"
+              : "bg-gray-300 text-gray-700"
+          }`}>
           {userData.isApproved ? "Active" : "Inactive"}
         </span>
         <div className="text-sm mt-1">Role: {userData.role}</div>
@@ -98,7 +101,9 @@ const UserProfile: React.FC = () => {
         <div className="flex flex-col space-y-2 border border-yellow-500 rounded px-3 py-2">
           <span className="flex items-center gap-2 font-semibold">
             🔑 Security settings
-            <small className="text-xs font-normal">Manage your account password</small>
+            <small className="text-xs font-normal">
+              Manage your account password
+            </small>
           </span>
           {editingPassword ? (
             <input
@@ -110,11 +115,12 @@ const UserProfile: React.FC = () => {
             />
           ) : (
             <div className="flex items-center justify-between">
-              <span className="text-white">{password ? "*".repeat(password.length) : ""}</span>
+              <span className="text-white">
+                {password ? "*".repeat(password.length) : ""}
+              </span>
               <button
                 onClick={() => setEditingPassword(true)}
-                className="bg-yellow-500 text-black px-3 py-1 rounded"
-              >
+                className="bg-yellow-500 text-black px-3 py-1 rounded">
                 Change Password
               </button>
             </div>
@@ -129,8 +135,7 @@ const UserProfile: React.FC = () => {
         </button>
         <button
           onClick={handleSave}
-          className="flex-1 bg-[#E09721] text-black rounded-lg py-2 hover:bg-yellow-600"
-        >
+          className="flex-1 bg-[#E09721] text-black rounded-lg py-2 hover:bg-yellow-600">
           Save
         </button>
       </div>

@@ -61,7 +61,7 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           members
         </Link>
         <Link
-          to="/meeting"
+          to="/secretarydashboard/ScheduleMeetingForm"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
           meetings

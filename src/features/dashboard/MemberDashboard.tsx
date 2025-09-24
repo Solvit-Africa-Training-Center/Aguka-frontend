@@ -24,8 +24,7 @@ const MemberDashboard: React.FC = () => {
   ];
   return (
     <div className="w-full min-h-screen bg-[#00353B] font-poppins">
-      <div>
-      </div>
+      <div></div>
       <div className="p-10 grid grid-cols-2 w-full gap-10 pt-45">
         <div>
           <LineChartDashboard data={contributionData} />
@@ -35,7 +34,7 @@ const MemberDashboard: React.FC = () => {
             <div className="w-70 h-80 border-0 border-[#F9A825] rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
               <div className="flex space-x-5">
                 <h2 className="capitalize text-xl font-bold">
-                  current balance 
+                  current balance
                 </h2>
                 <Wallet className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
               </div>
@@ -71,7 +70,7 @@ const MemberDashboard: React.FC = () => {
             <div className="w-70 h-80 border-0 border-[#F9A825] rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
               <div className="flex space-x-5 ">
                 <h2 className="capitalize text-xl font-bold ">
-                 dividend payout
+                  dividend payout
                 </h2>
                 <WalletMinimal className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
               </div>
@@ -92,13 +91,13 @@ const MemberDashboard: React.FC = () => {
                 rwf 5000
               </span>
               <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                 dec 25
+                dec 25
               </span>
               <span>pay your debt properly</span>
             </div>
           </div>
         </div>
-        <div className="w-230 font-poppins">
+        <div className="w-210 font-poppins">
           <RecentTransactions />
         </div>
         <div className="font-poppins text-[#b2b2b2] mt-15 border border-b-0 overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg w-180 h-120 rounded-2xl  p-4 ">
