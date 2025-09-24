@@ -155,7 +155,7 @@ export default function MembersList() {
       </div>
 
       {/* Users Table */}
-      <div className="overflow-auto max-h-[600px] rounded-lg shadow-md ">
+      <div className="overflow-auto  rounded-lg  shadow-md h-100">
         <table className="w-full text-left border-collapse">
           <thead className="bg-[#003B42] text-gray-300 sticky top-0 ">
             <tr className="text-2xl font-poppins font-bold text-white">

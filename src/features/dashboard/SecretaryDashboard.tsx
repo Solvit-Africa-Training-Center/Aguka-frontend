@@ -137,10 +137,10 @@ const SecretaryDashboard: React.FC = () => {
         {/* Recent Communications */}
         <div className="bg-[#D9E9EB] px-10 py-4 rounded-xl border border-[#F9A825] h-120">
           <h2 className="text-2xl font-extrabold text-[#003B42]">
-            Communications
+            Meeting schedule
           </h2>
           <p className="text-[#628184] text-sm mb-15">
-            Recent communications sent
+            Latest meeting activities
           </p>
           <ul className="space-y-10">
             {communications.map((comm, index) => (

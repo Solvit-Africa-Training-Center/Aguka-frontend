@@ -91,6 +91,7 @@ const AppRoutes = () => {
           <Route path="AttendanceReport" element={<AttendanceReport />} />
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="ScheduleMeetingForm" element={<ScheduleMeetingForm />} />
+          <Route path="memberaccount" element={<MemberDashboard />} />
         </Route>
       </Routes>
     </div>
