@@ -3,7 +3,7 @@ import { apiSlice } from "./apiSlice";
 import type {
   Contribution,
   ContributionCreate,
-  ContributionUpdate,
+  ContributionCreateMe,
 } from "types/Contribution";
 
 export const contributionApi = apiSlice.injectEndpoints({
@@ -16,14 +16,27 @@ export const contributionApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Contributions"],
     }),
-    getContributionsByUser: builder.query<Contribution[], string>({
-      query: (userId) => `/contributions/user/${userId}`,
-      providesTags: ["Contributions"],
+
+    createContributionMe: builder.mutation<Contribution, ContributionCreateMe>({
+      query: (data) => ({
+        url: "/contributions/me",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Contributions"],
     }),
+
+   getContributionsByUser: builder.query<Contribution[], void>({
+  query: () => "/contributions/me",
+  transformResponse: (response: { data: Contribution[] }) => response.data, // <-- extract array
+  providesTags: ["Contributions"],
+}),
+
     getTodayContribution: builder.query<Contribution[], void>({
       query: () => "/contributions/today",
       providesTags: ["Contributions"],
     }),
+
     updateContribution: builder.mutation<
       Contribution,
       { id: string; data: Partial<Contribution> }
@@ -35,6 +48,7 @@ export const contributionApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Contributions"],
     }),
+
     deleteContribution: builder.mutation<void, string>({
       query: (id) => ({
         url: `/contributions/${id}`,
@@ -42,9 +56,20 @@ export const contributionApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Contributions"],
     }),
-    getGroupContributions: builder.query<Contribution[], string>({
-      query: (groupId) => `/contributions/group/${groupId}`,
-      providesTags: ["Contributions"],
+
+   getGroupContributions: builder.query<Contribution[], string>({
+  query: (groupId) => `/contributions/${groupId}/all`, 
+  providesTags: ["Contributions"],
+}),
+
+
+    // ✅ New approve contribution endpoint (POST)
+    approveContribution: builder.mutation<Contribution, string>({
+      query: (contributionId) => ({
+        url: `/contributions/${contributionId}/approve`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Contributions"],
     }),
   }),
   overrideExisting: true,
@@ -56,5 +81,7 @@ export const {
   useGetTodayContributionQuery,
   useUpdateContributionMutation,
   useDeleteContributionMutation,
+  useCreateContributionMeMutation,
   useGetGroupContributionsQuery,
+  useApproveContributionMutation, 
 } = contributionApi;
