@@ -24,8 +24,7 @@ import SecretaryDashboard from "@features/dashboard/SecretaryDashboard";
 import SecretaryDashboardLayout from "@components/dashboardLayout/SecretaryDashboardLayout";
 import MemberDashboardLayout from "@components/dashboardLayout/MemberDashboardLayout";
 import PresidentLayout from "@components/dashboardLayout/PresidentLayout";
-<<<<<<< HEAD
-=======
+
 import Notifications from "@components/dashboard/PresidentComponents/Notifications";
 import MembersPage from "@components/dashboard/PresidentComponents/MembersPage";
 import ApprovalPage from "@components/dashboard/PresidentComponents/ApprovalPage";
@@ -36,7 +35,6 @@ import AttendanceReport from "@components/dashboard/secretary/AttendenceReport";
 import ScheduleMeetingForm from "@components/dashboard/secretary/ScheduleMeetingForm";
 import PolicyForm from "@components/dashboard/TreasurerComponents/PolicyForm";
 import TreasurerDashboard from "@features/dashboard/TreasurerDashboard";
->>>>>>> features/auth
 
 const AppRoutes = () => {
   return (
@@ -62,10 +60,7 @@ const AppRoutes = () => {
         <Route path="/loanpayment" element={<LoanPayment />} />
         <Route path="/policyform" element={<PolicyForm/>}/>
 
-<<<<<<< HEAD
-        <Route path="/presidentdashboard" element={<PresidentLayout />}>
-          <Route index element={<PresidentDashboard />} />
-=======
+
         <Route path="/treasurerdashboard" element={<TreasurerDashboard />}/>
 
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
@@ -76,7 +71,7 @@ const AppRoutes = () => {
           <Route path="managemembers" element={<MembersPage />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="userprofile" element={<UserProfile />} />
->>>>>>> features/auth
+
         </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
