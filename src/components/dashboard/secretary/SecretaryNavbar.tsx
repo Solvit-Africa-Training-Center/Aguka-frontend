@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import type { RootState } from "services/store/store";
 import { Menu, Bell } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
-import { Outlet } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import SecretaryAsidebar from "./SecretaryAsidebar";
@@ -12,17 +11,17 @@ const SecretaryNavbar: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   // Compute initials safely
-  const firstChar = user
-    ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
+  const firstChar = user?.name
+    ? user.name.charAt(0).toUpperCase()
+    : user?.email
+    ? user.email.charAt(0).toUpperCase()
     : "?";
+
+  const displayName = user?.name || user?.email || "Guest";
 
   return (
     <>
-      <div className="w-full bg-[#003B42] flex justify-between font-poppins p-4 fixed z-10">
+      <div className="w-full bg-[#003B42] flex justify-between font-poppins p-4 fixed z-10 shadow-lg">
         <div className="w-full p-2 flex items-center gap-10">
           <button onClick={() => setIsSidebarOpen(true)}>
             <Menu className="text-white size-10 hover:text-secondary-300" />
@@ -41,14 +40,13 @@ const SecretaryNavbar: React.FC = () => {
             <div className="bg-secondary-400 text-white rounded-full w-15 h-15 flex items-center justify-center text-2xl">
               {firstChar}
             </div>
-            <span className="text-sm">{user ? user.name : "Guest"}</span>
+            <span className="text-sm">{displayName}</span>
           </div>
         </div>
-        <Outlet />
       </div>
 
       {/* Sidebar Component */}
-      < SecretaryAsidebar
+      <SecretaryAsidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />

@@ -1,43 +1,51 @@
 import { Calendar, CreditCard } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
+import { useGetLoansQuery } from "@services/api/loanApi";
+import { useSelector } from "react-redux";
+import type { RootState } from "@services/store/store";
+
+const DEFAULT_RATE = 0.05; // default monthly interest rate
 
 export default function LoanPayment() {
+  const loggedInUser = useSelector((state: RootState) => state.auth.user);
+
+  const { data: loans = [] } = useGetLoansQuery();
+
+  // Filter only approved loans of the logged-in user
+  const userApprovedLoans = loans.filter(
+  (loan) => loan.userId === loggedInUser?.id && loan.status === "approved"
+);
+
+  // Calculate total outstanding (principal + interest - amountPaid)
+const totalOutstanding = userApprovedLoans.reduce((sum, loan) => {
+  const duration = loan.durationMonths ?? 0;
+  const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
+  return sum + Math.floor(totalPayable);
+}, 0);
+
   return (
     <div className="min-h-screen bg-[#00353B] p-4 font-poppins relative">
-      {/* Top-left logo */}
       <div className="absolute top-20 left-20">
-        <img
-          src={logo}
-          alt="aguka logo"
-          className="w-50 h-50 rounded-full object-cover"/>
-        
+        <img src={logo} alt="aguka logo" className="w-50 h-50 rounded-full object-cover" />
       </div>
 
-      {/* Centered card */}
       <div className="flex items-center justify-center min-h-screen">
         <div className="w-full max-w-2xl bg-[#00353B] text-white rounded-2xl shadow-lg p-6 sm:p-8">
-          {/* Title */}
-          <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#F9A825] mb-10">
-            Loan Payment
-          </h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#F9A825] mb-10">Loan Payment</h2>
           <p className="font-semibold text-[#FFFFFF] mb-6 text-2xl sm:text-base">
             Make payment toward your loan balance
           </p>
 
-          {/* Loan Amount Remaining */}
           <div className="mb-4">
-            <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">
-              Loan Amount Remaining
-            </label>
+            <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">Loan Amount Remaining</label>
             <input
               type="text"
-              value="Frw 157,750.00"
+              value={`Frw ${totalOutstanding.toLocaleString()}`}
               readOnly
               className="w-full px-4 py-2 bg-transparent border border-[#F9A825] rounded-lg font-bold text-lg text-gray-100"
             />
           </div>
 
-          {/* Amount to Pay */}
           <div className="mb-4">
             <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">
               Amount to Pay <span className="text-red-500">*</span>
@@ -49,27 +57,19 @@ export default function LoanPayment() {
             />
           </div>
 
-          {/* Payment Date */}
           <div className="mb-4">
             <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">
               Payment Date <span className="text-red-500">*</span>
             </label>
             <div className="flex items-center border border-[#F9A825] rounded-lg px-3 py-2 bg-transparent">
               <Calendar className="w-5 h-5 text-[#F9A825] mr-2" />
-              <input
-                type="date"
-                className="w-full bg-transparent text-white focus:outline-none"
-              />
+              <input type="date" className="w-full bg-transparent text-white focus:outline-none" />
             </div>
           </div>
 
-          {/* Payment Method */}
           <div className="mb-6">
             <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">
-              Payment Method{" "}
-              <span className="bg-gradient-to-r from-[#545D5E] to-[#B0C2C4] bg-clip-text text-transparent">
-                (Optional)
-              </span>
+              Payment Method <span className="bg-gradient-to-r from-[#545D5E] to-[#B0C2C4] bg-clip-text text-transparent">(Optional)</span>
             </label>
             <div className="flex items-center border border-[#F9A825] rounded-lg px-3 py-2 bg-transparent">
               <CreditCard className="w-5 h-5 text-[#F9A825] mr-2" />
@@ -81,7 +81,6 @@ export default function LoanPayment() {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button className="w-full bg-gradient-to-r from-[#7A5212] to-[#E09721] text-white text-2xl font-semibold py-3 rounded-lg shadow-md hover:opacity-90 transition">
             Submit Payment
           </button>

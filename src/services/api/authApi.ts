@@ -1,4 +1,7 @@
 import { apiSlice } from "./apiSlice";
+import type { User } from "@models/User";
+
+
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -35,7 +38,42 @@ export const authApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+  getUsers: builder.query<{ data: User[] }, void>({
+  query: () => ({
+    url: "/users",
+    method: "GET",
+        headers: {
+          // Authorization: `Bearer ${localStorage.getItem("token")}`, // if needed
+        },
+      }),
+      }),
+      updateUser: builder.mutation<User, Partial<User> & { id: string }>({
+  query: ({ id, ...patch }) => ({
+    url: `/users/${id}`,
+    method: "PUT",
+    body: patch,
   }),
+  invalidatesTags: ["Users"],
+}),
+
+approveUser: builder.mutation<User, string>({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body: { isApproved: true },
+      }),
+      invalidatesTags: ["Users"],
+    }),
+
+deleteUser: builder.mutation<{ success: boolean; id: string }, string>({
+  query: (id) => ({
+    url: `/users/${id}`,
+    method: "DELETE",
+  }),
+  invalidatesTags: ["Users"],
+}),
+    }),
+
 });
 
 export const {
@@ -44,4 +82,8 @@ export const {
   useLazyInitiateGoogleLoginQuery,
   useHandleGoogleCallbackMutation,
   useCompleteProfileMutation,
+  useGetUsersQuery,
+  useUpdateUserMutation,
+  useApproveUserMutation,
+  useDeleteUserMutation,
 } = authApi;

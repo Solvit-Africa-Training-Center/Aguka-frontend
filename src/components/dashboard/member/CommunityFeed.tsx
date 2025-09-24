@@ -123,7 +123,7 @@ const CommunityFeed: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#00353B] p-6">
-      <div className="max-w-3xl mx-auto space-y-6">
+      <div className="max-w-3xl mx-auto space-y-6 ">
         {/* Create Post */}
         <div className="rounded-2xl p-5 flex gap-3 justify-center">
           <textarea

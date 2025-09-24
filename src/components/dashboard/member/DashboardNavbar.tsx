@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Menu, Bell } from "lucide-react";
+import { Menu, } from "lucide-react";
 import type { RootState } from "services/store/store";
 import logo from "assets/logo/agukalogo.png";
 
@@ -11,13 +11,14 @@ interface DashboardNavbarProps {
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({ onOpenSidebar }) => {
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const firstChar = user
-    ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-    : "?";
+const firstChar = user?.name
+  ? user.name.charAt(0).toUpperCase()
+  : user?.email
+  ? user.email.charAt(0).toUpperCase()
+  : "?";
+
+const displayName = user?.name || user?.email || "Guest";
+
 
   return (
     <div className="w-full bg-[#003B42] flex justify-between font-poppins p-4 fixed z-10">
@@ -31,16 +32,13 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({ onOpenSidebar }) => {
         </div>
       </div>
       <div className="flex gap-10 items-center text-2xl text-white relative right-30">
-        <Bell className="size-10 absolute" />
-        <span className="bg-red-500 rounded-full text-sm h-5 w-5 items-center mb-13 ml-5 pl-1 pb-5">
-          2
-        </span>
-        <div className="font-poppins flex items-center">
-          <div className="bg-secondary-400 text-white rounded-full w-15 h-15 flex items-center justify-center text-2xl">
-            {firstChar}
-          </div>
-          <span className="text-sm">{user ? user.name : "Guest"}</span>
-        </div>
+      <div className="font-poppins flex items-center gap-2">
+  <div className="bg-secondary-400 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl">
+    {firstChar}
+  </div>
+  <span className="text-sm text-white">{displayName}</span>
+</div>
+
       </div>
     </div>
   );
