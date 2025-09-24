@@ -103,7 +103,7 @@ export default function MembersList() {
     return <div className="p-6 text-white">Loading user data...</div>;
 
   return (
-    <div className="p-15 bg-[#002D2D] min-h-screen text-white pt-60 font-poppins">
+    <div className="p-15 bg-[#003B42] min-h-screen text-white pt-60 font-poppins">
       <div className="flex gap-6 mb-6 justify-between">
         <div className="border border-secondary-400 w-100 h-50 text-center text-2xl font-bold pt-4 space-y-13 rounded-2xl">
           <h2>Total Members</h2>
@@ -155,10 +155,10 @@ export default function MembersList() {
       </div>
 
       {/* Users Table */}
-      <div className="overflow-auto max-h-[600px] rounded-lg shadow-md">
+      <div className="overflow-auto max-h-[600px] rounded-lg shadow-md ">
         <table className="w-full text-left border-collapse">
-          <thead className="bg-[#033535] text-gray-300 sticky top-0">
-            <tr>
+          <thead className="bg-[#003B42] text-gray-300 sticky top-0 ">
+            <tr className="text-2xl font-poppins font-bold text-white">
               <th className="p-3">Member</th>
               <th className="p-3">Status</th>
               <th className="p-3">Roles</th>
@@ -172,7 +172,7 @@ export default function MembersList() {
               <tr key={user.id} className="border-b border-gray-700">
                 <td className="p-3">
                   <div>
-                    <div className="font-semibold">{user.name}</div>
+                    <div className="font-semibold capitalize">{user.name}</div>
                     <div className="text-sm text-gray-400">{user.id}</div>
                   </div>
                 </td>
@@ -228,7 +228,7 @@ export default function MembersList() {
                   {/* Pause - Toggle Status */}
                   <button
                     onClick={() => toggleStatus(user)}
-                    className="text-blue-400 hover:text-blue-500"
+                    className="text-blue-400 hover:text-blue-500 "
                     disabled={updating}>
                     <Pause size={20} />
                   </button>

@@ -29,6 +29,8 @@ import MembersPage from "@components/dashboard/PresidentComponents/MembersPage";
 import ApprovalPage from "@components/dashboard/PresidentComponents/ApprovalPage";
 import UserProfile from "@components/dashboard/PresidentComponents/UserProfile";
 import MembersList from "@components/dashboard/secretary/MembersList";
+import AnnouncementNotice from "@features/dashboard/AnnouncementNotice";
+import AttendanceReport from "@components/dashboard/secretary/AttendenceReport";
 
 const AppRoutes = () => {
   return (
@@ -78,6 +80,9 @@ const AppRoutes = () => {
           element={<SecretaryDashboardLayout />}>
           <Route index element={<SecretaryDashboard />} />
           <Route path="members" element={<MembersList />} />
+          <Route path="AnnouncementNotice" element={<AnnouncementNotice />} />
+          <Route path="AttendanceReport" element={<AttendanceReport />} />
+          <Route path="userprofile" element={<UserProfile />} />
         </Route>
       </Routes>
     </div>
