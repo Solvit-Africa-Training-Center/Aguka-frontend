@@ -37,7 +37,10 @@ const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
       <div className="flex gap-3 mt-2 mb-5">
         <button
           onClick={onView}
-          className="flex items-center gap-2 bg-gradient-to-b font-bold from-[#B0C2C4] to-[#545D5E] text-white px-4 py-2 rounded-lg hover:opacity-90">
+          className="flex items-center gap-2 bg-gradient-to-b from-[#B0C2C4] to-[#545D5E] 
+             text-white px-4 py-2 rounded-lg font-bold
+             hover:from-[#C8D6D8] hover:to-[#6B7576] hover:scale-105 
+             transition-all duration-200">
           <Eye className="text-black size-8" /> View Detail
         </button>
 
