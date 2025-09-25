@@ -35,6 +35,10 @@ import AttendanceReport from "@components/dashboard/secretary/AttendenceReport";
 import ScheduleMeetingForm from "@components/dashboard/secretary/ScheduleMeetingForm";
 import PolicyForm from "@components/dashboard/TreasurerComponents/PolicyForm";
 import TreasurerDashboard from "@features/dashboard/TreasurerDashboard";
+import TreasurerDashboardLayout from "@components/dashboardLayout/TreasurerDashboardLayout";
+import ReportsPage from "@pages/ReportPage";
+import LoanApprovalPage from "@pages/LoanApproalPage";
+import AllowContributionPage from "@pages/AllowContributePage";
 
 const AppRoutes = () => {
   return (
@@ -58,10 +62,7 @@ const AppRoutes = () => {
         <Route path="/loanform" element={<LoanForm />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/loanpayment" element={<LoanPayment />} />
-        <Route path="/policyform" element={<PolicyForm/>}/>
-
-
-        <Route path="/treasurerdashboard" element={<TreasurerDashboard />}/>
+        <Route path="/policyform" element={<PolicyForm />} />
 
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
           <Route index element={<PresidentDashboard />} /> {/* /president */}
@@ -71,12 +72,11 @@ const AppRoutes = () => {
           <Route path="managemembers" element={<MembersPage />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="userprofile" element={<UserProfile />} />
-
         </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
           <Route index element={<MemberDashboard />} />
-           <Route path="memberdashboard" element={<MemberDashboard />}/>
+          <Route path="memberdashboard" element={<MemberDashboard />} />
           <Route path="contribution" element={<ContributionForm />} />
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanprofile" element={<LoanProfile />} />
@@ -95,6 +95,16 @@ const AppRoutes = () => {
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="ScheduleMeetingForm" element={<ScheduleMeetingForm />} />
           <Route path="memberaccount" element={<MemberDashboard />} />
+        </Route>
+
+        <Route
+          path="/treasurerdashboard"
+          element={<TreasurerDashboardLayout />}>
+          <Route index element={<TreasurerDashboard />} />
+          <Route path="report" element={<ReportsPage />} />
+          <Route path="userprofile" element={<UserProfile />} />
+          <Route path="loanapproval" element={<LoanApprovalPage />} />
+          <Route path="allowcontribution" element={<AllowContributionPage />} />
         </Route>
       </Routes>
     </div>
