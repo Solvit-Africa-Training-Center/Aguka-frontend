@@ -61,7 +61,7 @@ const TreasurerAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Document&Report
         </Link>
         <Link
-          to="/secretarydashboard/loanapproval"
+          to="/treasurerdashboard/loanapproval"
           className="flex items-center gap-3 p-3  rounded-lg hover:bg-gray-100 text-gray-700">
           <HiOutlineSpeakerphone size={25} />
           Loan Approval

@@ -1,21 +1,25 @@
-// ✅ components/dashboard/reports/ReportTable.tsx
 import React from "react";
 import ReportRow from "./ReportRow";
 
-const reports = [
-  { date: "2025-01-14", member: "Alice Johnson", action: "Withdrawal", amount: "Rwf 20,000", status: "Active" },
-  { date: "2025-01-24", member: "Marie Mukesh", action: "Deposit", amount: "Rwf 20,000", status: "Active" },
-  { date: "2025-01-14", member: "Alice Johnson", action: "Deposit", amount: "Rwf 20,000", status: "Active" },
-  // ... add more rows
-];
+interface Report {
+  date: string;
+  member: string;
+  action: string;
+  amount: string;
+  status: string;
+}
 
-const ReportTable: React.FC = () => {
+interface Props {
+  reports: Report[];
+}
+
+const ReportTable: React.FC<Props> = ({ reports }) => {
   return (
-    <div className="border border-gray-400 rounded-lg p-6">
-      <h2 className="text-xl font-bold text-white mb-4">Detailed Daily Report</h2>
+    <div className="border border-gray-400 rounded-lg p-6 font-poppins">
+      <h2 className="text-2xl font-bold text-white mb-10">Detailed Report</h2>
       <table className="w-full text-left">
         <thead>
-          <tr className="text-white border-b border-gray-500">
+          <tr className="text-white  text-3xl ">
             <th className="px-4 py-2">Date</th>
             <th className="px-4 py-2">Member</th>
             <th className="px-4 py-2">Action</th>
@@ -24,9 +28,15 @@ const ReportTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {reports.map((r, i) => (
-            <ReportRow key={i} {...r} />
-          ))}
+          {reports.length > 0 ? (
+            reports.map((r, i) => <ReportRow key={i} {...r} />)
+          ) : (
+            <tr>
+              <td colSpan={5} className="text-center text-gray-300 py-4">
+                No reports found
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

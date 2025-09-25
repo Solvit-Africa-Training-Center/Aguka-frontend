@@ -20,7 +20,7 @@ const AllowContributionPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#002f34] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#003B42] space-y-10 flex items-center justify-center p-4">
       <ActionPromptCard
         title="Allow Everyone to"
         highlightedText="Contribute"

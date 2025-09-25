@@ -2,7 +2,7 @@ import LoanApprovalList from "@components/dashboard/TreasurerComponents/LoanAppr
 
 const LoanApprovalPage: React.FC = () => {
   return (
-    <div className="p-10  min-h-screen text-white font-poppins">
+    <div className="p-10 bg-[#003B42] min-h-screen text-white font-poppins pt-50">
       <LoanApprovalList />
     </div>
   );

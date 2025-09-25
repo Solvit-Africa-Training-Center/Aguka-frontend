@@ -11,12 +11,12 @@ interface ReportRowProps {
 
 const ReportRow: React.FC<ReportRowProps> = ({ date, member, action, amount, status }) => {
   return (
-    <tr className="border-b border-gray-700 text-white">
-      <td className="px-4 py-2">{date}</td>
-      <td className="px-4 py-2">{member}</td>
-      <td className="px-4 py-2">{action}</td>
-      <td className="px-4 py-2">{amount}</td>
-      <td className="px-4 py-2 text-green-500">{status}</td>
+    <tr className=" text-white font-poppins">
+      <td className="px-4 py-3">{date}</td>
+      <td className="px-4 py-3">{member}</td>
+      <td className="px-4 py-3">{action}</td>
+      <td className="px-4 py-3">{amount}</td>
+      <td className="px-4 py-3 text-green-500">{status}</td>
     </tr>
   );
 };
