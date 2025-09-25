@@ -49,31 +49,37 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Dashboard
         </Link>
         <Link
+          to="/member"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <LayoutDashboard size={20} />
+          my account
+        </Link>
+        <Link
           to="members"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <TbUsersGroup size={20} />
           members
         </Link>
         <Link
-          to="/payment"
+          to="/secretarydashboard/ScheduleMeetingForm"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
           meetings
         </Link>
         <Link
-          to="/loanprofile"
+          to="/secretarydashboard/userprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <UserPen size={20} />
           User Profile
         </Link>
         <Link
-          to="/loanprofile"
+          to="/secretarydashboard/AttendanceReport"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <LuNotebook size={20} />
           Document&Report
         </Link>
         <Link
-          to="/loanprofile"
+          to="/secretarydashboard/AnnouncementNotice"
           className="flex items-center gap-3 p-3  rounded-lg hover:bg-gray-100 text-gray-700">
           <HiOutlineSpeakerphone size={25} />
           Announcement&Notice

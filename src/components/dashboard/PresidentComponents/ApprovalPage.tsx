@@ -1,69 +1,91 @@
 import React, { useState } from "react";
 import ApprovalCard from "./ApprovalCard";
-import { useGetLoansByStatusQuery } from "@services/api/loanApi";
-import { useGetUsersQuery, useApproveUserMutation } from "@services/api/authApi";
-import { useGetGroupContributionsQuery, useApproveContributionMutation } from "@services/api/ContributionApi";
+import { useGetLoansByStatusQuery, useApproveLoanMutation, useRejectLoanMutation } from "@services/api/loanApi";
+import { useGetUsersQuery, useApproveUserMutation, useDeleteUserMutation } from "@services/api/authApi";
 import type { Loan } from "types/Loan";
 import type { User } from "types/User";
-import type { Contribution } from "types/Contribution";
 import { useSelector } from "react-redux";
 import type { RootState } from "@services/store/store";
 
 const ApprovalPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"loans" | "users" | "contributions">("loans");
+  const [activeTab, setActiveTab] = useState<"loans" | "users">("loans");
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
 
   // Loans
-  const { data: loans, isLoading: loadingLoans, isError: errorLoans } =
-    useGetLoansByStatusQuery("pending");
+  const { data: loans, isLoading: loadingLoans, isError: errorLoans, refetch: refetchLoans } = useGetLoansByStatusQuery("pending");
+  const [approveLoan] = useApproveLoanMutation();
+  const [rejectLoan] = useRejectLoanMutation();
 
   // Users
-  const { data: users, isLoading: loadingUsers, isError: errorUsers } =
-    useGetUsersQuery();
+  const { data: users, isLoading: loadingUsers, isError: errorUsers, refetch: refetchUsers } = useGetUsersQuery();
   const [approveUser] = useApproveUserMutation();
-  const pendingUsers =
-    users?.data?.filter(
-      (u: User) => !u.isApproved && u.groupId === loggedInUser?.groupId
-    ) || [];
+  const [rejectUser] = useDeleteUserMutation();
 
-  // Contributions
-const { data: contributions, isLoading, isError } = useGetGroupContributionsQuery(loggedInUser?.groupId || "");
-console.log("token:", localStorage.getItem("token"));
-const loadingContributions = isLoading;
-const errorContributions = isError;
-const [approveContribution] = useApproveContributionMutation();
+  // Filter loans for logged-in user's group
+  const loanList = Array.isArray(loans)
+    ? loans
+    : loans && typeof loans === "object" && "data" in loans
+    ? (loans as { data: Loan[] }).data
+    : [];
 
-const pendingContributions = contributions || [];
+  const groupLoans = loggedInUser && users?.data
+    ? loanList.filter((loan: Loan) => {
+        const loanUser = users.data.find((u: User) => u.id === loan.userId);
+        return loanUser?.groupId === loggedInUser.groupId && loanUser?.isApproved;
+      })
+    : [];
 
-  const loanList =
-    Array.isArray(loans)
-      ? loans
-      : loans && typeof loans === "object" && "data" in loans
-      ? (loans as { data: Loan[] }).data
-      : [];
+  // Filter users for logged-in user's group
+  const pendingUsers = users?.data?.filter(
+    (u: User) => !u.isApproved && u.groupId === loggedInUser?.groupId
+  ) || [];
 
-  const groupLoans =
-    loggedInUser && users?.data
-      ? loanList.filter((loan: Loan) => {
-          const loanUser = users.data.find((u: User) => u.id === loan.userId);
-          return loanUser?.groupId === loggedInUser.groupId && loanUser?.isApproved;
-        })
-      : [];
+  // Handlers for Loans
+  const handleApproveLoan = async (loanId: string) => {
+    try {
+      await approveLoan(loanId).unwrap();
+      alert("Loan approved successfully!");
+      refetchLoans();
+    } catch (err) {
+      console.error("Failed to approve loan:", err);
+      alert("Failed to approve loan.");
+    }
+  };
 
-  // Approve / Reject handlers
-  const handleApproveContribution = async (contribution: Contribution) => {
-  try {
-    await approveContribution(contribution.id).unwrap();
-    console.log("Contribution approved:", contribution.id);
-  } catch (err) {
-    console.error("Failed to approve contribution:", contribution.id, err);
-  }
-};
+  const handleRejectLoan = async (loanId: string) => {
+    try {
+      await rejectLoan(loanId).unwrap();
+      alert("Loan rejected successfully!");
+      refetchLoans();
+    } catch (err) {
+      console.error("Failed to reject loan:", err);
+      alert("Failed to reject loan.");
+    }
+  };
 
-const handleRejectContribution = (contribution: Contribution) => {
-  console.log("Reject contribution:", contribution.id);
-  // Optional: implement a backend reject if your API supports it
-};
+  // Handlers for Users
+  const handleApproveUser = async (userId: string) => {
+    try {
+      await approveUser(userId).unwrap();
+      alert("User approved successfully!");
+      refetchUsers();
+    } catch (err) {
+      console.error("Failed to approve user:", err);
+      alert("Failed to approve user.");
+    }
+  };
+
+  const handleRejectUser = async (userId: string) => {
+    try {
+      
+      await rejectUser(userId).unwrap();
+      alert("User rejected successfully!");
+      refetchUsers();
+    } catch (err) {
+      console.error("Failed to reject user:", err);
+      alert("Failed to reject user.");
+    }
+  };
 
   return (
     <div className="min-h-screen p-6 bg-[#002F35] flex justify-center rounded-lg shadow-lg overflow-hidden font-poppins">
@@ -86,12 +108,6 @@ const handleRejectContribution = (contribution: Contribution) => {
           >
             User Approvals
           </button>
-          <button
-            className={`px-4 py-2 rounded ${activeTab === "contributions" ? "bg-yellow-500 text-black" : "bg-gray-700 text-white"}`}
-            onClick={() => setActiveTab("contributions")}
-          >
-            Contribution Approvals
-          </button>
         </div>
 
         {/* Loan approvals */}
@@ -111,6 +127,8 @@ const handleRejectContribution = (contribution: Contribution) => {
                     type={`Loan request of ${loan.amount.toLocaleString()} Rwf for ${loan.durationMonths} months`}
                     amount={loan.amount.toLocaleString()}
                     time={new Date(loan.createdAt).toLocaleString()}
+                    onApprove={() => handleApproveLoan(loan.id)}
+                    onReject={() => handleRejectLoan(loan.id)}
                   />
                 );
               })
@@ -134,8 +152,8 @@ const handleRejectContribution = (contribution: Contribution) => {
                   name={user.name}
                   type={`User registration request for role: ${user.role}`}
                   time={new Date(user.createdAt).toLocaleString()}
-                  onApprove={() => approveUser(user.id)}
-                  onReject={() => console.log("Reject user", user.id)}
+                  onApprove={() => handleApproveUser(user.id)}
+                  onReject={() => handleRejectUser(user.id)}
                 />
               ))
             ) : (
@@ -143,34 +161,6 @@ const handleRejectContribution = (contribution: Contribution) => {
             )}
           </>
         )}
-
-      {/* Contribution approvals */}
-{activeTab === "contributions" && (
-  <>
-    {loadingContributions ? (
-      <p className="text-white">Loading contributions...</p>
-    ) : errorContributions ? (
-      <p className="text-red-500">Error loading contributions.</p>
-    ) : pendingContributions.length > 0 ? (
-      pendingContributions.map((contribution: Contribution) => {
-        const contributionUser = users?.data.find((u: User) => u.id === contribution.userId);
-        return (
-          <ApprovalCard
-            key={contribution.id}
-            name={contributionUser?.name || "Unknown"}
-            type={`Contribution of ${contribution.amount.toLocaleString()} Rwf`}
-            amount={contribution.amount.toLocaleString()}
-            time={new Date(contribution.contributionDate).toLocaleString()}
-            onApprove={() => handleApproveContribution(contribution)}
-            onReject={() => handleRejectContribution(contribution)}
-          />
-        );
-      })
-    ) : (
-      <p className="text-white p-4">No contributions in your group.</p>
-    )}
-  </>
-)}
       </div>
     </div>
   );

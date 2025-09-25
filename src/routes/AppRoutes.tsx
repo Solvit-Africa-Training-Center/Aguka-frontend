@@ -28,7 +28,12 @@ import Notifications from "@components/dashboard/PresidentComponents/Notificatio
 import MembersPage from "@components/dashboard/PresidentComponents/MembersPage";
 import ApprovalPage from "@components/dashboard/PresidentComponents/ApprovalPage";
 import UserProfile from "@components/dashboard/PresidentComponents/UserProfile";
-
+import MembersList from "@components/dashboard/secretary/MembersList";
+import AnnouncementNotice from "@features/dashboard/AnnouncementNotice";
+import AttendanceReport from "@components/dashboard/secretary/AttendenceReport";
+import ScheduleMeetingForm from "@components/dashboard/secretary/ScheduleMeetingForm";
+import PolicyForm from "@components/dashboard/TreasurerComponents/PolicyForm";
+import TreasurerDashboard from "@features/dashboard/TreasurerDashboard";
 
 const AppRoutes = () => {
   return (
@@ -52,33 +57,40 @@ const AppRoutes = () => {
         <Route path="/loanform" element={<LoanForm />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/loanpayment" element={<LoanPayment />} />
+        <Route path="/policyform" element={<PolicyForm/>}/>
+
+        <Route path="/treasurerdashboard" element={<TreasurerDashboard />}/>
 
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
-        <Route index element={<PresidentDashboard />} /> {/* /president */}
-        <Route path="presidentdashboard" element={<PresidentDashboard />} />
-        <Route path="loanprofile" element={<LoanProfile />} />
-        <Route path="approvals" element={<ApprovalPage />} />
-        <Route path="managemembers" element={<MembersPage />} />
-        <Route path="notifications" element={<Notifications />} />
-        <Route path="userprofile" element={<UserProfile/>} />
-        
-      </Route>
+          <Route index element={<PresidentDashboard />} /> {/* /president */}
+          <Route path="presidentdashboard" element={<PresidentDashboard />} />
+          <Route path="loanprofile" element={<LoanProfile />} />
+          <Route path="approvals" element={<ApprovalPage />} />
+          <Route path="managemembers" element={<MembersPage />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="userprofile" element={<UserProfile />} />
+        </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
           <Route index element={<MemberDashboard />} />
+           <Route path="memberdashboard" element={<MemberDashboard />}/>
           <Route path="contribution" element={<ContributionForm />} />
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="loanform" element={<LoanForm />} />
           <Route path="successcontribution" element={<SuccessContribution />} />
-          <Route path="userprofile" element={<UserProfile/>} />
+          <Route path="userprofile" element={<UserProfile />} />
         </Route>
 
         <Route
           path="/secretarydashboard"
           element={<SecretaryDashboardLayout />}>
           <Route index element={<SecretaryDashboard />} />
-          <Route path="managemembers" element={<MembersPage />} />
+          <Route path="members" element={<MembersList />} />
+          <Route path="AnnouncementNotice" element={<AnnouncementNotice />} />
+          <Route path="AttendanceReport" element={<AttendanceReport />} />
+          <Route path="userprofile" element={<UserProfile />} />
+          <Route path="ScheduleMeetingForm" element={<ScheduleMeetingForm />} />
         </Route>
       </Routes>
     </div>

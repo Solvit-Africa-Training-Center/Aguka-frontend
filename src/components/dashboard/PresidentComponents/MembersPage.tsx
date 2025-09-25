@@ -55,10 +55,15 @@ export default function MembersPage() {
   const toggleStatus = async (user: User) => {
     try {
       const newStatus = !user.isApproved;
-      const res = await updateUser({ id: user.id, isApproved: newStatus }).unwrap();
+      const res = await updateUser({
+        id: user.id,
+        isApproved: newStatus,
+      }).unwrap();
       console.log("Status updated:", res);
       setUsers((prev) =>
-        prev.map((u) => (u.id === user.id ? { ...u, isApproved: newStatus } : u))
+        prev.map((u) =>
+          u.id === user.id ? { ...u, isApproved: newStatus } : u
+        )
       );
     } catch (err) {
       console.error("Error updating status", err);
@@ -94,7 +99,7 @@ export default function MembersPage() {
     return <div className="p-6 text-white">Loading user data...</div>;
 
   return (
-    <div className="p-15 bg-[#002D2D] min-h-screen text-white">
+    <div className="p-15 bg-[#003B42] min-h-screen text-white">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Manage Members</h1>
         <button className="bg-[#F9A825] text-black font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
@@ -118,8 +123,7 @@ export default function MembersPage() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 rounded-lg bg-transparent border border-gray-400 text-white"
-        >
+          className="px-4 py-2 rounded-lg bg-transparent border border-gray-400 text-white">
           <option value="All">All status</option>
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
@@ -128,8 +132,7 @@ export default function MembersPage() {
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="px-4 py-2 rounded-lg bg-transparent border border-gray-400 text-white"
-        >
+          className="px-4 py-2 rounded-lg bg-transparent border border-gray-400 text-white">
           <option value="All">All roles</option>
           {roles.map((r) => (
             <option key={r} value={r}>
@@ -142,7 +145,7 @@ export default function MembersPage() {
       {/* Users Table */}
       <div className="overflow-auto max-h-[600px] rounded-lg shadow-md">
         <table className="w-full text-left border-collapse">
-          <thead className="bg-[#033535] text-gray-300 sticky top-0">
+          <thead className="text-gray-300 sticky top-0 ">
             <tr>
               <th className="p-3">Member</th>
               <th className="p-3">Status</th>
@@ -167,28 +170,32 @@ export default function MembersPage() {
                       user.isApproved
                         ? "bg-green-800 text-green-200"
                         : "bg-red-800 text-red-200"
-                    }`}
-                  >
+                    }`}>
                     {user.isApproved ? "Active" : "Inactive"}
                   </span>
                 </td>
                 <td className="p-3">
-                  <span className="bg-gray-700 px-2 py-1 rounded-lg text-sm">{user.role}</span>
+                  <span className="bg-gray-700 px-2 py-1 rounded-lg text-sm">
+                    {user.role}
+                  </span>
                 </td>
                 <td className="p-3">
                   <div className="text-sm">{user.email}</div>
                   <div className="text-sm">{user.phoneNumber}</div>
                 </td>
-                <td className="p-3">{new Date(user.createdAt).toLocaleDateString()}</td>
+                <td className="p-3">
+                  {new Date(user.createdAt).toLocaleDateString()}
+                </td>
                 <td className="p-3 relative flex gap-3">
                   {/* Crown - Role Editor */}
                   <div className="relative" ref={roleMenuRef}>
                     <button
                       onClick={() =>
-                        setEditingRoleId(editingRoleId === user.id ? null : user.id)
+                        setEditingRoleId(
+                          editingRoleId === user.id ? null : user.id
+                        )
                       }
-                      className="text-yellow-400 hover:text-yellow-500"
-                    >
+                      className="text-yellow-400 hover:text-yellow-500">
                       <Crown size={20} />
                     </button>
 
@@ -198,8 +205,7 @@ export default function MembersPage() {
                           <div
                             key={r}
                             onClick={() => changeRole(user, r)}
-                            className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-sm"
-                          >
+                            className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-sm">
                             {r}
                           </div>
                         ))}
@@ -211,8 +217,7 @@ export default function MembersPage() {
                   <button
                     onClick={() => toggleStatus(user)}
                     className="text-blue-400 hover:text-blue-500"
-                    disabled={updating}
-                  >
+                    disabled={updating}>
                     <Pause size={20} />
                   </button>
 
@@ -220,8 +225,7 @@ export default function MembersPage() {
                   <button
                     onClick={() => removeUser(user.id)}
                     className="text-red-400 hover:text-red-500"
-                    disabled={deleting}
-                  >
+                    disabled={deleting}>
                     <Trash2 size={20} />
                   </button>
                 </td>

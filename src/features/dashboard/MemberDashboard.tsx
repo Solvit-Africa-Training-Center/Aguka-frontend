@@ -47,10 +47,16 @@ const contributions = useMemo(
   );
 
   // Calculate total loans
-  const totalLoan = useMemo(
-    () => userLoans.reduce((sum, loan) => sum + loan.amount, 0),
-    [userLoans]
-  );
+// Calculate total loans including interest
+const totalLoan = useMemo(() => {
+  const DEFAULT_RATE = 0.05; // default monthly interest rate
+  return userLoans.reduce((sum, loan) => {
+    const duration = loan.durationMonths ?? 0;
+    const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
+    return sum + Math.floor(totalPayable); // ensure whole number
+  }, 0);
+}, [userLoans]);
+
 
   // Example line chart data
   const contributionData = [
@@ -70,6 +76,7 @@ const contributions = useMemo(
 
   return (
     <div className="w-full min-h-screen bg-[#00353B] font-poppins">
+      <div></div>
       <div className="p-10 grid grid-cols-2 w-full gap-10 pt-45">
         {/* Line Chart */}
         <div>
@@ -82,7 +89,9 @@ const contributions = useMemo(
             {/* Current Balance */}
             <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
               <div className="flex space-x-5">
-                <h2 className="capitalize text-xl font-bold">current balance</h2>
+                <h2 className="capitalize text-xl font-bold">
+                  current balance
+                </h2>
                 <Wallet className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
               </div>
               <span className="font-bold text-4xl text-center capitalize">
@@ -110,11 +119,11 @@ const contributions = useMemo(
               </div>
               <span>Total contributed this year</span>
             </div>
-
-            {/* Dividend Payout */}
-            <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-              <div className="flex space-x-5">
-                <h2 className="capitalize text-xl font-bold">dividend payout</h2>
+            <div className="w-70 h-80 border-0 border-[#F9A825] rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
+              <div className="flex space-x-5 ">
+                <h2 className="capitalize text-xl font-bold ">
+                  dividend payout
+                </h2>
                 <WalletMinimal className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
               </div>
               <span className="font-bold text-4xl text-center capitalize">rwf 5000</span>
@@ -124,25 +133,24 @@ const contributions = useMemo(
               <span>Next expected Payout</span>
             </div>
 
-            {/* Total Loan */}
-            <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-              <div className="flex space-x-5 justify-between">
-                <h2 className="capitalize text-xl font-bold">total loan</h2>
-                <CreditCard className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
-              </div>
-              <span className="font-bold text-4xl text-center capitalize">
-                rwf {totalLoan.toLocaleString()}
-              </span>
-              <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                dec 25
-              </span>
-              <span>pay your debt properly</span>
-            </div>
+         {/* Total Loan */}
+<div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
+  <div className="flex space-x-5 justify-between">
+    <h2 className="capitalize text-xl font-bold">total loan</h2>
+    <CreditCard className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+  </div>
+  <span className="font-bold text-4xl text-center capitalize">
+    rwf {totalLoan.toLocaleString()}
+  </span>
+  <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
+    dec 25
+  </span>
+  <span>pay your debt properly</span>
+</div>
+
           </div>
         </div>
-
-        {/* Other Components */}
-        <div className="w-230 font-poppins">
+        <div className="w-210 font-poppins">
           <RecentTransactions />
         </div>
 

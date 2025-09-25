@@ -3,26 +3,37 @@ import { useState } from "react";
 import { differenceInMonths } from "date-fns";
 import { useRequestLoanMutation } from "@services/api/loanApi";
 
+const DEFAULT_RATE = 0.05; // Default monthly interest rate
+
 export default function LoanForm() {
   const [amount, setAmount] = useState<number | "">("");
   const [totalPayable, setTotalPayable] = useState<number | "">("");
   const [endDate, setEndDate] = useState<string>("");
   const [durationMonths, setDurationMonths] = useState<number | null>(null);
 
-  const [requestLoan, { isLoading, data, error }] = useRequestLoanMutation();
+  const [requestLoan, { isLoading }] = useRequestLoanMutation();
 
-  // Handle loan amount change
+  // Calculate total payable based on default rate
+  const calculateTotal = (amt: number, months: number) => {
+    return Math.floor(amt + amt * DEFAULT_RATE * months); // always whole number
+  };
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    setAmount(value);
+    let value = Number(e.target.value);
+
     if (!isNaN(value) && value > 0) {
-      setTotalPayable(value + value * 0.05); // 5% interest
+      value = Math.floor(value); // force whole number
+      setAmount(value);
+
+      if (durationMonths) {
+        setTotalPayable(calculateTotal(value, durationMonths));
+      }
     } else {
+      setAmount("");
       setTotalPayable("");
     }
   };
 
-  // Handle date change and calculate duration in months
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pickedDate = new Date(e.target.value);
     const today = new Date();
@@ -31,22 +42,27 @@ export default function LoanForm() {
       const months = differenceInMonths(pickedDate, today);
       setDurationMonths(months);
       setEndDate(e.target.value);
+
+      if (amount) {
+        setTotalPayable(calculateTotal(Number(amount), months));
+      }
     } else {
       setDurationMonths(null);
       setEndDate("");
+      setTotalPayable("");
     }
   };
 
-  // Submit loan
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!amount || !durationMonths) return alert("Please fill all fields");
+    if (!amount || !durationMonths) {
+      return alert("Please fill all fields");
+    }
 
     try {
       await requestLoan({ amount: Number(amount), durationMonths }).unwrap();
       alert("Loan submitted successfully!");
-      // Optionally reset form
       setAmount("");
       setTotalPayable("");
       setEndDate("");
@@ -59,12 +75,10 @@ export default function LoanForm() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#003B42] p-4 font-poppins">
-      {/* Logo */}
       <div className="mb-6">
         <img src={logo} alt="aguka logo" className="w-50 h-50 rounded-full object-cover" />
       </div>
 
-      {/* Form Card */}
       <form
         className="bg-[#003B42] text-white p-8 rounded-3xl shadow-lg w-full max-w-2xl"
         onSubmit={handleSubmit}
@@ -74,7 +88,6 @@ export default function LoanForm() {
           <span className="text-[#F9A825] font-bold">Loan</span>
         </h2>
 
-        {/* Loan Amount */}
         <div className="mb-4">
           <label className="block text-xl mb-1">Loan Amount</label>
           <input
@@ -86,21 +99,22 @@ export default function LoanForm() {
           />
         </div>
 
-        {/* Total Payable */}
         <div className="mb-4">
           <label className="block text-xl mb-1">Total Payable</label>
           <input
             type="number"
             value={totalPayable}
             readOnly
-            placeholder="The money you will pay"
+            placeholder="Calculated automatically"
             className="w-full px-4 py-2 rounded-lg border-3 border-[#948E8E] bg-transparent placeholder-gray-400 text-white focus:outline-none"
           />
+          <p className="mt-2 text-yellow-400">
+            Using default interest rate: 5% per month
+          </p>
         </div>
 
-        {/* Loan End Date */}
         <div className="mb-6">
-          <label className="block text-xl mb-1">Duration Months</label>
+          <label className="block text-xl mb-1">Duration / End Date</label>
           <input
             type="date"
             value={endDate}
@@ -114,7 +128,6 @@ export default function LoanForm() {
           )}
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-[#F9A825] text-white text-xl font-bold py-3 rounded-lg shadow-md hover:opacity-90 transition"
@@ -122,10 +135,6 @@ export default function LoanForm() {
         >
           {isLoading ? "Submitting..." : "Submit"}
         </button>
-
-        {/* Success / Error messages */}
-        {data && <p className="mt-4 text-green-400">Loan Pending! ID: {data.id}</p>}
-        {error && <p className="mt-4 text-red-500">Error: {(error as any)?.data?.message || "Something went wrong"}</p>}
       </form>
     </div>
   );

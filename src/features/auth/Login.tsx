@@ -117,8 +117,8 @@ export default function Login() {
       const role = decoded.role || "user";
       const groupId = decoded.groupId;
 
-    const user = decoded; // store everything
-dispatch(setCredentials({ token: accessToken, role, user }));
+      const user = decoded; // store everything
+      dispatch(setCredentials({ token: accessToken, role, user }));
 
       setSuccess("Login successful!");
 
@@ -143,7 +143,7 @@ dispatch(setCredentials({ token: accessToken, role, user }));
       const groupId = decoded.groupId;
 
       const user = decoded; // instead of partial
-dispatch(setCredentials({ token, role, user }));
+      dispatch(setCredentials({ token, role, user }));
 
       if (!groupId) {
         navigate("/fillbeforeregister");

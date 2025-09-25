@@ -31,21 +31,18 @@ export const loanApi = apiSlice.injectEndpoints({
     }),
 
     
-    approveLoan: builder.mutation<Loan, string>({
+     approveLoan: builder.mutation<Loan, string>({ // string = loan id
       query: (id) => ({
         url: `/loans/${id}/approve`,
-        method: "PUT",
+        method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, id) => [{ type: "Loan", id }],
     }),
-
    
-    denyLoan: builder.mutation<Loan, string>({
+     rejectLoan: builder.mutation<Loan, string>({
       query: (id) => ({
-        url: `/loans/${id}/deny`,
-        method: "PUT",
+        url: `/loans/${id}/reject`,
+        method: "PATCH",
       }),
-      invalidatesTags: (_result, _error, id) => [{ type: "Loan", id }],
     }),
   }),
   overrideExisting: true,
@@ -57,5 +54,5 @@ export const {
   useGetLoanByIdQuery,
   useGetLoansByStatusQuery,
   useApproveLoanMutation,
-  useDenyLoanMutation,
+  useRejectLoanMutation,
 } = loanApi;

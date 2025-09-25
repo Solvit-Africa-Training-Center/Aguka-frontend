@@ -16,6 +16,7 @@ export const store = configureStore({
     loan: loanReducer,
     contributions: contributionReducer,
     email: emailReducer,
+    
   },
 
   middleware: (getDefaultMiddleware) =>
