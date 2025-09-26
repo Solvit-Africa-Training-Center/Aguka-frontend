@@ -108,9 +108,9 @@ export default function LoanForm() {
             placeholder="Calculated automatically"
             className="w-full px-4 py-2 rounded-lg border-3 border-[#948E8E] bg-transparent placeholder-gray-400 text-white focus:outline-none"
           />
-          <p className="mt-2 text-yellow-400">
+          {/* <p className="mt-2 text-yellow-400">
             Using default interest rate: 5% per month
-          </p>
+          </p> */}
         </div>
 
         <div className="mb-6">

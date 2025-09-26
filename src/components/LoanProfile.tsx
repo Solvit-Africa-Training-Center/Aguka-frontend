@@ -18,23 +18,27 @@ export default function LoanProfile() {
 
   const userLoans: Loan[] = loans.filter((loan) => loan.userId === userId);
 
-  // Total borrowed (original amounts)
-  const totalBorrowed = userLoans.reduce((sum, loan) => sum + loan.amount, 0);
+// Only approved loans should be considered
+const approvedLoans: Loan[] = userLoans.filter(
+  (loan) => loan.status?.toLowerCase() === "approved"
+);
 
-  // Current loan balance (subtracting repayments)
-  const currentLoanBalance = userLoans.reduce((sum, loan) => {
-    const DEFAULT_RATE = 0.05;
-    const duration = loan.durationMonths ?? 0;
-    const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
+const totalBorrowed = approvedLoans.reduce((sum, loan) => sum + loan.amount, 0);
 
-    const totalRepayments = repayments
-      .filter((r: Repayment) => r.loanId === loan.id)
-      .reduce((rSum, r) => rSum + r.amount, 0);
+const currentLoanBalance = approvedLoans.reduce((sum, loan) => {
+  const DEFAULT_RATE = 0.05;
+  const duration = loan.durationMonths ?? 0;
+  const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
 
-    const remainingBalance = totalPayable - totalRepayments;
+  const totalRepayments = repayments
+    .filter((r: Repayment) => r.loanId === loan.id)
+    .reduce((rSum, r) => rSum + r.amount, 0);
 
-    return sum + remainingBalance;
-  }, 0);
+  const remainingBalance = totalPayable - totalRepayments;
+
+  return sum + remainingBalance;
+}, 0);
+
 
   // Max loan amount and pending applications
   const maxLoanAmount = 800000;

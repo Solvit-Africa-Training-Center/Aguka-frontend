@@ -6,7 +6,6 @@ import { useGetRepaymentsQuery, useCreateRepaymentMutation } from "@services/api
 import { useSelector } from "react-redux";
 import type { RootState } from "@services/store/store";
 import type { Loan } from "types/Loan";
-import type { Repayment } from "types/Repayment";
 
 export default function LoanPayment() {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -14,21 +13,21 @@ export default function LoanPayment() {
   const { data: loans = [] } = useGetLoansQuery();
   const { data: repayments = [] } = useGetRepaymentsQuery();
 
-  // Filter approved loans with remaining balance > 0
+  // Filter approved loans
   const approvedLoans = loans.filter(
     (loan: Loan) =>
       loan.userId === user?.id &&
       loan.status.toLowerCase() === "approved"
   );
 
-  // Compute remaining balance dynamically
+  // Compute remaining balance
   const loansWithBalance = approvedLoans.map((loan: Loan) => {
     const DEFAULT_RATE = 0.05;
     const duration = loan.durationMonths ?? 0;
     const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
 
     const totalRepayments = repayments
-      .filter((r: Repayment) => r.loanId === loan.id)
+      .filter((r) => r.loanId === loan.id)
       .reduce((sum, r) => sum + r.amount, 0);
 
     return {
@@ -39,14 +38,16 @@ export default function LoanPayment() {
 
   const activeLoan = loansWithBalance[0];
 
+  // State
   const [amount, setAmount] = useState<number>(activeLoan?.remainingBalance || 0);
-  const today = new Date().toISOString().split("T")[0];
-  const [paymentDate] = useState<string>(today);
+  const [paymentDate, setPaymentDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
   const [paymentMethod, setPaymentMethod] = useState<string>("Bank Transfer");
 
   const [createRepayment, { isLoading }] = useCreateRepaymentMutation();
 
-  // Reset amount whenever activeLoan changes
+  // Reset amount when active loan changes
   useEffect(() => {
     setAmount(activeLoan?.remainingBalance || 0);
   }, [activeLoan]);
@@ -62,12 +63,17 @@ export default function LoanPayment() {
       return;
     }
 
+    if (!paymentDate) {
+      alert("Please select a payment date.");
+      return;
+    }
+
     try {
       await createRepayment({
         loanId: activeLoan.id,
         amount,
-        date: paymentDate,
         paymentMethod,
+       paymentDate: paymentDate, // now valid
       }).unwrap();
 
       alert("Payment submitted successfully!");
@@ -81,7 +87,11 @@ export default function LoanPayment() {
   return (
     <div className="min-h-screen bg-[#00353B] p-4 font-poppins relative">
       <div className="absolute top-20 left-20">
-        <img src={logo} alt="aguka logo" className="w-50 h-50 rounded-full object-cover" />
+        <img
+          src={logo}
+          alt="aguka logo"
+          className="w-50 h-50 rounded-full object-cover"
+        />
       </div>
 
       <div className="flex items-center justify-center min-h-screen">
@@ -127,7 +137,7 @@ export default function LoanPayment() {
               <input
                 type="date"
                 value={paymentDate}
-                readOnly
+                onChange={(e) => setPaymentDate(e.target.value)}
                 className="w-full bg-transparent text-white focus:outline-none"
               />
             </div>

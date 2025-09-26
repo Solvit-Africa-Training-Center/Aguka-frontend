@@ -21,7 +21,6 @@ export const apiSlice = createApi({
     "Contributions",
     "Policies",
 
-    // ✅ Add these for your new features
     "Dividends",
     "Repayment",
     "Announcements",

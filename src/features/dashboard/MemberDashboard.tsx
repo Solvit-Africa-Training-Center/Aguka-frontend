@@ -57,7 +57,7 @@ const MemberDashboard: React.FC = () => {
   // Total loan remaining after repayments
   const totalLoan = useMemo(() => {
     const DEFAULT_RATE = 0.05;
-    return userLoans.reduce((sum, loan) => {
+    return userLoans.filter((loan) => loan.status.toLowerCase() === "approved").reduce((sum, loan) => {
       const duration = loan.durationMonths ?? 0;
       const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
 
@@ -128,7 +128,7 @@ const MemberDashboard: React.FC = () => {
                 rwf {totalDividends.toLocaleString()}
               </span>
               <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                dec 28
+                sept 20
               </span>
               <span>Next expected Payout</span>
             </div>
@@ -143,7 +143,7 @@ const MemberDashboard: React.FC = () => {
                 rwf {totalLoan.toLocaleString()}
               </span>
               <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                dec 25
+                sept 20
               </span>
               <span>pay your debt properly</span>
             </div>
@@ -151,17 +151,21 @@ const MemberDashboard: React.FC = () => {
         </div>
 
         {/* Recent Transactions */}
-        <div className="w-210 font-poppins">
-          <RecentTransactions />
-        </div>
+  <div className="flex flex-col items-center gap-6 mt-10 font-poppins">
+  {/* Recent Transactions */}
+  <div className="w-full max-w-3xl">
+    <RecentTransactions />
+  </div>
 
-        {/* Community Feeds */}
-        <div className="font-poppins text-[#b2b2b2] mt-15 border border-b-0 overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg w-180 h-120 rounded-2xl p-4">
-          <h2 className="text-left ml-10 text-3xl capitalize p-2 text-[#F9A825] font-bold">
-            community feeds
-          </h2>
-          <CommunityFeed />
-        </div>
+  {/* Community Feeds */}
+  <div className="w-full max-w-3xl text-[#b2b2b2] border overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg h-[480px] rounded-2xl p-4">
+    <h2 className="text-left text-3xl capitalize p-2 text-[#F9A825] font-bold">
+      community feeds
+    </h2>
+    <CommunityFeed />
+  </div>
+</div>
+
       </div>
 
       {/* Footer */}

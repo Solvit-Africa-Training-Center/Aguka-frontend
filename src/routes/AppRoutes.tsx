@@ -19,7 +19,7 @@ import AdminDashboard from "@features/dashboard/AdminDashboard";
 import LoanPayment from "@components/LoanPayment";
 import LoanForm from "@components/LoanForm";
 import ContributionForm from "@components/ContributionForm";
-import SuccessContribution from "@components/SuccessContribution";
+//import SuccessContribution from "@components/SuccessContribution";
 import SecretaryDashboard from "@features/dashboard/SecretaryDashboard";
 import SecretaryDashboardLayout from "@components/dashboardLayout/SecretaryDashboardLayout";
 import MemberDashboardLayout from "@components/dashboardLayout/MemberDashboardLayout";
@@ -73,7 +73,9 @@ const AppRoutes = () => {
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanform" element={<LoanForm />} />
-          <Route path="success" element={<SuccessContribution />} />
+           <Route path="contribution" element={<ContributionForm />} />
+            <Route path="memberdashboard" element={<MemberDashboard />} />
+          {/* <Route path="success" element={<SuccessContribution />} /> */}
         </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
@@ -83,7 +85,7 @@ const AppRoutes = () => {
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="loanform" element={<LoanForm />} />
-          <Route path="successcontribution" element={<SuccessContribution />} />
+          {/* <Route path="successcontribution" element={<SuccessContribution />} /> */}
           <Route path="userprofile" element={<UserProfile />} />
         </Route>
 
