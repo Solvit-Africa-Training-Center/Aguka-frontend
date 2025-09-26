@@ -1,5 +1,5 @@
 // LineChartDashboard.tsx
-import React from "react";
+import React, { useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useGetContributionsByUserQuery } from "@services/api/ContributionApi";
 
 interface ChartData {
   month: string;
@@ -16,43 +17,73 @@ interface ChartData {
 }
 
 interface LineChartDashboardProps {
-  data: ChartData[];
   title?: string;
   subtitle?: string;
   lineColor?: string;
 }
 
-// Custom Y-axis tick component
 const CustomYAxisTick = ({ x, y, payload }: any) => (
   <text
-    x={x - 20} // ✅ move further left for padding
+    x={x - 20}
     y={y + 5}
     textAnchor="end"
-    fill="#fff" // white text
+    fill="#fff"
     fontSize={14}
-    fontWeight={500}>
+    fontWeight={500}
+  >
     {payload.value.toLocaleString()}
   </text>
 );
 
 const LineChartDashboard: React.FC<LineChartDashboardProps> = ({
-  data,
   title = "Contribution trends",
   subtitle = "Your monthly contribution over the past year",
   lineColor = "#fff",
 }) => {
+  const { data, isLoading, isError } = useGetContributionsByUserQuery();
+
+  // Aggregate contributions per month
+  const chartData: ChartData[] = useMemo(() => {
+    if (!data) return [];
+
+    const monthlyMap: Record<number, number> = {};
+
+    data.forEach((c) => {
+      const date = new Date(c.contributionDate);
+      const monthIndex = date.getMonth(); // 0 = Jan, 1 = Feb, ..., 11 = Dec
+      monthlyMap[monthIndex] = (monthlyMap[monthIndex] || 0) + c.amount;
+    });
+
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+
+    return months.map((m, i) => ({
+      month: m,
+      contribution: monthlyMap[i] || 0,
+    }));
+  }, [data]);
+
+  console.log("Chart data:", chartData); // ✅ debug
+
+  if (isLoading) return <p className="text-white">Loading chart...</p>;
+  if (isError) return <p className="text-red-500">Failed to load contributions</p>;
+
   return (
-    <div
-      className="w-200 h-180 p-4 rounded-lg"
-      tabIndex={-1} // prevents focus
-      style={{ outline: "none", WebkitTapHighlightColor: "transparent" }}>
+   <div
+  className="w-full h-150 p-4 rounded-lg" // increased height
+  tabIndex={-1}
+  style={{ outline: "none", WebkitTapHighlightColor: "transparent" }}
+>
+
       <h2 className="text-4xl font-bold text-white mb-1">{title}</h2>
       <p className="text-sm text-gray-200 mb-4">{subtitle}</p>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart
-          data={data}
+          data={chartData}
           margin={{ top: 10, right: 20, bottom: 5, left: 50 }}
-          style={{ outline: "none" }} // remove focus on LineChart SVG
+          style={{ outline: "none" }}
         >
           <CartesianGrid stroke="#ccc" strokeDasharray="1 3" />
           <XAxis
@@ -63,8 +94,7 @@ const LineChartDashboard: React.FC<LineChartDashboardProps> = ({
           <YAxis
             stroke="#fff"
             tick={<CustomYAxisTick />}
-            domain={[500, 300000]}
-            ticks={[500, 5000, 10000, 50000, 100000, 200000, 300000]}
+            domain={[0, "dataMax + 5000"]} // dynamic scaling
           />
           <Tooltip
             contentStyle={{
@@ -80,6 +110,7 @@ const LineChartDashboard: React.FC<LineChartDashboardProps> = ({
             dataKey="contribution"
             stroke={lineColor}
             strokeWidth={2}
+            dot={{ r: 4 }} // shows points
           />
         </LineChart>
       </ResponsiveContainer>

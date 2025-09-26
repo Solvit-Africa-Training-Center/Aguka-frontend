@@ -1,67 +1,64 @@
-// features/repayment/repaymentSlice.ts
-
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+// src/services/api/repaymentApi.ts
+import { apiSlice } from "./apiSlice"; // assuming you already have apiSlice set up
 import type { Repayment } from "types/Repayment";
 
-interface RepaymentState {
-  repayments: Repayment[];
-  selectedRepayment: Repayment | null;
-  loading: boolean;
-  error: string | null;
+export interface RepaymentCreate {
+  loanId: string;
+  amount: number;
+  date: string; // ISO date string
 }
 
-const initialState: RepaymentState = {
-  repayments: [],
-  selectedRepayment: null,
-  loading: false,
-  error: null,
-};
+export const repaymentApi = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    // Create repayment
+    createRepayment: builder.mutation<Repayment, RepaymentCreate>({
+      query: (repayment) => ({
+        url: "/repayments",
+        method: "POST",
+        body: repayment,
+      }),
+    }),
 
-const repaymentSlice = createSlice({
-  name: "repayments",
-  initialState,
-  reducers: {
-    setRepayments: (state, action: PayloadAction<Repayment[]>) => {
-      state.repayments = action.payload;
-    },
+    // Get all repayments
+    getRepayments: builder.query<Repayment[], void>({
+      query: () => "/repayments",
+    }),
 
-    addRepayment: (state, action: PayloadAction<Repayment>) => {
-      state.repayments.push(action.payload);
-    },
+    // Get repayment by ID
+    getRepaymentById: builder.query<Repayment, string>({
+      query: (id) => `/repayments/${id}`,
+    }),
 
-    updateRepaymentLocal: (state, action: PayloadAction<Repayment>) => {
-      const index = state.repayments.findIndex(r => r.id === action.payload.id);
-      if (index !== -1) {
-        state.repayments[index] = action.payload;
-      }
-    },
+    // Update repayment
+    updateRepayment: builder.mutation<Repayment, { id: string; data: Partial<Repayment> }>({
+      query: ({ id, data }) => ({
+        url: `/repayments/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
 
-    deleteRepaymentLocal: (state, action: PayloadAction<string>) => {
-      state.repayments = state.repayments.filter(r => r.id !== action.payload);
-    },
+    // Delete repayment
+    deleteRepayment: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/repayments/${id}`,
+        method: "DELETE",
+      }),
+    }),
 
-    selectRepayment: (state, action: PayloadAction<Repayment | null>) => {
-      state.selectedRepayment = action.payload;
-    },
-
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-
-    setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
-    },
-  },
+    // Get remaining balance for a loan
+    getLoanBalance: builder.query<{ balance: number }, string>({
+      query: (loanId) => `/repayments/loan/${loanId}/balance`,
+    }),
+  }),
+  overrideExisting: false,
 });
 
 export const {
-  setRepayments,
-  addRepayment,
-  updateRepaymentLocal,
-  deleteRepaymentLocal,
-  selectRepayment,
-  setLoading,
-  setError,
-} = repaymentSlice.actions;
-
-export default repaymentSlice.reducer;
+  useCreateRepaymentMutation,
+  useGetRepaymentsQuery,
+  useGetRepaymentByIdQuery,
+  useUpdateRepaymentMutation,
+  useDeleteRepaymentMutation,
+  useGetLoanBalanceQuery,
+} = repaymentApi;

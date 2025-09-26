@@ -23,7 +23,7 @@ export const apiSlice = createApi({
 
     // ✅ Add these for your new features
     "Dividends",
-    "Repayments",
+    "Repayment",
     "Announcements",
     "AdminOverview",
     "InactiveUsers",

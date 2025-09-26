@@ -51,7 +51,7 @@ const ScheduleMeetingForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#00333D] text-white p-6 rounded-md w-full h-screen font-poppins">
+    <div className="bg-[#00333D] text-white p-6 rounded-md w-full font-poppins">
       <div className="max-w-xl mx-auto pt-40">
         <h2 className="text-2xl font-bold mb-6 text-4xl">
           Schedule New Meeting

@@ -58,6 +58,7 @@ const AppRoutes = () => {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/loanpayment" element={<LoanPayment />} />
         <Route path="/policyform" element={<PolicyForm/>}/>
+        <Route path="/ScheduleMeetingForm" element={<ScheduleMeetingForm />} />
 
         <Route path="/treasurerdashboard" element={<TreasurerDashboard />}/>
 

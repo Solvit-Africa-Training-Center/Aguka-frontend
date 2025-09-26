@@ -5,7 +5,7 @@ import CommunityFeed from "@components/dashboard/member/CommunityFeed";
 import LineChartDashboard from "@components/dashboard/member/LineChartDashboard";
 import RecentTransactions from "@components/dashboard/member/RecentTransaction";
 import { Percent, Wallet, TrendingUp, WalletMinimal, CreditCard } from "lucide-react";
-import { useGetContributionsByUserQuery } from "services/api/ContributionApi";
+import { useGetContributionsByUserQuery } from "@services/api/ContributionApi";
 import type { Loan } from "types/Loan";
 import { useGetLoansQuery } from "services/api/loanApi";
 import type { Contribution } from "@models/Contribution";
@@ -45,7 +45,7 @@ const contributions = useMemo(
         .reduce((sum, c) => sum + c.amount, 0),
     [contributions]
   );
-
+ 
   // Calculate total loans
 // Calculate total loans including interest
 const totalLoan = useMemo(() => {
@@ -56,23 +56,10 @@ const totalLoan = useMemo(() => {
     return sum + Math.floor(totalPayable); // ensure whole number
   }, 0);
 }, [userLoans]);
-
-
-  // Example line chart data
-  const contributionData = [
-    { month: "Jan", contribution: 0 },
-    { month: "Feb", contribution: 30000 },
-    { month: "Mar", contribution: 3000 },
-    { month: "Apr", contribution: 4000 },
-    { month: "May", contribution: 50000 },
-    { month: "Jun", contribution: 50000 },
-    { month: "Jul", contribution: 90000 },
-    { month: "Aug", contribution: 120000 },
-    { month: "Sep", contribution: 200000 },
-    { month: "Oct", contribution: 190000 },
-    { month: "Nov", contribution: 200000 },
-    { month: "Dec", contribution: 265000 },
-  ];
+ const totalDividends = 5000;
+const currentBalance = useMemo(() => {
+  return totalContribution + totalDividends - totalLoan;
+}, [totalContribution, totalDividends, totalLoan]);
 
   return (
     <div className="w-full min-h-screen bg-[#00353B] font-poppins">
@@ -80,7 +67,7 @@ const totalLoan = useMemo(() => {
       <div className="p-10 grid grid-cols-2 w-full gap-10 pt-45">
         {/* Line Chart */}
         <div>
-          <LineChartDashboard data={contributionData} />
+          <LineChartDashboard />
         </div>
 
         {/* Dashboard Cards */}
@@ -95,7 +82,7 @@ const totalLoan = useMemo(() => {
                 <Wallet className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
               </div>
               <span className="font-bold text-4xl text-center capitalize">
-                rwf {totalContribution.toLocaleString()}
+                rwf {currentBalance.toLocaleString()}
               </span>
               <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
                 <span>+12.5</span>
@@ -126,8 +113,8 @@ const totalLoan = useMemo(() => {
                 </h2>
                 <WalletMinimal className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
               </div>
-              <span className="font-bold text-4xl text-center capitalize">rwf 5000</span>
-              <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
+             <span className="font-bold text-4xl text-center capitalize">rwf {totalDividends.toLocaleString()}</span>
+<span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
                 dec 28
               </span>
               <span>Next expected Payout</span>

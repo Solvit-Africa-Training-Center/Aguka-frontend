@@ -1,6 +1,6 @@
 // src/types/loan.ts
 
-export type LoanStatus = "pending" | "approved" | "denied" | "repaid";
+export type LoanStatus = "pending" | "approved" | "denied" | "paid";
 // extend with any other statuses your backend supports
 
 export interface Loan {
@@ -11,7 +11,8 @@ export interface Loan {
   status: LoanStatus;
   approvedBy?: string;   // optional, only if approved
   createdAt: string;     // ISO string
-  updatedAt: string;     // ISO string
+  updatedAt: string;  
+  remainingBalance: number;   // ISO string
 }
 
 // For requesting a loan

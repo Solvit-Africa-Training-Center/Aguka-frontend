@@ -88,9 +88,9 @@ const ApprovalPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-[#002F35] flex justify-center rounded-lg shadow-lg overflow-hidden font-poppins">
+    <div className="min-h-screen p-15 bg-[#002F35] flex justify-center rounded-lg shadow-lg overflow-hidden font-poppins">
       <div className="w-full max-w-6xl space-y-4">
-        <h3 className="text-2xl font-bold text-white p-4 border-b border-gray-600">
+        <h3 className="text-2xl font-bold text-[#F9A825] p-4 border-b border-gray-600">
           Approval & Decisions
         </h3>
 

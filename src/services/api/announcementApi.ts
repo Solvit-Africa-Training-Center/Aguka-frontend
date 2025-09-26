@@ -19,12 +19,12 @@ export const announcementApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Announcements"],
     }),
 
-    // Get paginated list
-    getAnnouncements: builder.query<Announcement[], { page: number; limit: number }>({
-      query: ({ page, limit }) => `/announcements?page=${page}&limit=${limit}`,
-      transformResponse: (response: { data: Announcement[] }) => response.data,
-      providesTags: ["Announcements"],
-    }),
+   // Get paginated list
+getAnnouncements: builder.query<Announcement[], { page: number; limit: number }>({
+  query: ({ page, limit }) => `/announcements?page=${page}&limit=${limit}`,
+  transformResponse: (response: { data: { items: Announcement[] } }) => response.data.items,
+  providesTags: ["Announcements"],
+}),
 
     // Get by ID
     getAnnouncementById: builder.query<Announcement, string>({

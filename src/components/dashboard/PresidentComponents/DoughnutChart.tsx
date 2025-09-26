@@ -1,14 +1,69 @@
+import React, { useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from "recharts";
-
-const data = [
-  { name: "Contributions", value: 400 },
-  { name: "Loan Repayments", value: 300 },
-  { name: "Meeting Attendance", value: 200 },
-];
+import { useSelector } from "react-redux";
+import type { RootState } from "@services/store/store";
+import type { User } from "@models/User";
+import type { Contribution } from "@models/Contribution";
+import type { Loan } from "types/Loan";
+import { useGetUsersQuery } from "@services/api/authApi";
+import { useGetGroupContributionsQuery } from "@services/api/ContributionApi";
+import { useGetLoansQuery } from "@services/api/loanApi";
 
 const COLORS = ["#006C77", "#F9A825", "#F4F4F4"];
 
-const DoughnutChart = () => {
+const DoughnutChart: React.FC = () => {
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const currentGroupId = currentUser?.groupId;
+
+  // Fetch users
+  const { data: usersData } = useGetUsersQuery();
+  const users: User[] = useMemo(() => {
+    if (!usersData) return [];
+    const arr = Array.isArray(usersData)
+      ? usersData
+      : Array.isArray((usersData as any).data)
+      ? (usersData as any).data
+      : [];
+    return arr.filter((u: User) => u.groupId === currentGroupId);
+  }, [usersData, currentGroupId]);
+
+  // Fetch contributions
+  const { data: contributionsData } = useGetGroupContributionsQuery(currentGroupId || "");
+  const contributions: Contribution[] = useMemo(() => {
+    if (!contributionsData) return [];
+    return Array.isArray(contributionsData)
+      ? contributionsData
+      : Array.isArray((contributionsData as any).data)
+      ? (contributionsData as any).data
+      : [];
+  }, [contributionsData]);
+
+  // Fetch loans
+  const { data: loansData } = useGetLoansQuery();
+  const loans: Loan[] = useMemo(() => {
+    if (!loansData) return [];
+    const allLoans = Array.isArray(loansData)
+      ? loansData
+      : Array.isArray((loansData as any)?.data)
+      ? (loansData as any).data
+      : [];
+    // Only include loans from users in this group
+    return allLoans.filter((l: Loan) => users.some((u) => u.id === l.userId));
+  }, [loansData, users]);
+
+  // Compute metrics
+  const totalContributions = contributions.reduce((sum, c) => sum + Number(c.amount), 0);
+  const totalLoanRepayments = loans
+    .filter((l) => l.status.toLowerCase() === "paid")
+    .reduce((sum, l) => sum + Number(l.amount), 0);
+  const totalAttendance = users.filter((u) => u.isApproved).length;
+
+  const data = [
+    { name: "Contributions", value: totalContributions },
+    { name: "Loan Repayments", value: totalLoanRepayments },
+    { name: "Meeting Attendance", value: totalAttendance },
+  ];
+
   const renderLegend = (props: any) => {
     const { payload } = props;
     return (
@@ -19,7 +74,7 @@ const DoughnutChart = () => {
               className="w-4 h-4 rounded-full"
               style={{ backgroundColor: entry.color }}
             />
-            <span className="text-white text-sm md:text-base">{entry.value}</span>
+            <span className="text-white text-sm md:text-base">{entry.value.toLocaleString()}</span>
           </div>
         ))}
       </div>
@@ -53,7 +108,7 @@ const DoughnutChart = () => {
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip formatter={(value: number, name: string) => [`${value}`, name]} />
+            <Tooltip formatter={(value: number, name: string) => [`${value.toLocaleString()}`, name]} />
             <Legend content={renderLegend} layout="vertical" verticalAlign="bottom" align="left" />
           </PieChart>
         </ResponsiveContainer>

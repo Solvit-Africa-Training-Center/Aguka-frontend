@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -8,38 +9,68 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useGetLoansByStatusQuery } from "@services/api/loanApi";
+import { useGetRepaymentsQuery } from "@services/api/repaymentApi"; // if you have a repayments API
 
-const data = [
-  { month: "Jan", Repayments: 50000, Disbursements: 30000 },
-  { month: "Feb", Repayments: 70000, Disbursements: 50000 },
-  { month: "Mar", Repayments: 60000, Disbursements: 40000 },
-  { month: "Apr", Repayments: 90000, Disbursements: 70000 },
-  { month: "May", Repayments: 80000, Disbursements: 60000 },
-  { month: "Jun", Repayments: 100000, Disbursements: 80000 },
-  { month: "Jul", Repayments: 90000, Disbursements: 70000 },
-  { month: "Aug", Repayments: 120000, Disbursements: 100000 },
-];
+const MyBarChart: React.FC = () => {
+  // Fetch approved loans
+  const { data: loansData = [] } = useGetLoansByStatusQuery("approved");
 
-const MyBarChart = () => {
+  // Fetch repayments
+  const { data: repaymentsData = [] } = useGetRepaymentsQuery();
+
+  // Transform data to monthly totals
+  const chartData = useMemo(() => {
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
+
+    // Initialize empty data for all months
+    const monthlyData = months.map((month) => ({
+      month,
+      Repayments: 0,
+      Disbursements: 0,
+    }));
+
+    // Sum disbursements by month
+    loansData.forEach((loan: any) => {
+      const date = new Date(loan.createdAt);
+      const monthIndex = date.getMonth();
+      const DEFAULT_RATE = 0.05;
+      const duration = loan.durationMonths ?? 0;
+      const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
+      monthlyData[monthIndex].Disbursements += totalPayable;
+    });
+
+    // Sum repayments by month
+    repaymentsData.forEach((repayment: any) => {
+      const date = new Date(repayment.date);
+      const monthIndex = date.getMonth();
+      monthlyData[monthIndex].Repayments += repayment.amount;
+    });
+
+    return monthlyData;
+  }, [loansData, repaymentsData]);
+
   return (
     <div>
       <h3 className="text-3xl text-[#F9A825] text-center mb-4 mt-5">Loan Activities</h3>
       <h4 className="text-xl text-center text-white mb-4">
-        Disbursement vs repayments
+        Disbursement vs Repayments
       </h4>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={350}>
         <BarChart
-          data={data}
+          data={chartData}
           margin={{ top: 10, right: 30, left: 20, bottom: 5 }}
           barGap={8}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
           <YAxis
-            tickFormatter={(value) => `${value / 1000}K`} // format Y-axis as K
+            tickFormatter={(value) => `${(value / 1000).toLocaleString()}K`}
           />
           <Tooltip
-            formatter={(value: number) => `${value / 1000}K`} // format tooltip
+            formatter={(value: number) => `${(value / 1000).toLocaleString()}K`}
           />
           <Legend />
           <Bar dataKey="Repayments" fill="#9E92FE" barSize={20} />
