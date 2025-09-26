@@ -107,6 +107,7 @@ const AppRoutes = () => {
           <Route path="allowcontribution" element={<AllowContributionPage />} />
           <Route path="policyform" element={<PolicyForm />} />
           <Route path="contribution" element={<ContributionForm />} />
+          <Route path="myaccount" element={<MemberDashboard />} />
         </Route>
       </Routes>
     </div>
