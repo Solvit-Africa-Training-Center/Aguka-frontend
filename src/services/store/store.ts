@@ -9,7 +9,7 @@ import contributionReducer from "@services/api/contributionSlice";
 import emailReducer from "@services/api/EmailSlice";
 import feedReducer from "@services/api/feedSlice";
 import { penaltyReducer } from "@services/api/penaltySlice";
-import repaymentReducer from "@services/api/repaymentApi";
+import repaymentReducer from "@services/api/repaymentSlice";
 import announcementReducer from "@services/api/announcementSlice";
 import dividendReducer from "@services/api/dividendSlice";
 import adminReducer from "@services/api/adminSlice";

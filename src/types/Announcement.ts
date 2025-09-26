@@ -9,6 +9,7 @@ export interface Announcement {
   agenda: string;
   createdAt: string;
   updatedAt: string;
+  groupId: string; // Add this line
 }
 
 export interface AnnouncementCreate {

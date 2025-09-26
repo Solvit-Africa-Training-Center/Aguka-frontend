@@ -7,6 +7,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
+import { FaMoneyCheck } from "react-icons/fa6";
 import { LuNotebook } from "react-icons/lu";
 import { TbUsersGroup } from "react-icons/tb";
 import logo from "assets/logo/agukalogo.png";
@@ -26,8 +27,9 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
+      onMouseLeave={onClose}
       className={`fixed top-0 left-0 h-full w-68 bg-white shadow-lg transform transition-transform duration-300 z-50
-      ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+  ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
       <div className="grid items-center p-4 border-b">
         <button
           onClick={onClose}
@@ -49,13 +51,19 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Dashboard
         </Link>
         <Link
-          to="/member"
+          to="/secretarydashboard/member"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <LayoutDashboard size={20} />
           my account
         </Link>
         <Link
-          to="members"
+          to="/secretarydashboard/contribution"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <FaMoneyCheck size={20} />
+          pay Contribution
+        </Link>
+        <Link
+          to="/secretarydashboard/members"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <TbUsersGroup size={20} />
           members

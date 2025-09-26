@@ -1,16 +1,31 @@
+// export interface Feed {
+//   id: string;
+//   title: string;
+//   message: string;
+//   likes: number;
+//   createdAt: string; // server timestamp
+//   updatedAt: string;
+//   userName: string; // add the author's name
+//   groupId: string;  // add group id
+//   comments?: Comment[];
+// }
+
 export interface Feed {
   id: string;
-  title: string;
-  content: string;
-  likes: number;
+  message: string;      // your post content
+  authorId: string;
+  groupId: string;
   createdAt: string;
   updatedAt: string;
-  // add other fields as necessary
+  author: { id: string; name: string; email: string };
+  comments: Comment[];
+  likes: any[];
 }
 
+
 export interface FeedCreate {
-  title: string;
-  content: string;
+  message: string;       // send this, not "content" or "title"
+  //groupId: string;
 }
 
 export interface FeedUpdate {
@@ -20,8 +35,12 @@ export interface FeedUpdate {
 
 export interface Comment {
   id: string;
-  content: string;
-  author: string;
+  message: string;
+  author: {
+    id: string;
+    name: string;
+    email: string;
+  };
   createdAt: string;
   updatedAt: string;
   feedId: string;

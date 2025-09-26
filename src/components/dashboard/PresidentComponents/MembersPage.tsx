@@ -1,6 +1,7 @@
 // MembersPage.tsx
 import { useState, useEffect, useRef } from "react";
-import { Crown, Pause, Trash2, Plus, Search } from "lucide-react";
+import { Crown, Pause, Trash2, Search } from "lucide-react";
+import { Download } from "lucide-react";
 import {
   useGetUsersQuery,
   useUpdateUserMutation,
@@ -41,15 +42,42 @@ export default function MembersPage() {
     .filter((u) => currentGroupId && u.groupId === currentGroupId)
     .filter((user) => {
       const status = user.isApproved ? "Active" : "Inactive";
-      const matchesSearch =
-        user.name.toLowerCase().includes(search.toLowerCase()) ||
-        user.email.toLowerCase().includes(search.toLowerCase()) ||
-        user.phoneNumber.includes(search) ||
-        user.id.includes(search);
+    const matchesSearch =
+  (user.name?.toLowerCase().includes(search.toLowerCase()) ?? false) ||
+  (user.email?.toLowerCase().includes(search.toLowerCase()) ?? false) ||
+  (user.phoneNumber?.toString().includes(search) ?? false) ||
+  (user.id?.toString().includes(search) ?? false);
+
       const matchesStatus = statusFilter === "All" || status === statusFilter;
       const matchesRole = roleFilter === "All" || user.role === roleFilter;
       return matchesSearch && matchesStatus && matchesRole;
     });
+const exportMembers = () => {
+  if (filteredUsers.length === 0) return;
+
+  const headers = ["ID", "Name", "Email", "Phone", "Role", "Status", "Joined Date"];
+  const rows = filteredUsers.map(u => [
+    u.id,
+    u.name,
+    u.email,
+    u.phoneNumber,
+    u.role,
+    u.isApproved ? "Active" : "Inactive",
+    new Date(u.createdAt).toLocaleDateString()
+  ]);
+
+  const csvContent =
+    "data:text/csv;charset=utf-8," +
+    [headers, ...rows].map(e => e.join(",")).join("\n");
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "members_list.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   // Toggle user status (Active / Inactive)
   const toggleStatus = async (user: User) => {
@@ -99,12 +127,12 @@ export default function MembersPage() {
     return <div className="p-6 text-white">Loading user data...</div>;
 
   return (
-    <div className="p-15 bg-[#003B42] min-h-screen text-white">
+    <div className="p-15 bg-[#003B42] min-h-screen text-white font-poppins">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Manage Members</h1>
-        <button className="bg-[#F9A825] text-black font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
+        {/* <button className="bg-[#F9A825] text-black font-semibold px-4 py-2 rounded-lg flex items-center gap-2">
           <Plus size={18} /> Add Member
-        </button>
+        </button> */}
       </div>
 
       {/* Search + Filters */}
@@ -145,7 +173,7 @@ export default function MembersPage() {
       {/* Users Table */}
       <div className="overflow-auto max-h-[600px] rounded-lg shadow-md">
         <table className="w-full text-left border-collapse">
-          <thead className="text-gray-300 sticky top-0 ">
+          <thead className="text-[#FFFFFF] text-xl font-bold sticky top-0 ">
             <tr>
               <th className="p-3">Member</th>
               <th className="p-3">Status</th>
@@ -168,18 +196,18 @@ export default function MembersPage() {
                   <span
                     className={`px-2 py-1 rounded-lg text-sm ${
                       user.isApproved
-                        ? "bg-green-800 text-green-200"
-                        : "bg-red-800 text-red-200"
+                        ? "bg-[#C5E2C6] text-[#3C9040]"
+                        : "bg-[#CE3330] text-[#000000]"
                     }`}>
                     {user.isApproved ? "Active" : "Inactive"}
                   </span>
                 </td>
                 <td className="p-3">
-                  <span className="bg-gray-700 px-2 py-1 rounded-lg text-sm">
+                  <span className="bg-[#C3C3C3] text-[#000000] px-2 py-1 rounded-lg text-sm">
                     {user.role}
                   </span>
                 </td>
-                <td className="p-3">
+                <td className="p-3 text-white">
                   <div className="text-sm">{user.email}</div>
                   <div className="text-sm">{user.phoneNumber}</div>
                 </td>
@@ -242,6 +270,17 @@ export default function MembersPage() {
           </tbody>
         </table>
       </div>
+<div className="mt-6 flex justify-center">
+  <button
+    onClick={exportMembers}
+    className="text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 bg-[#003B42] hover:bg-[#004d52] transition"
+  >
+    <Download size={25} className="text-[#E09721]" />
+    <span className="text-xl">Export Members</span>
+  </button>
+</div>
+
+
     </div>
   );
 }

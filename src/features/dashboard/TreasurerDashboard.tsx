@@ -28,7 +28,6 @@ const TreasurerDashboard: React.FC = () => {
         />
       </div>
 
-      {/* Transactions + Community Feed */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <TransactionList />
         <div className="font-poppins text-[#b2b2b2] mt-17 border border-b-0 overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg w-180 h-120 rounded-2xl p-4">

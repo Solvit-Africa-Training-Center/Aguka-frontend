@@ -13,6 +13,7 @@ export interface User {
   email: string;
   password?: string; // optional if your backend doesn't send it
   phoneNumber: string; // add this
+  location: string; // add this
   role: string;
   groupId?: string | null;
   isApproved: boolean; // add this

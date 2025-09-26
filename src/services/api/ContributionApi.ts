@@ -26,14 +26,19 @@ export const contributionApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Contributions"],
     }),
 
-   getContributionsByUser: builder.query<Contribution[], void>({
-  query: () => "/contributions/me",
-  transformResponse: (response: { data: Contribution[] }) => response.data, // <-- extract array
-  providesTags: ["Contributions"],
-}),
+    getContributionsByUser: builder.query<Contribution[], void>({
+      query: () => "/contributions/me",
+      transformResponse: (response: { data: Contribution[] }) => response.data,
+      providesTags: ["Contributions"],
+    }),
 
-    getTodayContribution: builder.query<Contribution[], void>({
-      query: () => "/contributions/today",
+    getAllContributionsByUser: builder.query<Contribution[], string>({
+      query: (userId) => `/contributions/${userId}/all`,
+      providesTags: ["Contributions"],
+    }),
+
+    getTodayContributionByUser: builder.query<Contribution[], string>({
+      query: (userId) => `/contributions/${userId}`,
       providesTags: ["Contributions"],
     }),
 
@@ -57,19 +62,9 @@ export const contributionApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Contributions"],
     }),
 
-   getGroupContributions: builder.query<Contribution[], string>({
-  query: (groupId) => `/contributions/${groupId}/all`, 
-  providesTags: ["Contributions"],
-}),
-
-
-    // ✅ New approve contribution endpoint (POST)
-    approveContribution: builder.mutation<Contribution, string>({
-      query: (contributionId) => ({
-        url: `/contributions/${contributionId}/approve`,
-        method: "POST",
-      }),
-      invalidatesTags: ["Contributions"],
+    getGroupContributionsToday: builder.query<Contribution[], string>({
+      query: (groupId) => `/contributions/${groupId}/today`,
+      providesTags: ["Contributions"],
     }),
   }),
   overrideExisting: true,
@@ -77,11 +72,11 @@ export const contributionApi = apiSlice.injectEndpoints({
 
 export const {
   useCreateContributionMutation,
+  useCreateContributionMeMutation,
   useGetContributionsByUserQuery,
-  useGetTodayContributionQuery,
+  useGetAllContributionsByUserQuery,
+  useGetTodayContributionByUserQuery,
   useUpdateContributionMutation,
   useDeleteContributionMutation,
-  useCreateContributionMeMutation,
-  useGetGroupContributionsQuery,
-  useApproveContributionMutation, 
+  useGetGroupContributionsTodayQuery,
 } = contributionApi;

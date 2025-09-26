@@ -3,6 +3,7 @@ import { X, LayoutDashboard, User, UserPen, LogOut } from "lucide-react";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { LuNotebook } from "react-icons/lu";
 import { TbUsersGroup } from "react-icons/tb";
+import { FaMoneyCheck } from "react-icons/fa6";
 import logo from "assets/logo/agukalogo.png";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -48,6 +49,12 @@ const TreasurerAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <TbUsersGroup size={20} />
           contribution
+        </Link>
+        <Link
+          to="/treasurerdashboard/contribution"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <FaMoneyCheck size={20} />
+          Pay Contribution
         </Link>
         <Link
           to="/treasurerdashboard/userprofile"
