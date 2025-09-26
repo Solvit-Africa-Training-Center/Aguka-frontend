@@ -54,7 +54,7 @@ const ActionPromptCard: React.FC<ActionPromptCardProps> = ({
             {placeholder}
           </option>
           {selectOptions.map((opt) => (
-            <option key={opt.value} value={opt.value}>
+            <option key={opt.value} value={opt.value} >
               {opt.label}
             </option>
           ))}

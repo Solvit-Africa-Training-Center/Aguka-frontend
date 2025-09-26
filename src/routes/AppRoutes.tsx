@@ -40,7 +40,6 @@ import ReportsPage from "@pages/ReportPage";
 import LoanApprovalPage from "@pages/LoanApproalPage";
 import AllowContributionPage from "@pages/AllowContributePage";
 
-
 const AppRoutes = () => {
   return (
     <div>
@@ -63,7 +62,6 @@ const AppRoutes = () => {
         <Route path="/loanform" element={<LoanForm />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/loanpayment" element={<LoanPayment />} />
-        <Route path="/policyform" element={<PolicyForm />} />
 
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
           <Route index element={<PresidentDashboard />} /> {/* /president */}
@@ -109,6 +107,7 @@ const AppRoutes = () => {
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="loanapproval" element={<LoanApprovalPage />} />
           <Route path="allowcontribution" element={<AllowContributionPage />} />
+          <Route path="policyform" element={<PolicyForm />} />
         </Route>
       </Routes>
     </div>

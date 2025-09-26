@@ -20,8 +20,9 @@ const TreasurerAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
+      onMouseLeave={onClose}
       className={`fixed top-0 left-0 h-full w-68 bg-white shadow-lg transform transition-transform duration-300 z-50
-      ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+  ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
       <div className="grid items-center p-4 border-b">
         <button
           onClick={onClose}
