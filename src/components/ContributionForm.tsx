@@ -19,21 +19,20 @@ const ContributionForm: React.FC = () => {
     { label: "Cash", value: "cash" },
   ];
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  try {
-    await createContributionMe({
-      amount: Math.round(parseFloat(amount)), 
-      paymentMethod,
-    }).unwrap();
+    try {
+      await createContributionMe({
+        amount: Math.round(parseFloat(amount)),
+        paymentMethod,
+      }).unwrap();
 
-    navigate("/memberdashboard/successcontribution");
-  } catch (err) {
-    console.error("Failed to submit contribution:", err);
-  }
-};
-
+      navigate("/memberdashboard/successcontribution");
+    } catch (err) {
+      console.error("Failed to submit contribution:", err);
+    }
+  };
 
   return (
     <div className="place-items-center min-h-screen bg-[#00353B] pt-20 font-poppins px-4">
@@ -82,8 +81,7 @@ const ContributionForm: React.FC = () => {
                   onChange={(e) =>
                     setPaymentMethod(e.target.value as PaymentMethod)
                   }
-                  className="w-full px-3 py-3 border border-[#E09721] rounded-lg text-xl text-transparent bg-clip-text bg-gradient-to-b from-[#545D5E] to-[#B0C2C4] focus:outline-none text-center pl-10"
-                >
+                  className="my-custom-select w-full px-3 py-3 border border-[#E09721] rounded-lg appearance-none  text-xl text-transparent bg-clip-text bg-gradient-to-b  from-[#545D5E] to-[#B0C2C4] focus:outline-none text-center pl-10">
                   {paymentOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>
                       {opt.label}
@@ -101,8 +99,7 @@ const ContributionForm: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-[#E09721] hover:bg-yellow-600 text-white font-semibold rounded-lg text-2xl transition duration-200"
-            >
+              className="w-full py-3 bg-[#E09721] hover:bg-yellow-600 text-white font-semibold rounded-lg text-2xl transition duration-200">
               {isLoading ? "Submitting..." : "Submit"}
             </button>
 
