@@ -6,88 +6,79 @@ import { LuShield } from "react-icons/lu";
 import AdminTrendChart from "@components/dashboard/admin/AdminTrendChart";
 import RecentActivities from "@components/dashboard/admin/RecentActivities";
 import CurrentStatistics from "@components/dashboard/admin/CurrentStatics";
+import { useGetAdminOverviewQuery } from "@services/api/adminApi";
 
 const AdminDashboard = () => {
+  const { data: overview, isLoading, isError } = useGetAdminOverviewQuery();
+
+  const cards = [
+    {
+      title: "Total Users",
+      icon: (
+        <HiUsers className="w-11 h-11 bg-[#005159] p-2 rounded-full text-secondary-300" />
+      ),
+      value: overview?.totalUsers ?? "--",
+      subtitle: "Users in the system",
+    },
+    {
+      title: "Total Groups",
+      icon: (
+        <TbWaveSawTool className="w-11 h-11 p-2 rounded-full text-[#006D75]" />
+      ),
+      value: overview?.totalGroups ?? "--",
+      subtitle: "Registered groups",
+    },
+    {
+      title: "Users per Group",
+      icon: (
+        <LuShield className="w-11 h-11 p-2 rounded-full text-secondary-300" />
+      ),
+      value: overview?.usersPerGroup?.length ?? "--",
+      subtitle: "Groups with users",
+    },
+    {
+      title: "Group Presidents",
+      icon: <GoAlert className="w-11 h-11 p-2 rounded-full text-[#E53935]" />,
+      value: overview?.groupPresidents?.length ?? "--",
+      subtitle: "Presidents with contacts",
+    },
+  ];
+
+  if (isLoading) {
+    return (
+      <div className="font-poppons bg-[#003B42] min-h-screen text-white p-10">
+        <AdminNavbar />
+        <div className="pt-45 text-2xl">Loading admin dashboard...</div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="font-poppons bg-[#003B42] min-h-screen text-white ">
+        <AdminNavbar />
+        <div className="pt-45 text-red-500 text-2xl">
+          Failed to load admin dashboard data.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="font-poppons bg-[#003B42] min-h-screen ">
       <div className="fixed z-10">
         <AdminNavbar />
       </div>
+
       <div className="pt-45 pl-10 text-white pb-10">
-        <h1 className="text-4xl capitalize font-bold">Admin dashboard </h1>
+        <h1 className="text-4xl capitalize font-bold">Admin dashboard</h1>
         <span className="capitalize text-sm">
           system administration and security monitoring
         </span>
       </div>
-      <div className="flex gap-10 overflow-x-auto text-white ml-15 mr-15 scrollbar-hide ">
-        {[
-          {
-            title: "Total User",
-            icon: (
-              <HiUsers className="w-11 h-11 bg-[#005159] p-2 rounded-full text-secondary-300" />
-            ),
-            value: "50",
-            subtitle: "5 new this month",
-          },
-          {
-            title: "System Health",
-            icon: (
-              <TbWaveSawTool className="w-11 h-11  p-2 rounded-full text-[#006D75]" />
-            ),
-            value: "98.5",
-            subtitle: "Uptime this month",
-          },
-          {
-            title: "Active Sessions",
 
-            icon: (
-              <LuShield className="w-11 h-11  p-2 rounded-full text-secondary-300" />
-            ),
-            value: "15",
-            subtitle: "Users currently Online",
-          },
-          {
-            title: "Security Alerts",
-            icon: (
-              <GoAlert className="w-11 h-11  p-2 rounded-full text-[#E53935]" />
-            ),
-            value: "2",
-            subtitle: "Requires attention",
-          },
-          {
-            title: "Security Alerts",
-            icon: (
-              <HiUsers className="w-11 h-11 bg-[#005159] p-2 rounded-full text-secondary-300" />
-            ),
-            value: "2",
-            subtitle: "Requires attention",
-          },
-          {
-            title: "Security Alerts",
-            icon: (
-              <HiUsers className="w-11 h-11 bg-[#005159] p-2 rounded-full text-secondary-300" />
-            ),
-            value: "2",
-            subtitle: "Requires attention",
-          },
-          {
-            title: "Security Alerts",
-            icon: (
-              <HiUsers className="w-11 h-11 bg-[#005159] p-2 rounded-full text-secondary-300" />
-            ),
-            value: "2",
-            subtitle: "Requires attention",
-          },
-          {
-            title: "Security Alerts",
-            icon: (
-              <HiUsers className="w-11 h-11 bg-[#005159] p-2 rounded-full text-secondary-300" />
-            ),
-            value: "2",
-            subtitle: "Requires attention",
-          },
-          // Add more objects as needed
-        ].map((item, idx) => (
+      <div className="flex gap-10 overflow-x-auto text-white ml-15 mr-15 scrollbar-hide ">
+        {cards.map((item, idx) => (
           <div
             key={idx}
             className="min-w-[280px] h-50 rounded-md p-4 space-y-5 border border-secondary-300 shadow-[-3px_3px_2px_2px_#F9A825] flex-shrink-0">
@@ -106,18 +97,21 @@ const AdminDashboard = () => {
           </div>
         ))}
       </div>
-      <div className="flex gap-20 ">
+
+      <div className="flex gap-20">
         <AdminTrendChart />
         <RecentActivities />
       </div>
+
       <div className="place-items-center p-15">
         <CurrentStatistics />
       </div>
-      <div className=" w-full text-accent-100 p-5 relative">
-        <hr className="w-300 text-center absolute left-70 " />
+
+      <div className="w-full text-accent-100 p-5 relative">
+        <hr className="w-300 text-center absolute left-70" />
         <div className="text-sm text-center pt-15 capitalize">
           <span>
-            &copy; 2025 Aguka.all rights reserved.Building Wealth through
+            &copy; 2025 Aguka. All rights reserved. Building Wealth through
             community.
           </span>
         </div>

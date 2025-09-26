@@ -19,6 +19,7 @@ export const adminApi = apiSlice.injectEndpoints({
       query: () => "/admin/group-distribution",
       providesTags: ["GroupDistribution"],
     }),
+    
   }),
   overrideExisting: true,
 });
@@ -27,4 +28,5 @@ export const {
   useGetAdminOverviewQuery,
   useGetInactiveUsersQuery,
   useGetGroupDistributionQuery,
+  
 } = adminApi;

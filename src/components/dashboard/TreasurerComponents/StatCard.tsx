@@ -1,6 +1,6 @@
 // ✅ components/dashboard/shared/StatCard.tsx
 import React from "react";
-
+import { GrLineChart } from "react-icons/gr";
 interface StatCardProps {
   title: string;
   amount: string;
@@ -19,9 +19,10 @@ const StatCard: React.FC<StatCardProps> = ({
       <h3 className="text-white text-xl font-medium">{title}</h3>
       <p className="text-2xl font-bold mt-2 text-white">{amount}</p>
       <span
-        className={`mt-2 text-sm font-semibold flex mb-5 justify-center ${
+        className={`mt-2 text-xl font-semibold flex mb-5 justify-center ${
           isPositive ? "text-secondary-400" : "text-red-400"
         }`}>
+        <GrLineChart className="size-7 mr-4" />
         {change}
       </span>
     </div>

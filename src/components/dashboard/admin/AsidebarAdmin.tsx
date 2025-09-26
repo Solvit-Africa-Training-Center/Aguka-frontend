@@ -27,9 +27,7 @@ const AsidebarAdmin: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       <div className="grid items-center  p-4 border-b  ">
         <button
           onClick={onClose}
-
           className="text-black  ml-45 font-extrabold hover:text-secondary-300">
-
           <X size={30} />
         </button>
         <div className="flex items-center gap-2  mt-20 ml-12 ">
@@ -42,7 +40,7 @@ const AsidebarAdmin: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       {/* Links */}
       <nav className="flex flex-col gap-2 p-4 font-poppins text-center font-bold">
         <Link
-          to="/memberdashboard"
+          to="/admindashboard"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 ">
           <LayoutDashboard size={20} />
           Dashboard

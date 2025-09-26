@@ -1,5 +1,5 @@
 import React from "react";
-import { X, LayoutDashboard, Users, UserPen, LogOut } from "lucide-react";
+import { X, LayoutDashboard, User, UserPen, LogOut } from "lucide-react";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { LuNotebook } from "react-icons/lu";
 import { TbUsersGroup } from "react-icons/tb";
@@ -53,6 +53,12 @@ const TreasurerAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <UserPen size={20} />
           User Profile
+        </Link>
+        <Link
+          to="/treasurerdashboard/myaccount"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <User size={20} />
+          My Account
         </Link>
         <Link
           to="/treasurerdashboard/report"
