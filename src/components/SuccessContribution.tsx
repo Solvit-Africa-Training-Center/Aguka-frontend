@@ -1,4 +1,5 @@
 import { FiCheckCircle } from "react-icons/fi";
+
 const SuccessContribution = () => {
   return (
     <div className="bg-[#D9E9EB] h-20 justify-center w-20">

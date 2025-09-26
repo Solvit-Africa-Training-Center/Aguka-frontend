@@ -40,6 +40,7 @@ import ReportsPage from "@pages/ReportPage";
 import LoanApprovalPage from "@pages/LoanApproalPage";
 import AllowContributionPage from "@pages/AllowContributePage";
 
+
 const AppRoutes = () => {
   return (
     <div>
@@ -72,6 +73,9 @@ const AppRoutes = () => {
           <Route path="managemembers" element={<MembersPage />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="userprofile" element={<UserProfile />} />
+          <Route path="payment" element={<LoanPayment />} />
+          <Route path="loanform" element={<LoanForm />} />
+          <Route path="success" element={<SuccessContribution />} />
         </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
