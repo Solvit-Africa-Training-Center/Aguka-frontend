@@ -2,210 +2,206 @@ import React, { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { useSelector } from "react-redux";
 import { Heart, MessageCircle } from "lucide-react";
-import type { RootState } from "@services/store/store"; // Make sure path is correct
+import type { RootState } from "@services/store/store";
+import {
+  useGetFeedsQuery,
+  useCreateFeedMutation,
+  useCreateCommentMutation,
+  useLikeFeedMutation,
+} from "@services/api/feedApi";
+import type { Feed, FeedCreate } from "types/Feed";
 
-interface Post {
-  id: string;
-  userId: string;
-  userName: string;
-  content: string;
-  timestamp: Date;
-  likes: number;
-  comments: Comment[];
-}
+const CommunityFeedPres: React.FC = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
 
-interface Comment {
-  id: string;
-  userId: string;
-  userName: string;
-  content: string;
-  timestamp: Date;
-}
-
-const CommunityFeed: React.FC = () => {
-  const { user } = useSelector((state: RootState) => state.auth); // ✅ get user from Redux
-  const name = user?.name;
-  const email = user?.email;
-
-  const [posts, setPosts] = useState<Post[]>([
-    {
-      id: "1",
-      userId: "alice@example.com",
-      userName: "Alice",
-      content: "Excited to join this community! 🚀",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60),
-      likes: 3,
-      comments: [
-        {
-          id: "c1",
-          userId: "bob@example.com",
-          userName: "Bob",
-          content: "Welcome Alice! 🎉",
-          timestamp: new Date(Date.now() - 1000 * 60 * 30),
-        },
-      ],
-    },
-    {
-      id: "2",
-      userId: "charlie@example.com",
-      userName: "Charlie",
-      content: "Anyone working on React projects? Let's connect!",
-      timestamp: new Date(Date.now() - 1000 * 60 * 120),
-      likes: 5,
-      comments: [],
-    },
-  ]);
+  const { data: feedsData, isLoading } = useGetFeedsQuery({ page: 1, limit: 50 });
+  const [createFeed] = useCreateFeedMutation();
+  const [createComment] = useCreateCommentMutation();
+  const [likeFeed] = useLikeFeedMutation();
 
   const [newPostContent, setNewPostContent] = useState("");
-  const [visibleComments, setVisibleComments] = useState<
-    Record<string, boolean>
-  >({});
+  const [visibleComments, setVisibleComments] = useState<Record<string, boolean>>({});
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
+  const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>({});
+  const [localFeeds, setLocalFeeds] = useState<Feed[]>([]);
 
-  const formatDate = (date: Date) =>
-    formatDistanceToNow(date, { addSuffix: true });
+  const feeds: Feed[] = Array.isArray(feedsData) ? feedsData : [];
+  const combinedFeeds = [...localFeeds, ...feeds];
+  const groupFeeds = combinedFeeds.filter(feed => feed.groupId === user?.groupId);
+
+  const formatDate = (dateStr: string) =>
+    formatDistanceToNow(new Date(dateStr), { addSuffix: true });
 
   const getInitials = (fullName: string) => {
     if (!fullName) return "?";
     const parts = fullName.trim().split(" ");
-    if (parts.length === 1) return parts[0][0].toUpperCase();
-    return parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
+    return parts.length === 1
+      ? parts[0][0].toUpperCase()
+      : parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
   };
 
-  const handleCreatePost = () => {
-    if (!newPostContent.trim()) return;
+  const handleCreatePost = async () => {
+    if (!newPostContent.trim() || !user) return;
 
-    const newPost: Post = {
-      id: Math.random().toString(36).substr(2, 9),
-      userId: email || "unknown",
-      userName: name || email || "Anonymous",
-      content: newPostContent,
-      timestamp: new Date(),
-      likes: 0,
-      comments: [],
-    };
+    const feedData: FeedCreate = { message: newPostContent };
 
-    setPosts([newPost, ...posts]);
-    setNewPostContent("");
+    try {
+      const createdFeed = await createFeed(feedData).unwrap();
+
+      setLocalFeeds(prev => [
+        {
+          ...createdFeed,
+          author: { id: user.id, name: user.name, email: user.email },
+          comments: [],
+          likes: [],
+        },
+        ...prev,
+      ]);
+
+      setNewPostContent("");
+    } catch (error) {
+      console.error("Failed to create feed:", error);
+    }
   };
 
-  const handleLike = (postId: string) => {
-    setPosts(
-      posts.map((post) =>
-        post.id === postId ? { ...post, likes: post.likes + 1 } : post
-      )
-    );
+  const handleLike = async (feedId: string) => {
+    try {
+      await likeFeed(feedId).unwrap();
+      setLikedPosts({ ...likedPosts, [feedId]: true });
+    } catch (error) {
+      console.error("Failed to like feed:", error);
+    }
   };
 
-  const handleAddComment = (postId: string) => {
-    if (!replyContent.trim()) return;
+  const handleAddComment = async (feedId: string) => {
+    if (!replyContent.trim() || !user) return;
 
-    const newComment: Comment = {
-      id: Math.random().toString(36).substr(2, 9),
-      userId: email || "unknown",
-      userName: name || email || "Anonymous",
-      content: replyContent,
-      timestamp: new Date(),
-    };
+    try {
+      const newComment = await createComment({
+        feedId,
+        data: { message: replyContent },
+      }).unwrap();
 
-    setPosts(
-      posts.map((post) =>
-        post.id === postId
-          ? { ...post, comments: [...post.comments, newComment] }
-          : post
-      )
-    );
+      setLocalFeeds(prev =>
+        prev.map(feed => {
+          if (feed.id === feedId) {
+            return {
+              ...feed,
+              comments: [
+                ...feed.comments,
+                {
+                  ...newComment,
+                  author: { id: user.id, name: user.name, email: user.email }, // map author locally
+                },
+              ],
+            };
+          }
+          return feed;
+        })
+      );
 
-    setReplyingTo(null);
-    setReplyContent("");
+      setReplyingTo(null);
+      setReplyContent("");
+    } catch (error) {
+      console.error("Failed to add comment:", error);
+    }
   };
+
+  if (isLoading) return <div>Loading feeds...</div>;
+
+  // Function to get comment author
+ const getCommentAuthorName = (comment: any) => {
+  if (comment.author?.name) return comment.author.name;
+  if (comment.authorId === user?.id) return user?.name ?? "Unknown";
+  return "Unknown";
+};
+
 
   return (
-    <div className="min-h-screen bg-[#00353B] p-6">
-      <div className="max-w-3xl mx-auto space-y-6 ">
-        {/* Create Post */}
-        <div className="rounded-2xl p-5 flex gap-3 justify-center">
-          <textarea
-            value={newPostContent}
-            onChange={(e) => setNewPostContent(e.target.value)}
-            placeholder={`What's on your mind, ${name || "member"}?`}
-            className="w-full h-15 border border-secondary-400 rounded-lg p-3 resize-none focus:ring-2 focus:ring-secondary-400 focus:outline-none"
-          />
-          <div className="flex justify-end">
-            <button
-              onClick={handleCreatePost}
-              className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-3 text-2xl h-15 rounded-xl transition-all">
-              Post
-            </button>
-          </div>
-        </div>
+    <div className="bg-[#003B42] h-[550px] flex flex-col font-poppins border-b-4 border-l-4 border-[#DCE4E5] p-6 rounded-tl-xl rounded-tr-xl overflow-y-auto">
+      <h3 className="font-bold text-2xl mb-4 text-[#F9A825] text-center">Community feeds</h3>
 
-        {/* Posts Feed */}
-        {posts.map((post) => (
-          <div key={post.id} className="rounded-2xl shadow-md p-5 text-white">
+      {/* Create Post */}
+      <div className="rounded-2xl p-5 flex gap-3 justify-center mb-6">
+        <textarea
+          value={newPostContent}
+          onChange={e => setNewPostContent(e.target.value)}
+          placeholder={`What's on your mind, ${user?.name || "member"}?`}
+          className="w-full h-15 text-white border border-secondary-400 rounded-lg p-3 resize-none focus:ring-2 focus:ring-secondary-400 focus:outline-none"
+        />
+        <div className="flex justify-end">
+          <button
+            onClick={handleCreatePost}
+            className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-3 text-2xl h-15 rounded-xl transition-all"
+          >
+            Post
+          </button>
+        </div>
+      </div>
+
+      {/* Feeds */}
+      <div className="max-w-3xl mx-auto space-y-6 overflow-y-auto max-h-[450px] p-10 rounded-xl">
+        {groupFeeds.map(feed => (
+          <div key={feed.id} className="rounded-2xl shadow-md p-5 text-white">
             {/* Header */}
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-secondary-300 flex items-center justify-center text-white font-semibold">
-                {getInitials(post.userName)}
+                {getInitials(feed.author?.name || "")}
               </div>
               <div>
-                <div className="font-semibold text-white">{post.userName}</div>
-                <div className="text-sm text-gray-400">
-                  {formatDate(post.timestamp)}
-                </div>
+                <div className="font-semibold text-white">{feed.author?.name || "Unknown"}</div>
+                <div className="text-sm text-gray-400">{formatDate(feed.createdAt)}</div>
               </div>
             </div>
 
             {/* Content */}
-            <p className="mt-4">{post.content}</p>
+            <p className="mt-4">{feed.message}</p>
 
             {/* Actions */}
             <div className="flex items-center gap-6 mt-4 text-gray-400">
               <button
-                onClick={() => handleLike(post.id)}
-                className="flex items-center gap-1 hover:text-secondary-400 transition">
-                <Heart size={18} /> {post.likes}
+                onClick={() => handleLike(feed.id)}
+                className={`flex items-center gap-1 transition ${likedPosts[feed.id] ? "text-yellow-400" : "hover:text-secondary-400"}`}
+              >
+                <Heart size={18} /> {feed.likes.length}
               </button>
               <button
                 onClick={() =>
-                  setVisibleComments({
-                    ...visibleComments,
-                    [post.id]: !visibleComments[post.id],
-                  })
+                  setVisibleComments({ ...visibleComments, [feed.id]: !visibleComments[feed.id] })
                 }
-                className="flex items-center gap-1 hover:text-secondary-400 transition">
-                <MessageCircle size={18} /> {post.comments.length} Reply
+                className="flex items-center gap-1 hover:text-secondary-400 transition"
+              >
+                <MessageCircle size={18} /> Reply
               </button>
             </div>
 
             {/* Comments */}
-            {visibleComments[post.id] && (
+            {visibleComments[feed.id] && (
               <div className="mt-4 space-y-3">
-                {post.comments.map((comment) => (
-                  <div
-                    key={comment.id}
-                    className="flex items-start gap-3 text-sm">
-                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold">
-                      {getInitials(comment.userName)}
-                    </div>
-                    <div>
-                      <div className="bg-gray-100 text-black rounded-lg p-2">
-                        <span className="font-medium">{comment.userName}</span>:{" "}
-                        {comment.content}
+                {feed.comments?.map(comment => {
+                  const authorName = getCommentAuthorName(comment);
+                  return (
+                    <div key={comment.id} className="flex items-start gap-3 text-sm">
+                      <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold">
+                        {getInitials(authorName)}
                       </div>
-                      <div className="text-xs text-gray-500">
-                        {formatDate(comment.timestamp)}
+                      <div>
+                        <div className="bg-gray-100 text-black rounded-lg p-2">
+                          <span className="font-medium">{authorName}</span>: {comment.message}
+                        </div>
+                        <div className="text-xs text-gray-500">{formatDate(comment.createdAt)}</div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
                 {/* Reply Box */}
-                {replyingTo !== post.id ? (
+                {replyingTo !== feed.id ? (
                   <button
-                    onClick={() => setReplyingTo(post.id)}
-                    className="text-sm text-secondary-400 hover:underline">
+                    onClick={() => setReplyingTo(feed.id)}
+                    className="text-sm text-secondary-400 hover:underline"
+                  >
                     Write a reply...
                   </button>
                 ) : (
@@ -213,13 +209,14 @@ const CommunityFeed: React.FC = () => {
                     <input
                       type="text"
                       value={replyContent}
-                      onChange={(e) => setReplyContent(e.target.value)}
+                      onChange={e => setReplyContent(e.target.value)}
                       placeholder="Write a reply..."
                       className="flex-1 border border-secondary-400 rounded-lg px-3 py-1 focus:ring-2 focus:ring-secondary-400 focus:outline-none"
                     />
                     <button
-                      onClick={() => handleAddComment(post.id)}
-                      className="bg-secondary-400 hover:bg-secondary-500 text-white px-3 py-1 rounded-lg text-sm">
+                      onClick={() => handleAddComment(feed.id)}
+                      className="bg-secondary-400 hover:bg-secondary-500 text-white px-3 py-1 rounded-lg text-sm"
+                    >
                       Reply
                     </button>
                     <button
@@ -227,7 +224,8 @@ const CommunityFeed: React.FC = () => {
                         setReplyingTo(null);
                         setReplyContent("");
                       }}
-                      className="text-xs text-gray-400 hover:underline">
+                      className="text-xs text-gray-400 hover:underline"
+                    >
                       Cancel
                     </button>
                   </div>
@@ -241,4 +239,4 @@ const CommunityFeed: React.FC = () => {
   );
 };
 
-export default CommunityFeed;
+export default CommunityFeedPres;

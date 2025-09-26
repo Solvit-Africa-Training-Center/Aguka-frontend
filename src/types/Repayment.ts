@@ -15,8 +15,8 @@ export interface Repayment {
 export interface RepaymentCreate {
   loanId: string;
   amount: number;
-  paymentDate: string;
-  paymentMethod: PaymentMethod;
+  paymentDate: string;   
+  paymentMethod: string; 
 }
 
 export interface RepaymentUpdate {

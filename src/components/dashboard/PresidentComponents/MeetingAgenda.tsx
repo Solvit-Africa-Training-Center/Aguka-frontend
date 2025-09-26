@@ -5,7 +5,7 @@ import { useGetAnnouncementsQuery } from "@services/api/announcementApi";
 import type { Announcement } from "types/Announcement";
 
 interface MeetingAgendaProps {
-  groupId?: string; // optional filter by group
+  groupId?: string; 
 }
 
 const MeetingAgenda: React.FC<MeetingAgendaProps> = ({ groupId }) => {

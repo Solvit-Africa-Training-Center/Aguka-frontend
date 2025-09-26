@@ -1,11 +1,13 @@
 // src/services/api/repaymentApi.ts
-import { apiSlice } from "./apiSlice"; // assuming you already have apiSlice set up
+import { apiSlice } from "./apiSlice";
 import type { Repayment } from "types/Repayment";
 
+// Update the type to match the backend
 export interface RepaymentCreate {
   loanId: string;
   amount: number;
-  date: string; // ISO date string
+  date: string;        // ISO date string
+  paymentMethod?: string; // optional if your backend supports it
 }
 
 export const repaymentApi = apiSlice.injectEndpoints({
@@ -15,7 +17,7 @@ export const repaymentApi = apiSlice.injectEndpoints({
       query: (repayment) => ({
         url: "/repayments",
         method: "POST",
-        body: repayment,
+        body: repayment, // pass the object directly
       }),
     }),
 

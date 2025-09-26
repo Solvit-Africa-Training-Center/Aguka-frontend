@@ -2,39 +2,54 @@ import { useState, useEffect } from "react";
 import { Calendar, CreditCard } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import { useGetLoansQuery } from "@services/api/loanApi";
-import { useCreateRepaymentMutation, useGetLoanBalanceQuery } from "@services/api/repaymentApi";
+import { useGetRepaymentsQuery, useCreateRepaymentMutation } from "@services/api/repaymentApi";
 import { useSelector } from "react-redux";
 import type { RootState } from "@services/store/store";
+import type { Loan } from "types/Loan";
+import type { Repayment } from "types/Repayment";
 
 export default function LoanPayment() {
-  const loggedInUser = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.user);
 
-  const { data: loans = [], isLoading: loadingLoans } = useGetLoansQuery();
-  const userApprovedLoans = loans.filter(
-    (loan) => loan.userId === loggedInUser?.id && loan.status === "approved"
+  const { data: loans = [] } = useGetLoansQuery();
+  const { data: repayments = [] } = useGetRepaymentsQuery();
+
+  // Filter approved loans with remaining balance > 0
+  const approvedLoans = loans.filter(
+    (loan: Loan) =>
+      loan.userId === user?.id &&
+      loan.status.toLowerCase() === "approved"
   );
-  const activeLoan = userApprovedLoans[0];
-  const { data: balanceData, isLoading: loadingBalance } = useGetLoanBalanceQuery(activeLoan?.id!, {
-    skip: !activeLoan,
-  });
-  const [amount, setAmount] = useState<number>(0);
-  const [date, setDate] = useState<string>(() => {
-    const today = new Date();
-    return today.toISOString().split("T")[0]; 
-  });
-  const [method, setMethod] = useState<string>("Bank Transfer");
 
-  const [totalRemaining, setTotalRemaining] = useState<number>(0);
+  // Compute remaining balance dynamically
+  const loansWithBalance = approvedLoans.map((loan: Loan) => {
+    const DEFAULT_RATE = 0.05;
+    const duration = loan.durationMonths ?? 0;
+    const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
 
-  useEffect(() => {
-    if (balanceData?.balance !== undefined) {
-      setTotalRemaining(balanceData.balance);
-    } else {
-      setTotalRemaining(0);
-    }
-  }, [balanceData]);
+    const totalRepayments = repayments
+      .filter((r: Repayment) => r.loanId === loan.id)
+      .reduce((sum, r) => sum + r.amount, 0);
+
+    return {
+      ...loan,
+      remainingBalance: Math.max(totalPayable - totalRepayments, 0),
+    };
+  });
+
+  const activeLoan = loansWithBalance[0];
+
+  const [amount, setAmount] = useState<number>(activeLoan?.remainingBalance || 0);
+  const today = new Date().toISOString().split("T")[0];
+  const [paymentDate] = useState<string>(today);
+  const [paymentMethod, setPaymentMethod] = useState<string>("Bank Transfer");
 
   const [createRepayment, { isLoading }] = useCreateRepaymentMutation();
+
+  // Reset amount whenever activeLoan changes
+  useEffect(() => {
+    setAmount(activeLoan?.remainingBalance || 0);
+  }, [activeLoan]);
 
   const handleSubmit = async () => {
     if (!activeLoan) {
@@ -42,8 +57,8 @@ export default function LoanPayment() {
       return;
     }
 
-    if (!amount || !date) {
-      alert("Please enter amount and date.");
+    if (!amount || amount <= 0) {
+      alert("Please enter a valid amount.");
       return;
     }
 
@@ -51,14 +66,12 @@ export default function LoanPayment() {
       await createRepayment({
         loanId: activeLoan.id,
         amount,
-        date,
+        date: paymentDate,
+        paymentMethod,
       }).unwrap();
 
       alert("Payment submitted successfully!");
       setAmount(0);
-
-      const today = new Date();
-      setDate(today.toISOString().split("T")[0]);
     } catch (error) {
       console.error("Payment failed", error);
       alert("Payment failed. Please try again.");
@@ -76,28 +89,23 @@ export default function LoanPayment() {
           <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#F9A825] mb-10">
             Loan Payment
           </h2>
-          <p className="font-semibold text-[#FFFFFF] mb-6 text-2xl sm:text-base">
-            Make payment toward your loan balance
-          </p>
 
+          {/* Loan Remaining */}
           <div className="mb-4">
-            <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">
+            <label className="block text-xl font-semibold text-[#FFFFFF] mb-2">
               Loan Amount Remaining
             </label>
             <input
               type="text"
-              value={
-                loadingLoans || loadingBalance
-                  ? "Loading..."
-                  : `Frw ${totalRemaining.toLocaleString()}`
-              }
+              value={`Frw ${activeLoan?.remainingBalance.toLocaleString() || 0}`}
               readOnly
               className="w-full px-4 py-2 bg-transparent border border-[#F9A825] rounded-lg font-bold text-lg text-gray-100"
             />
           </div>
 
+          {/* Payment Amount */}
           <div className="mb-4">
-            <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">
+            <label className="block text-xl font-semibold text-[#FFFFFF] mb-2">
               Amount to Pay <span className="text-red-500">*</span>
             </label>
             <input
@@ -109,33 +117,32 @@ export default function LoanPayment() {
             />
           </div>
 
+          {/* Payment Date */}
           <div className="mb-4">
-            <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">
-              Payment Date <span className="text-red-500">*</span>
+            <label className="block text-xl font-semibold text-[#FFFFFF] mb-2">
+              Payment Date
             </label>
             <div className="flex items-center border border-[#F9A825] rounded-lg px-3 py-2 bg-transparent">
               <Calendar className="w-5 h-5 text-[#F9A825] mr-2" />
               <input
                 type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={paymentDate}
+                readOnly
                 className="w-full bg-transparent text-white focus:outline-none"
               />
             </div>
           </div>
 
+          {/* Payment Method */}
           <div className="mb-6">
-            <label className="block text-xl font-semibold text-[#FFFFFF] mb-4">
-              Payment Method{" "}
-              <span className="bg-gradient-to-r from-[#545D5E] to-[#B0C2C4] bg-clip-text text-transparent">
-                (Optional)
-              </span>
+            <label className="block text-xl font-semibold text-[#FFFFFF] mb-2">
+              Payment Method
             </label>
             <div className="flex items-center border border-[#F9A825] rounded-lg px-3 py-2 bg-transparent">
               <CreditCard className="w-5 h-5 text-[#F9A825] mr-2" />
               <select
-                value={method}
-                onChange={(e) => setMethod(e.target.value)}
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
                 className="w-full bg-transparent text-[#FFFFFF] focus:outline-none"
               >
                 <option className="bg-[#003B42]">Bank Transfer</option>

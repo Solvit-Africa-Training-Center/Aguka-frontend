@@ -1,14 +1,18 @@
 // DashboardStats.tsx
-import React from "react";
+import React, { useMemo } from "react";
 import { Users, DollarSign, ArrowUpCircle, Clock } from "lucide-react"; 
 import type { LucideIcon } from "lucide-react"; 
-import { useGetUsersQuery } from "@services/api/authApi";
-import { useGetLoansByStatusQuery } from "@services/api/loanApi";
-import { useGetGroupContributionsQuery } from "@services/api/ContributionApi";
 import { useSelector } from "react-redux";
 import type { RootState } from "@services/store/store";
+import { useGetUsersQuery } from "@services/api/authApi";
+import { useGetLoansByStatusQuery } from "@services/api/loanApi";
+import { useGetAllContributionsByUserQuery } from "@services/api/ContributionApi";
+import { useGetRepaymentsQuery } from "@services/api/repaymentApi";
+
 import type { User } from "@models/User";
 import type { Loan } from "types/Loan";
+import type { Contribution } from "@models/Contribution";
+import type { Repayment } from "types/Repayment";
 
 interface StatsCardProps {
   title: string;
@@ -38,65 +42,96 @@ const DashboardStats: React.FC = () => {
 
   // Fetch all users
   const { data: usersData, isLoading: loadingUsers } = useGetUsersQuery();
-  const users: User[] = usersData && Array.isArray(usersData)
-    ? usersData
-    : Array.isArray((usersData as any)?.data)
-    ? (usersData as any).data
-    : [];
+  const users: User[] = useMemo(() => {
+    if (!usersData) return [];
+    const arr = Array.isArray(usersData)
+      ? usersData
+      : Array.isArray((usersData as any)?.data)
+      ? (usersData as any).data
+      : [];
+    return arr.filter((u: User) => u.groupId === currentGroupId);
+  }, [usersData, currentGroupId]);
 
-  // Fetch contributions for this group
-  const { data: contributionsData, isLoading: loadingContributions } =
-    useGetGroupContributionsQuery(currentGroupId || "");
-  const contributions: any[] = contributionsData && Array.isArray(contributionsData)
-    ? contributionsData
-    : Array.isArray((contributionsData as any)?.data)
-    ? (contributionsData as any).data
-    : [];
+  // Fetch contributions
+  const { data: contributionsData, isLoading: loadingContributions } = useGetAllContributionsByUserQuery(currentGroupId || "");
+  const contributions: Contribution[] = useMemo(() => {
+    if (!contributionsData) return [];
+    return Array.isArray(contributionsData)
+      ? contributionsData
+      : Array.isArray((contributionsData as any)?.data)
+      ? (contributionsData as any).data
+      : [];
+  }, [contributionsData]);
 
-  // Fetch approved loans for total loan disbursed
-  const { data: approvedLoansData, isLoading: loadingApprovedLoans } =
-    useGetLoansByStatusQuery("approved");
-  const approvedLoans: Loan[] = approvedLoansData && Array.isArray(approvedLoansData)
-    ? approvedLoansData
-    : Array.isArray((approvedLoansData as any)?.data)
-    ? (approvedLoansData as any).data
-    : [];
+  // Fetch approved loans
+  const { data: approvedLoansData, isLoading: loadingApprovedLoans } = useGetLoansByStatusQuery("approved");
+  const approvedLoans: Loan[] = useMemo(() => {
+    if (!approvedLoansData) return [];
+    const allLoans = Array.isArray(approvedLoansData)
+      ? approvedLoansData
+      : Array.isArray((approvedLoansData as any)?.data)
+      ? (approvedLoansData as any).data
+      : [];
+    return allLoans.filter((loan: Loan) => users.some(u => u.id === loan.userId));
+  }, [approvedLoansData, users]);
 
-  // Fetch pending loans for pending requests
-  const { data: pendingLoansData, isLoading: loadingPendingLoans } =
-    useGetLoansByStatusQuery("pending");
-  const pendingLoans: Loan[] = pendingLoansData && Array.isArray(pendingLoansData)
-    ? pendingLoansData
-    : Array.isArray((pendingLoansData as any)?.data)
-    ? (pendingLoansData as any).data
-    : [];
+  // Fetch pending loans
+  const { data: pendingLoansData, isLoading: loadingPendingLoans } = useGetLoansByStatusQuery("pending");
+  const pendingLoans: Loan[] = useMemo(() => {
+    if (!pendingLoansData) return [];
+    const allLoans = Array.isArray(pendingLoansData)
+      ? pendingLoansData
+      : Array.isArray((pendingLoansData as any)?.data)
+      ? (pendingLoansData as any).data
+      : [];
+    return allLoans.filter((loan: Loan) => users.some(u => u.id === loan.userId));
+  }, [pendingLoansData, users]);
 
-  // Total members in this group
-  const totalUsersInGroup = users.filter(u => u.groupId === currentGroupId).length;
+  // Fetch all repayments
+  const { data: repaymentsData } = useGetRepaymentsQuery();
+  const repayments: Repayment[] = useMemo(() => {
+    if (!repaymentsData) return [];
+    return Array.isArray(repaymentsData)
+      ? repaymentsData
+      : Array.isArray((repaymentsData as any)?.data)
+      ? (repaymentsData as any).data
+      : [];
+  }, [repaymentsData]);
 
-  // Total savings of members in this group
-  const totalSavings = contributions.reduce((sum, c) => sum + c.amount, 0);
+  // Total savings
+  const totalSavings = useMemo(() => {
+    return contributions.reduce((sum: number, c: Contribution) => sum + Number(c.amount), 0);
+  }, [contributions]);
 
-  // Total approved loans disbursed for this group including interest
-  const totalLoanDisbursed = approvedLoans
-    .filter(loan => users.find(u => u.id === loan.userId)?.groupId === currentGroupId)
-    .reduce((sum, loan) => {
-      const DEFAULT_RATE = 0.05; // fallback if interestRate is missing
-      const rate = (loan as any).interestRate ?? DEFAULT_RATE;
+  // Total loan disbursed after repayments
+  const totalLoanDisbursed = useMemo(() => {
+    return approvedLoans.reduce((sum: number, loan: Loan) => {
+      const rate = (loan as any).interestRate ?? 0.05;
       const duration = loan.durationMonths ?? 0;
       const totalPayable = loan.amount + loan.amount * rate * duration;
-      return sum + Math.floor(totalPayable);
+
+      const totalRepaid = repayments
+        .filter(r => r.loanId === loan.id)
+        .reduce((repSum, r) => repSum + Number(r.amount), 0);
+
+      const remainingBalance = Math.max(totalPayable - totalRepaid, 0);
+      return sum + remainingBalance;
     }, 0);
+  }, [approvedLoans, repayments]);
 
-  // Pending users (not approved)
-  const pendingUsers = users.filter(u => !u.isApproved && u.groupId === currentGroupId);
+  // Total loan repaid
+  // const totalLoanRepaid = useMemo(() => {
+  //   return repayments.reduce((sum, r) => sum + Number(r.amount), 0);
+  // }, [repayments]);
 
-  // Pending loans in this group
-  const pendingGroupLoans = pendingLoans
-    .filter(loan => users.find(u => u.id === loan.userId)?.groupId === currentGroupId);
+  // Pending requests: pending users + pending loans
+  const pendingRequestsCount = useMemo(() => {
+    const pendingUsers = users.filter(u => !u.isApproved);
+    const pendingGroupLoans = pendingLoans.filter(loan => users.some(u => u.id === loan.userId));
+    return pendingUsers.length + pendingGroupLoans.length;
+  }, [users, pendingLoans]);
 
-  // Total pending requests = pending users + pending loans
-  const pendingRequestsCount = pendingUsers.length + pendingGroupLoans.length;
+  const totalUsersInGroup = users.length;
 
   return (
     <div className="w-full font-poppins pt-6 px-4 md:px-0">
@@ -118,6 +153,11 @@ const DashboardStats: React.FC = () => {
           value={loadingApprovedLoans ? "..." : `Frw ${totalLoanDisbursed.toLocaleString()}`}
           icon={ArrowUpCircle}
         />
+        {/* <StatsCard
+          title="Total Loan Repaid"
+          value={`Frw ${totalLoanRepaid.toLocaleString()}`}
+          icon={ArrowUpCircle}
+        /> */}
         <StatsCard
           title="Pending Requests"
           value={loadingUsers || loadingPendingLoans ? "..." : pendingRequestsCount.toString()}

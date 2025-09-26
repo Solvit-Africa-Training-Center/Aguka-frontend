@@ -1,3 +1,4 @@
+// LineChart.tsx
 import React, { useMemo } from "react";
 import {
   LineChart as ReLineChart,
@@ -9,7 +10,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useGetGroupContributionsQuery } from "@services/api/ContributionApi";
+import { useGetGroupContributionsTodayQuery } from "@services/api/ContributionApi";
 import { useSelector } from "react-redux";
 import type { RootState } from "@services/store/store";
 import type { Contribution } from "@models/Contribution";
@@ -18,27 +19,32 @@ const MyLineChart: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
   const currentGroupId = currentUser?.groupId || "";
 
-  // Fetch contributions for this group
-  const { data: contributionsData = [] } =
-    useGetGroupContributionsQuery(currentGroupId);
+  const { data: rawData } = useGetGroupContributionsTodayQuery(currentGroupId);
 
-  // Prepare chart data grouped by month
+  const contributionsData: Contribution[] = useMemo(() => {
+    if (!rawData) return [];
+    if (Array.isArray(rawData)) return rawData;
+    if (Array.isArray((rawData as any).data)) return (rawData as any).data;
+    return [];
+  }, [rawData]);
+
   const chartData = useMemo(() => {
     const months = [
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
     ];
 
-    // Initialize monthly contribution totals
-    const monthlyTotals = months.map((month) => ({
-      month,
-      contribution: 0,
-    }));
+    const monthlyTotals = months.map((month) => ({ month, contribution: 0 }));
 
-    contributionsData.forEach((contribution: Contribution) => {
+    contributionsData.forEach((contribution) => {
+      if (!contribution.contributionDate) return; // skip invalid dates
       const date = new Date(contribution.contributionDate);
+      if (isNaN(date.getTime())) return; // skip invalid dates
+
       const monthIndex = date.getMonth();
-      monthlyTotals[monthIndex].contribution += Number(contribution.amount);
+      if (monthIndex >= 0 && monthIndex < 12) {
+        monthlyTotals[monthIndex].contribution += Number(contribution.amount) || 0;
+      }
     });
 
     return monthlyTotals;

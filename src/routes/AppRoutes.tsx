@@ -70,6 +70,9 @@ const AppRoutes = () => {
           <Route path="managemembers" element={<MembersPage />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="userprofile" element={<UserProfile />} />
+           <Route path="memberdashboard" element={<MemberDashboard />}/>
+            <Route path="contribution" element={<ContributionForm />} />
+            <Route path="successcontribution" element={<SuccessContribution />} />
         </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>

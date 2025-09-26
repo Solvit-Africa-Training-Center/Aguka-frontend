@@ -10,12 +10,12 @@ import type {
 export const feedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Get paginated feeds
-    getFeeds: builder.query<Feed[], { page: number; limit: number }>({
-      query: ({ page, limit }) => `feeds?page=${page}&limit=${limit}`,
-      transformResponse: (response: { data: Feed[] }) => response.data,
-      providesTags: ["Feeds"],
-    }),
-    //create feed
+  getFeeds: builder.query<Feed[], { page: number; limit: number }>({
+  query: ({ page, limit }) => `feeds?page=${page}&limit=${limit}`,
+  transformResponse: (response: { data: { posts: Feed[] } }) => response.data.posts,
+  providesTags: ["Feeds"],
+}),
+
     createFeed: builder.mutation<Feed, FeedCreate>({
       query: (data) => ({
         url: "/feeds",
@@ -24,6 +24,7 @@ export const feedApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Feeds"],
     }),
+
     // Get comments for a specific feed
     getFeedComments: builder.query<
       Comment[],
@@ -33,6 +34,16 @@ export const feedApi = apiSlice.injectEndpoints({
         `feeds/${feedId}/comments?page=${page}&limit=${limit}`,
       transformResponse: (response: { data: Comment[] }) => response.data,
       providesTags: (_, __, { feedId }) => [{ type: "Comments", id: feedId }],
+    }),
+
+    // 👉 Create comment for a specific feed
+    createComment: builder.mutation<Comment, { feedId: string; data: any }>({
+      query: ({ feedId, data }) => ({
+        url: `feeds/${feedId}/comments`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: (_, __, { feedId }) => [{ type: "Comments", id: feedId }],
     }),
 
     // Like a feed
@@ -90,7 +101,9 @@ export const feedApi = apiSlice.injectEndpoints({
 
 export const {
   useGetFeedsQuery,
+  useCreateFeedMutation,
   useGetFeedCommentsQuery,
+  useCreateCommentMutation,   // 👈 added
   useLikeFeedMutation,
   useUpdateFeedMutation,
   useDeleteFeedMutation,
