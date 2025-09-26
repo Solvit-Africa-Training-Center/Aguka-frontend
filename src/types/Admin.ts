@@ -1,14 +1,17 @@
-// types/admin.ts
+// types/Admin.ts
 
 export interface AdminOverview {
   totalUsers: number;
-  activeUsers: number;
-  inactiveUsers: number;
   totalGroups: number;
-  totalLoans: number;
-  totalContributions: number;
-  totalDividends: number;
-  // Add more fields if needed
+  usersPerGroup: {
+    groupId: string;
+    count: number;
+  }[];
+  groupPresidents: {
+    groupId: string;
+    name: string;
+    contact: string;
+  }[];
 }
 
 export interface User {
@@ -26,4 +29,9 @@ export interface GroupDistribution {
   totalContributions: number;
   totalLoans: number;
   // Add more fields if needed
+}
+export interface SystemTrendData {
+  date: string;
+  users: number;
+  transactions: number;
 }

@@ -129,7 +129,7 @@ const SecretaryDashboard: React.FC = () => {
             <FileText size={20} className="text-[#F9A825]" />
           </div>
           <p className="text-3xl font-bold mt-2 text-[#003D42]">8</p>
-          <p className="text-sm text-[#555555]">All up to date</p>
+          <p className="text-sm text-[rgb(85,85,85)]">All up to date</p>
         </div>
       </div>
 

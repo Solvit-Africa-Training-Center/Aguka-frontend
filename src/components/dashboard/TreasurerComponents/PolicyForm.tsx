@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { useCreatePolicyMutation, useGetPoliciesQuery } from "@services/api/policyApi";
+import {
+  useCreatePolicyMutation,
+  useGetPoliciesQuery,
+} from "@services/api/policyApi";
 
 const PolicyForm = () => {
   const { data: policies } = useGetPoliciesQuery();
@@ -61,7 +64,9 @@ const PolicyForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-[#003B42] p-6 rounded-xl shadow-md text-white space-y-6">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-[#003B42] p-6 rounded-xl shadow-md text-white space-y-6">
       <h2 className="text-xl font-bold mb-4 text-center">Set Loan Policies</h2>
 
       {/* LOAN_STANDARD */}
@@ -92,7 +97,9 @@ const PolicyForm = () => {
           className="w-full px-3 py-2 rounded bg-gray-700 text-white"
         />
 
-        <p className="text-gray-300 text-sm">Grace period (days before penalty applies)</p>
+        <p className="text-gray-300 text-sm">
+          Grace period (days before penalty applies)
+        </p>
         <input
           type="number"
           value={gracePeriod}
@@ -106,12 +113,15 @@ const PolicyForm = () => {
       <button
         type="submit"
         disabled={isLoading}
-        className="bg-[#F9A825] px-4 py-2 rounded font-bold w-full hover:opacity-90 transition"
-      >
+        className="bg-[#F9A825] px-4 py-2 rounded font-bold w-full hover:opacity-90 transition">
         {isLoading ? "Saving..." : "Save Policies"}
       </button>
 
-      {error && <p className="text-red-500 mt-2">{(error as any)?.data?.message || "Error setting policies"}</p>}
+      {error && (
+        <p className="text-red-500 mt-2">
+          {(error as any)?.data?.message || "Error setting policies"}
+        </p>
+      )}
 
       {/* Current policies */}
       {policies && (
@@ -120,7 +130,8 @@ const PolicyForm = () => {
           <ul className="list-disc list-inside">
             {policies.map((p: any) => (
               <li key={p.type}>
-                {p.type}: {p.rate * 100}% ({p.frequency}), Grace: {p.gracePeriodDays} days
+                {p.type}: {p.rate * 100}% ({p.frequency}), Grace:{" "}
+                {p.gracePeriodDays} days
               </li>
             ))}
           </ul>

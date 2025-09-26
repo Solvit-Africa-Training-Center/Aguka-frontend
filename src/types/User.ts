@@ -20,6 +20,7 @@ export interface User {
   createdAt: string; // add this
   updatedAt: string; // add this
   profilePicture?: string | null; // optional if your backend sends it
+  location?: string;
 }
 
 // For creating a new user

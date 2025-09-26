@@ -22,7 +22,5 @@ export const dividendApi = apiSlice.injectEndpoints({
   overrideExisting: true,
 });
 
-export const {
-  useGetUserDividendsQuery,
-  useGetGroupDividendsQuery,
-} = dividendApi;
+export const { useGetUserDividendsQuery, useGetGroupDividendsQuery } =
+  dividendApi;
