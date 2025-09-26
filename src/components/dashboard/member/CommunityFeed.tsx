@@ -11,16 +11,22 @@ import {
 } from "@services/api/feedApi";
 import type { Feed, FeedCreate } from "types/Feed";
 
-const CommunityFeedPres: React.FC = () => {
+const CommunityFeed: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const { data: feedsData, isLoading } = useGetFeedsQuery({ page: 1, limit: 50 });
+  const { data: feedsData, isLoading } = useGetFeedsQuery({
+    page: 1,
+    limit: 50,
+  });
+
   const [createFeed] = useCreateFeedMutation();
   const [createComment] = useCreateCommentMutation();
   const [likeFeed] = useLikeFeedMutation();
 
   const [newPostContent, setNewPostContent] = useState("");
-  const [visibleComments, setVisibleComments] = useState<Record<string, boolean>>({});
+  const [visibleComments, setVisibleComments] = useState<
+    Record<string, boolean>
+  >({});
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
   const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>({});
@@ -28,7 +34,9 @@ const CommunityFeedPres: React.FC = () => {
 
   const feeds: Feed[] = Array.isArray(feedsData) ? feedsData : [];
   const combinedFeeds = [...localFeeds, ...feeds];
-  const groupFeeds = combinedFeeds.filter(feed => feed.groupId === user?.groupId);
+  const groupFeeds = combinedFeeds.filter(
+    (feed) => feed.groupId === user?.groupId
+  );
 
   const formatDate = (dateStr: string) =>
     formatDistanceToNow(new Date(dateStr), { addSuffix: true });
@@ -49,7 +57,7 @@ const CommunityFeedPres: React.FC = () => {
     try {
       const createdFeed = await createFeed(feedData).unwrap();
 
-      setLocalFeeds(prev => [
+      setLocalFeeds((prev) => [
         {
           ...createdFeed,
           author: { id: user.id, name: user.name, email: user.email },
@@ -83,8 +91,8 @@ const CommunityFeedPres: React.FC = () => {
         data: { message: replyContent },
       }).unwrap();
 
-      setLocalFeeds(prev =>
-        prev.map(feed => {
+      setLocalFeeds((prev) =>
+        prev.map((feed) => {
           if (feed.id === feedId) {
             return {
               ...feed,
@@ -92,7 +100,7 @@ const CommunityFeedPres: React.FC = () => {
                 ...feed.comments,
                 {
                   ...newComment,
-                  author: { id: user.id, name: user.name, email: user.email }, // map author locally
+                  author: { id: user.id, name: user.name, email: user.email },
                 },
               ],
             };
@@ -110,48 +118,49 @@ const CommunityFeedPres: React.FC = () => {
 
   if (isLoading) return <div>Loading feeds...</div>;
 
-  // Function to get comment author
- const getCommentAuthorName = (comment: any) => {
-  if (comment.author?.name) return comment.author.name;
-  if (comment.authorId === user?.id) return user?.name ?? "Unknown";
-  return "Unknown";
-};
-
+  const getCommentAuthorName = (comment: any) => {
+    if (comment.author?.name) return comment.author.name;
+    if (comment.authorId === user?.id) return user?.name ?? "Unknown";
+    return "Unknown";
+  };
 
   return (
-    <div className="bg-[#003B42] h-[550px] flex flex-col font-poppins border-b-4 border-l-4 border-[#DCE4E5] p-6 rounded-tl-xl rounded-tr-xl overflow-y-auto">
-      <h3 className="font-bold text-2xl mb-4 text-[#F9A825] text-center">Community feeds</h3>
-
+    <div className=" flex flex-col font-poppins    p-6 rounded-tl-xl rounded-tr-xl overflow-y-auto">
       {/* Create Post */}
       <div className="rounded-2xl p-5 flex gap-3 justify-center mb-6">
         <textarea
           value={newPostContent}
-          onChange={e => setNewPostContent(e.target.value)}
+          onChange={(e) => setNewPostContent(e.target.value)}
           placeholder={`What's on your mind, ${user?.name || "member"}?`}
           className="w-full h-15 text-white border border-secondary-400 rounded-lg p-3 resize-none focus:ring-2 focus:ring-secondary-400 focus:outline-none"
         />
         <div className="flex justify-end">
           <button
             onClick={handleCreatePost}
-            className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-3 text-2xl h-15 rounded-xl transition-all"
-          >
+            className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-3 text-2xl h-15 rounded-xl transition-all">
             Post
           </button>
         </div>
       </div>
 
       {/* Feeds */}
-      <div className="max-w-3xl mx-auto space-y-6 overflow-y-auto max-h-[450px] p-10 rounded-xl">
-        {groupFeeds.map(feed => (
-          <div key={feed.id} className="rounded-2xl shadow-md p-5 text-white">
+      <div className="max-w-5xl w-full mx-auto p-6 sm:p-8 md:p-10 space-y-6 overflow-y-auto max-h-[450px] rounded-xl scrollbar-hide bg-transparent">
+        {groupFeeds.map((feed) => (
+          <div
+            key={feed.id}
+            className="rounded-2xl shadow-md p-5 text-white bg-transparent">
             {/* Header */}
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-secondary-300 flex items-center justify-center text-white font-semibold">
                 {getInitials(feed.author?.name || "")}
               </div>
               <div>
-                <div className="font-semibold text-white">{feed.author?.name || "Unknown"}</div>
-                <div className="text-sm text-gray-400">{formatDate(feed.createdAt)}</div>
+                <div className="font-semibold text-white">
+                  {feed.author?.name || "Unknown"}
+                </div>
+                <div className="text-sm text-gray-400">
+                  {formatDate(feed.createdAt)}
+                </div>
               </div>
             </div>
 
@@ -162,16 +171,21 @@ const CommunityFeedPres: React.FC = () => {
             <div className="flex items-center gap-6 mt-4 text-gray-400">
               <button
                 onClick={() => handleLike(feed.id)}
-                className={`flex items-center gap-1 transition ${likedPosts[feed.id] ? "text-yellow-400" : "hover:text-secondary-400"}`}
-              >
+                className={`flex items-center gap-1 transition ${
+                  likedPosts[feed.id]
+                    ? "text-yellow-400"
+                    : "hover:text-secondary-400"
+                }`}>
                 <Heart size={18} /> {feed.likes.length}
               </button>
               <button
                 onClick={() =>
-                  setVisibleComments({ ...visibleComments, [feed.id]: !visibleComments[feed.id] })
+                  setVisibleComments({
+                    ...visibleComments,
+                    [feed.id]: !visibleComments[feed.id],
+                  })
                 }
-                className="flex items-center gap-1 hover:text-secondary-400 transition"
-              >
+                className="flex items-center gap-1 hover:text-secondary-400 transition">
                 <MessageCircle size={18} /> Reply
               </button>
             </div>
@@ -179,18 +193,23 @@ const CommunityFeedPres: React.FC = () => {
             {/* Comments */}
             {visibleComments[feed.id] && (
               <div className="mt-4 space-y-3">
-                {feed.comments?.map(comment => {
+                {feed.comments?.map((comment) => {
                   const authorName = getCommentAuthorName(comment);
                   return (
-                    <div key={comment.id} className="flex items-start gap-3 text-sm">
+                    <div
+                      key={comment.id}
+                      className="flex items-start gap-3 text-sm">
                       <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold">
                         {getInitials(authorName)}
                       </div>
                       <div>
                         <div className="bg-gray-100 text-black rounded-lg p-2">
-                          <span className="font-medium">{authorName}</span>: {comment.message}
+                          <span className="font-medium">{authorName}</span>:{" "}
+                          {comment.message}
                         </div>
-                        <div className="text-xs text-gray-500">{formatDate(comment.createdAt)}</div>
+                        <div className="text-xs text-gray-500">
+                          {formatDate(comment.createdAt)}
+                        </div>
                       </div>
                     </div>
                   );
@@ -200,8 +219,7 @@ const CommunityFeedPres: React.FC = () => {
                 {replyingTo !== feed.id ? (
                   <button
                     onClick={() => setReplyingTo(feed.id)}
-                    className="text-sm text-secondary-400 hover:underline"
-                  >
+                    className="text-sm text-secondary-400 hover:underline">
                     Write a reply...
                   </button>
                 ) : (
@@ -209,14 +227,13 @@ const CommunityFeedPres: React.FC = () => {
                     <input
                       type="text"
                       value={replyContent}
-                      onChange={e => setReplyContent(e.target.value)}
+                      onChange={(e) => setReplyContent(e.target.value)}
                       placeholder="Write a reply..."
                       className="flex-1 border border-secondary-400 rounded-lg px-3 py-1 focus:ring-2 focus:ring-secondary-400 focus:outline-none"
                     />
                     <button
                       onClick={() => handleAddComment(feed.id)}
-                      className="bg-secondary-400 hover:bg-secondary-500 text-white px-3 py-1 rounded-lg text-sm"
-                    >
+                      className="bg-secondary-400 hover:bg-secondary-500 text-white px-3 py-1 rounded-lg text-sm">
                       Reply
                     </button>
                     <button
@@ -224,8 +241,7 @@ const CommunityFeedPres: React.FC = () => {
                         setReplyingTo(null);
                         setReplyContent("");
                       }}
-                      className="text-xs text-gray-400 hover:underline"
-                    >
+                      className="text-xs text-gray-400 hover:underline">
                       Cancel
                     </button>
                   </div>
@@ -239,4 +255,4 @@ const CommunityFeedPres: React.FC = () => {
   );
 };
 
-export default CommunityFeedPres;
+export default CommunityFeed;

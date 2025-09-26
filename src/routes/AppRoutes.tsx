@@ -106,6 +106,7 @@ const AppRoutes = () => {
           <Route path="loanapproval" element={<LoanApprovalPage />} />
           <Route path="allowcontribution" element={<AllowContributionPage />} />
           <Route path="policyform" element={<PolicyForm />} />
+          <Route path="contribution" element={<ContributionForm />} />
         </Route>
       </Routes>
     </div>
