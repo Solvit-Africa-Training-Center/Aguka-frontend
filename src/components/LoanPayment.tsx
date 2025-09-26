@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Calendar, CreditCard } from "lucide-react";
-import logo from "assets/logo/agukalogo.png";
+//import logo from "assets/logo/agukalogo.png";
 import { useGetLoansQuery } from "@services/api/loanApi";
 import { useGetRepaymentsQuery, useCreateRepaymentMutation } from "@services/api/repaymentApi";
 import { useSelector } from "react-redux";
@@ -86,13 +86,13 @@ export default function LoanPayment() {
 
   return (
     <div className="min-h-screen bg-[#00353B] p-4 font-poppins relative">
-      <div className="absolute top-20 left-20">
+      {/* <div className="absolute top-20 left-20">
         <img
           src={logo}
           alt="aguka logo"
           className="w-50 h-50 rounded-full object-cover"
         />
-      </div>
+      </div> */}
 
       <div className="flex items-center justify-center min-h-screen">
         <div className="w-full max-w-2xl bg-[#00353B] text-white rounded-2xl shadow-lg p-6 sm:p-8">
