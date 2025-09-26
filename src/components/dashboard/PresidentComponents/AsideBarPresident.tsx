@@ -27,8 +27,9 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50
-      ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      onMouseLeave={onClose}
+      className={`fixed top-0 left-0 h-full w-68 bg-white shadow-lg transform transition-transform duration-300 z-50
+  ${isOpen ? "translate-x-0" : "-translate-x-full"}`}>
       <div className="grid items-center p-4 border-b">
         <button
           onClick={onClose}
@@ -46,44 +47,44 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
       <nav className="flex flex-col gap-2 p-4 font-poppins font-bold">
         <Link
-          to="presidentdashboard"
+          to="/presidentdashboard"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <LayoutDashboard size={20} />
           Dashboard
         </Link>
         <Link
-          to="loanprofile"
+          to="/presidentdashboard/loanprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BookMinus size={20} />
           Loan Profile
         </Link>
         <Link
-          to="approvals"
+          to="/presidentdashboard/approvals"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
           Approval & Decisions
         </Link>
         <Link
-          to="managemembers"
+          to="/presidentdashboard/managemembers"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <Users size={20} />
           Manage members
         </Link>
         <Link
-          to="memberdashboard"
+          to="/presidentdashboard/memberdashboard"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <Bell size={20} />
           My Account
         </Link>
-           <Link
-          to="contribution"
+        <Link
+          to="/presidentdashboard/contribution"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <FaMoneyCheck size={20} />
           Contribution
         </Link>
 
         <Link
-          to="userprofile"
+          to="/presidentdashboard/userprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <UserPen size={20} />
           User Profile
