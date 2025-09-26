@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import logo from "assets/logo/agukalogo.png";
 import { BsCreditCardFill } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
 import { useCreateContributionMeMutation } from "services/api/ContributionApi";
 import type { PaymentMethod } from "types/Contribution";
+import SuccessContribution from "./SuccessContribution"; // ✅ Import the popup
 
 const ContributionForm: React.FC = () => {
-  const navigate = useNavigate();
   const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("bank");
+  const [showPopup, setShowPopup] = useState(false); // ✅ Popup state
 
   const [createContributionMe, { isLoading, error }] =
     useCreateContributionMeMutation();
@@ -28,7 +28,11 @@ const ContributionForm: React.FC = () => {
         paymentMethod,
       }).unwrap();
 
-      navigate("/memberdashboard/successcontribution");
+      setShowPopup(true); // ✅ Show popup
+
+      // Optional: auto-close or navigate after delay
+      // setTimeout(() => setShowPopup(false), 3000);
+      // or navigate("/memberdashboard");
     } catch (err) {
       console.error("Failed to submit contribution:", err);
     }
@@ -36,6 +40,9 @@ const ContributionForm: React.FC = () => {
 
   return (
     <div className="place-items-center min-h-screen bg-[#00353B] pt-20 font-poppins px-4">
+      {/* ✅ Success Popup */}
+      {showPopup && <SuccessContribution onClose={() => setShowPopup(false)} />}
+
       {/* Logo */}
       <div className="relative w-36 h-36 mb-8 mx-auto rounded-full bg-black">
         <img
@@ -59,6 +66,8 @@ const ContributionForm: React.FC = () => {
               <label className="block mb-2 text-xl">Amount to contribute</label>
               <input
                 type="number"
+                min={500}
+                step={100}
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 className="w-full text-xl text-center font-bold focus:outline-none px-4 py-3 rounded-lg border border-[#E09721] placeholder:text-center text-transparent bg-clip-text bg-gradient-to-b from-[#545D5E] to-[#B0C2C4]"
@@ -81,16 +90,37 @@ const ContributionForm: React.FC = () => {
                   onChange={(e) =>
                     setPaymentMethod(e.target.value as PaymentMethod)
                   }
-                  className="my-custom-select w-full px-3 py-3 border border-[#E09721] rounded-lg appearance-none  text-xl text-transparent bg-clip-text bg-gradient-to-b  from-[#545D5E] to-[#B0C2C4] focus:outline-none text-center pl-10">
+                  aria-label="Select payment method"
+                  className="my-custom-select w-full px-3 py-3 border border-[#E09721] rounded-lg appearance-none text-xl text-transparent bg-clip-text bg-gradient-to-b from-[#545D5E] to-[#B0C2C4] focus:outline-none focus:ring-2 focus:ring-[#E09721]/50 focus:border-[#E09721] text-center pl-14 pr-12 transition duration-200 ease-in-out">
                   {paymentOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
+                    <option
+                      key={opt.value}
+                      value={opt.value}
+                      className="text-[#E09721]">
                       {opt.label}
                     </option>
                   ))}
                 </select>
 
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#E09721]">
-                  <BsCreditCardFill className="size-10" />
+                {/* Left icon: Credit Card */}
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#E09721] pointer-events-none">
+                  <BsCreditCardFill className="size-6 md:size-7 lg:size-8" />
+                </div>
+
+                {/* Right icon: Dropdown arrow */}
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#E09721] pointer-events-none">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                 </div>
               </div>
             </div>
