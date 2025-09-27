@@ -122,7 +122,7 @@ export default function Login() {
 
       setSuccess("Login successful!");
 
-      if (!groupId) {
+      if (!groupId && user.role!=="admin") {
         navigate("/fillbeforeregister");
       } else {
         redirectByRole(role);

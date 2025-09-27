@@ -40,7 +40,7 @@ export const loanApi = apiSlice.injectEndpoints({
    
      rejectLoan: builder.mutation<Loan, string>({
       query: (id) => ({
-        url: `/loans/${id}/reject`,
+        url: `/loans/${id}/deny`,
         method: "PATCH",
       }),
     }),

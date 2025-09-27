@@ -5,7 +5,7 @@ import type { User } from "@models/User";
 import type { Loan } from "types/Loan";
 import { useGetUsersQuery } from "@services/api/authApi";
 import { useGetLoansQuery } from "@services/api/loanApi";
-import type { Contribution } from "@models/Contribution";
+import { useGetAllContributionsByUserQuery } from "@services/api/ContributionApi";
 
 const GroupPerformance: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -32,32 +32,20 @@ const GroupPerformance: React.FC = () => {
   >({});
 
   useEffect(() => {
-    const fetchContributions = async () => {
-      if (!users.length) return;
-      const results: Record<string, number> = {};
+    if (!users.length) return;
 
-      await Promise.all(
-        users.map(async (user) => {
-          try {
-            const res = await fetch(
-              `https://aguka.onrender.com/api/contributions/${user.id}/all`
-            );
-            const json = await res.json();
-            const contributions: Contribution[] = json?.data || [];
-            results[user.id] = contributions.reduce(
-              (sum, c) => sum + Number(c.amount),
-              0
-            );
-          } catch {
-            results[user.id] = 0;
-          }
-        })
+    users.forEach(async (user) => {
+      const { data: contributions = [] } = useGetAllContributionsByUserQuery(user.id, {
+        skip: !user.id,
+      });
+
+      const total = contributions.reduce(
+        (sum, c) => sum + Number(c.amount),
+        0
       );
 
-      setContributionsByUser(results);
-    };
-
-    fetchContributions();
+      setContributionsByUser((prev) => ({ ...prev, [user.id]: total }));
+    });
   }, [users]);
 
   return (

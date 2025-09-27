@@ -72,7 +72,9 @@ const AppRoutes = () => {
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanform" element={<LoanForm />} />
+          <Route path="memberdashboard" element={<MemberDashboard />} />
         </Route>
+
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
           <Route index element={<MemberDashboard />} />
@@ -106,6 +108,8 @@ const AppRoutes = () => {
           <Route path="loanapproval" element={<LoanApprovalPage />} />
           <Route path="allowcontribution" element={<AllowContributionPage />} />
           <Route path="policyform" element={<PolicyForm />} />
+          <Route path="contribution" element={<ContributionForm />} />
+          <Route path="myaccount" element={<MemberDashboard />} />
         </Route>
       </Routes>
     </div>

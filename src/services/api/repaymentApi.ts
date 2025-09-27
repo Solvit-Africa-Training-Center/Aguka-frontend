@@ -6,8 +6,8 @@ import type { Repayment } from "types/Repayment";
 export interface RepaymentCreate {
   loanId: string;
   amount: number;
-  date: string;        // ISO date string
-  paymentMethod?: string; // optional if your backend supports it
+  paymentDate: string;   
+  paymentMethod: string; 
 }
 
 export const repaymentApi = apiSlice.injectEndpoints({
