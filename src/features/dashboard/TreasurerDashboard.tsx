@@ -8,6 +8,13 @@ import { useSelector } from "react-redux";
 import { useGetLoansByStatusQuery } from "@services/api/loanApi";
 import type { RootState } from "@services/store/store";
 import type { Loan } from "types/Loan";
+import { useGetGroupDividendsQuery } from "@services/api/dividendApi";
+
+type Dividend = {
+  id: string;
+  amount: number;
+  date: string;
+};
 
 type Contribution = {
   id: string;
@@ -17,9 +24,29 @@ type Contribution = {
   groupId?: string;
 };
 
+type Group = {
+  id: string;
+  name: string;
+};
+
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  groupId?: string;
+  group?: { id: string; name: string };
+};
+
 const TreasurerDashboard: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  const currentGroupId = currentUser?.groupId;
+
+  // ⚠️ Debug: log group info
+  console.log("Current user:", currentUser);
+
+  // Use the correct identifier (group UUID expected by backend)
+  const currentGroupId = currentUser?.id || "";
+
+  // ------------------- Contributions -------------------
   const {
     data: contributionsData,
     error: contributionsError,
@@ -84,6 +111,29 @@ const TreasurerDashboard: React.FC = () => {
     [totalApprovedLoan]
   );
 
+  // ------------------- Dividends -------------------
+  const { data: dividends, isLoading: loadingDividends } =
+    useGetGroupDividendsQuery();
+
+  const totalDividend = useMemo(
+    () =>
+      Array.isArray(dividends)
+        ? dividends.reduce((sum, d) => sum + (d.amount || 0), 0)
+        : 0,
+    [dividends]
+  );
+
+  const formattedTotalDividend = useMemo(
+    () =>
+      new Intl.NumberFormat("rw-RW", {
+        style: "currency",
+        currency: "RWF",
+        minimumFractionDigits: 0,
+      }).format(totalDividend),
+    [totalDividend]
+  );
+
+  // ------------------- UI -------------------
   return (
     <div className="p-10 bg-[#003B42] min-h-screen text-white font-poppins pt-50">
       {/* Stats */}
@@ -103,11 +153,12 @@ const TreasurerDashboard: React.FC = () => {
           change="+5.2%"
           isPositive
         />
+
         <StatCard
           title="Total Dividend"
-          amount="Frw 125,000"
+          amount={loadingDividends ? "Loading..." : formattedTotalDividend}
           change="-2.1%"
-          isPositive={false}
+          isPositive={totalDividend >= 0}
         />
       </div>
 

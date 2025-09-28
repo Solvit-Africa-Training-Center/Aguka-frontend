@@ -1,6 +1,8 @@
 // LoanApprovalCard.tsx
 import React from "react";
 import { Eye, Check, X } from "lucide-react";
+import { useGetLoansByStatusQuery, useApproveLoanMutation, useRejectLoanMutation } from "@services/api/loanApi";
+import { useGetUsersQuery, useApproveUserMutation, useDeleteUserMutation } from "@services/api/authApi";
 
 interface LoanApprovalCardProps {
   name: string;

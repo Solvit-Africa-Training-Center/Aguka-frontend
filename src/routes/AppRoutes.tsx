@@ -58,10 +58,6 @@ const AppRoutes = () => {
         <Route path="*" element={<ErrorPage />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
 
-        <Route path="/loanform" element={<LoanForm />} />
-        <Route path="/notifications" element={<Notifications />} />
-        <Route path="/loanpayment" element={<LoanPayment />} />
-
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
           <Route index element={<PresidentDashboard />} /> {/* /president */}
           <Route path="loanprofile" element={<LoanProfile />} />
@@ -73,8 +69,8 @@ const AppRoutes = () => {
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanform" element={<LoanForm />} />
           <Route path="memberdashboard" element={<MemberDashboard />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
-
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
           <Route index element={<MemberDashboard />} />
@@ -84,11 +80,13 @@ const AppRoutes = () => {
           <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="loanform" element={<LoanForm />} />
           <Route path="userprofile" element={<UserProfile />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
 
         <Route
           path="/secretarydashboard"
           element={<SecretaryDashboardLayout />}>
+          <Route path="loanprofile" element={<LoanProfile />} />
           <Route index element={<SecretaryDashboard />} />
           <Route path="members" element={<MembersList />} />
           <Route path="AnnouncementNotice" element={<AnnouncementNotice />} />
@@ -97,6 +95,9 @@ const AppRoutes = () => {
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="ScheduleMeetingForm" element={<ScheduleMeetingForm />} />
           <Route path="memberaccount" element={<MemberDashboard />} />
+          <Route path="payment" element={<LoanPayment />} />
+          <Route path="loanform" element={<LoanForm />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
 
         <Route
@@ -110,6 +111,10 @@ const AppRoutes = () => {
           <Route path="policyform" element={<PolicyForm />} />
           <Route path="contribution" element={<ContributionForm />} />
           <Route path="myaccount" element={<MemberDashboard />} />
+          <Route path="payment" element={<LoanPayment />} />
+          <Route path="loanform" element={<LoanForm />} />
+          <Route path="loanprofile" element={<LoanProfile />} />
+          <Route path="notifications" element={<Notifications />} />
         </Route>
       </Routes>
     </div>

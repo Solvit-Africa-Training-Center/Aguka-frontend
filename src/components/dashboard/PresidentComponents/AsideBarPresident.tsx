@@ -74,7 +74,6 @@ const AsidebarPresident: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           to="/presidentdashboard/memberdashboard"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <Bell size={20} />
-          My Account
         </Link>
         <Link
           to="/presidentdashboard/contribution"
