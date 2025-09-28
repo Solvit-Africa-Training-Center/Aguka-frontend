@@ -1,28 +1,49 @@
 // LoanApprovalCard.tsx
 import React from "react";
 import { Eye, Check, X } from "lucide-react";
-import { useGetLoansByStatusQuery, useApproveLoanMutation, useRejectLoanMutation } from "@services/api/loanApi";
-import { useGetUsersQuery, useApproveUserMutation, useDeleteUserMutation } from "@services/api/authApi";
+import {
+  useApproveLoanMutation,
+  useRejectLoanMutation,
+} from "@services/api/loanApi";
 
 interface LoanApprovalCardProps {
+  loanId: string;
   name: string;
   date: string;
   amount: string;
   reason: string;
   onView: () => void;
-  onApprove: () => void;
-  onReject: () => void;
 }
 
 const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
+  loanId,
   name,
   date,
   amount,
   reason,
   onView,
-  onApprove,
-  onReject,
 }) => {
+  const [approveLoan, { isLoading: approving }] = useApproveLoanMutation();
+  const [rejectLoan, { isLoading: rejecting }] = useRejectLoanMutation();
+
+  const handleApprove = async () => {
+    try {
+      await approveLoan(loanId).unwrap();
+      alert("Loan approved ");
+    } catch (error) {
+      console.error("Failed to approve loan:", error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      await rejectLoan(loanId).unwrap();
+      alert("Loan rejected ");
+    } catch (error) {
+      console.error("Failed to reject loan:", error);
+    }
+  };
+
   return (
     <div className="p-4">
       {/* Header */}
@@ -47,14 +68,17 @@ const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
         </button>
 
         <button
-          onClick={onApprove}
-          className="flex items-center gap-2 bg-[#3C9040] font-bold text-white px-4 py-2 rounded-lg hover:bg-green-700">
-          <Check size={16} /> Approve
+          onClick={handleApprove}
+          disabled={approving}
+          className="flex items-center gap-2 bg-[#3C9040] font-bold text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50">
+          <Check size={16} /> {approving ? "Approving..." : "Approve"}
         </button>
+
         <button
-          onClick={onReject}
-          className="flex items-center gap-2 bg-[#CE3330] font-bold text-white px-4 py-2 rounded-lg hover:bg-red-700">
-          <X size={16} /> Reject
+          onClick={handleReject}
+          disabled={rejecting}
+          className="flex items-center gap-2 bg-[#CE3330] font-bold text-white px-4 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50">
+          <X size={16} /> {rejecting ? "Rejecting..." : "Reject"}
         </button>
       </div>
     </div>
