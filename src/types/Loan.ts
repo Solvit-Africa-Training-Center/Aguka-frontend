@@ -6,6 +6,7 @@ export type LoanStatus = "pending" | "approved" | "denied" | "paid";
 export interface Loan {
   id: string;
   userId: string;
+  groupId?: string;
   amount: number;
   durationMonths: number;
   status: LoanStatus;
