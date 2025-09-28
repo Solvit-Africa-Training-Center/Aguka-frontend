@@ -1,13 +1,15 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface GroupState {
-  createdGroupId: string | null;
+  createdGroupId: string | null; // when a new group is created
+  currentGroupId: string | null; // ✅ add this: active group for queries
   successMessage: string | null;
   errorMessage: string | null;
 }
 
 const initialState: GroupState = {
   createdGroupId: null,
+  currentGroupId: null, // ✅ initialize
   successMessage: null,
   errorMessage: null,
 };
@@ -37,9 +39,19 @@ const groupSlice = createSlice({
       state.errorMessage = null;
       state.createdGroupId = null;
     },
+
+    // ✅ new reducer: set the currently active group
+    setCurrentGroupId: (state, action: PayloadAction<string | null>) => {
+      state.currentGroupId = action.payload;
+    },
   },
 });
 
-export const { setGroupSuccess, setGroupError, clearGroupMessages } =
-  groupSlice.actions;
+export const {
+  setGroupSuccess,
+  setGroupError,
+  clearGroupMessages,
+  setCurrentGroupId,
+} = groupSlice.actions;
+
 export default groupSlice.reducer;

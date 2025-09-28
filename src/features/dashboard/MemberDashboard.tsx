@@ -66,17 +66,20 @@ const MemberDashboard: React.FC = () => {
   // Total loan remaining after repayments
   const totalLoan = useMemo(() => {
     const DEFAULT_RATE = 0.05;
-    return userLoans.filter((loan) => loan.status.toLowerCase() === "approved").reduce((sum, loan) => {
-      const duration = loan.durationMonths ?? 0;
-      const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
+    return userLoans
+      .filter((loan) => loan.status.toLowerCase() === "approved")
+      .reduce((sum, loan) => {
+        const duration = loan.durationMonths ?? 0;
+        const totalPayable =
+          loan.amount + loan.amount * DEFAULT_RATE * duration;
 
-      const totalRepaid = userRepayments
-        .filter((r) => r.loanId === loan.id)
-        .reduce((acc, r) => acc + Number(r.amount), 0);
+        const totalRepaid = userRepayments
+          .filter((r) => r.loanId === loan.id)
+          .reduce((acc, r) => acc + Number(r.amount), 0);
 
-      const remaining = Math.max(totalPayable - totalRepaid, 0);
-      return sum + remaining;
-    }, 0);
+        const remaining = Math.max(totalPayable - totalRepaid, 0);
+        return sum + remaining;
+      }, 0);
   }, [userLoans, userRepayments]);
 
   const totalDividends = 5000;
@@ -86,111 +89,110 @@ const MemberDashboard: React.FC = () => {
 
   return (
     <div className="w-full min-h-screen bg-[#00353B] font-poppins">
-      <div className="p-10 grid grid-cols-2 w-full gap-10 pt-45">
-        {/* Line Chart */}
-        <div>
-          <LineChartDashboard />
-        </div>
+      <div>
+        <div className="p-10 grid grid-cols-2 w-full gap-10 pt-45">
+          {/* Line Chart */}
+          <div>
+            <LineChartDashboard />
+          </div>
 
-        {/* Dashboard Cards */}
-        <div>
-          <div className="text-white grid grid-cols-2 gap-10 mt-20 w-150 ml-30">
-            {/* Current Balance */}
-            <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-              <div className="flex space-x-5">
-                <h2 className="capitalize text-xl font-bold">
-                  current balance
-                </h2>
-                <Wallet className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+          {/* Dashboard Cards */}
+          <div>
+            <div className="text-white grid grid-cols-2 gap-10 mt-20 w-150 ml-30">
+              {/* Current Balance */}
+              <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
+                <div className="flex space-x-5">
+                  <h2 className="capitalize text-xl font-bold">
+                    current balance
+                  </h2>
+                  <Wallet className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+                </div>
+                <span className="font-bold text-4xl text-center capitalize">
+                  rwf {currentBalance.toLocaleString()}
+                </span>
+                <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
+                  <span>+12.5</span>
+                  <Percent className="size-8 font-bold " />
+                </div>
+                <span>Available for Withdrawal</span>
               </div>
-              <span className="font-bold text-4xl text-center capitalize">
-                rwf {currentBalance.toLocaleString()}
-              </span>
-              <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
-                <span>+12.5</span>
-                <Percent className="size-8 font-bold " />
-              </div>
-              <span>Available for Withdrawal</span>
-            </div>
 
-            {/* My Contribution */}
-            <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-              <div className="flex space-x-5">
-                <h2 className="capitalize text-xl font-bold">
-                  My contribution
-                </h2>
-                <TrendingUp className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+              {/* My Contribution */}
+              <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
+                <div className="flex space-x-5">
+                  <h2 className="capitalize text-xl font-bold">
+                    My contribution
+                  </h2>
+                  <TrendingUp className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+                </div>
+                <span className="font-bold text-4xl text-center capitalize">
+                  rwf {totalContribution.toLocaleString()}
+                </span>
+                <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
+                  <span>+8.2</span>
+                  <Percent className="size-8 font-bold " />
+                </div>
+                <span>Total contributed this year</span>
               </div>
-              <span className="font-bold text-4xl text-center capitalize">
-                rwf {totalContribution.toLocaleString()}
-              </span>
-              <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
-                <span>+8.2</span>
-                <Percent className="size-8 font-bold " />
-              </div>
-              <span>Total contributed this year</span>
-            </div>
 
-            {/* Dividend Payout */}
-            <div className="w-70 h-80 border-0 border-[#F9A825] rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-              <div className="flex space-x-5 ">
-                <h2 className="capitalize text-xl font-bold ">
-                  dividend payout
-                </h2>
-                <WalletMinimal className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+              {/* Dividend Payout */}
+              <div className="w-70 h-80 border-0 border-[#F9A825] rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
+                <div className="flex space-x-5 ">
+                  <h2 className="capitalize text-xl font-bold ">
+                    dividend payout
+                  </h2>
+                  <WalletMinimal className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+                </div>
+                <span className="font-bold text-4xl text-center capitalize">
+                  rwf {totalDividends.toLocaleString()}
+                </span>
+                <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
+                  sept 20
+                </span>
+                <span>Next expected Payout</span>
               </div>
-              <span className="font-bold text-4xl text-center capitalize">
-                rwf {totalDividends.toLocaleString()}
-              </span>
-              <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                sept 20
-              </span>
-              <span>Next expected Payout</span>
-            </div>
 
-            {/* Total Loan */}
-            <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-              <div className="flex space-x-5 justify-between">
-                <h2 className="capitalize text-xl font-bold">total loan</h2>
-                <CreditCard className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+              {/* Total Loan */}
+              <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
+                <div className="flex space-x-5 justify-between">
+                  <h2 className="capitalize text-xl font-bold">total loan</h2>
+                  <CreditCard className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+                </div>
+                <span className="font-bold text-4xl text-center capitalize">
+                  rwf {totalLoan.toLocaleString()}
+                </span>
+                <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
+                  sept 20
+                </span>
+                <span>pay your debt properly</span>
               </div>
-              <span className="font-bold text-4xl text-center capitalize">
-                rwf {totalLoan.toLocaleString()}
-              </span>
-              <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                sept 20
-              </span>
-              <span>pay your debt properly</span>
             </div>
           </div>
+
+          {/* Recent Transactions */}
+
+          {/* Recent Transactions */}
+          <div className="w-full max-w-3xl">
+            <RecentTransactions />
+          </div>
+
+          {/* Community Feeds */}
+          <div className="w-full max-w-3xl text-[#b2b2b2] border overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg h-[480px] rounded-2xl mt-15 p-4">
+            <h2 className="text-left text-3xl capitalize p-2 text-[#F9A825] font-bold">
+              community feeds
+            </h2>
+            <CommunityFeed />
+          </div>
         </div>
-
-        {/* Recent Transactions */}
-  <div className="flex flex-col items-center gap-6 mt-10 font-poppins">
-  {/* Recent Transactions */}
-  <div className="w-full max-w-3xl">
-    <RecentTransactions />
-  </div>
-
-  {/* Community Feeds */}
-  <div className="w-full max-w-3xl text-[#b2b2b2] border overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg h-[480px] rounded-2xl p-4">
-    <h2 className="text-left text-3xl capitalize p-2 text-[#F9A825] font-bold">
-      community feeds
-    </h2>
-    <CommunityFeed />
-  </div>
-</div>
-
-      </div>
-
-      {/* Footer */}
-      <div className="place-items-center">
-        <hr className="w-300 text-[#D4D4D4] p-5" />
-        <div className="text-sm text-center pt-15 capitalize text-[#D4D4D4] p-4 ">
-          <span>
-            &copy; 2025 Aguka. All rights reserved. Building wealth through
-            community.
-          </span>
+        {/* Footer */}
+        <div className="place-items-center">
+          <hr className="w-300 text-[#D4D4D4] p-5" />
+          <div className="text-sm text-center pt-15 capitalize text-[#D4D4D4] p-4 ">
+            <span>
+              &copy; 2025 Aguka. All rights reserved. Building wealth through
+              community.
+            </span>
+          </div>
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ export type LoanStatus = "pending" | "approved" | "denied" | "paid";
 export interface Loan {
   id: string;
   userId: string;
+  groupId?: string;
   amount: number;
   durationMonths: number;
   status: LoanStatus;
@@ -30,3 +31,13 @@ export type LoanCreate = LoanRequest;
 export type LoanUpdate = Partial<Omit<Loan, "id" | "userId">> & {
   id: string;
 };
+export interface LoanApprovalCardProps {
+  name: string;
+  date: string;
+  amount: string;
+  reason: string;
+  onView: () => void;
+  onApprove: () => void;   // ✅ add this
+  onReject: () => void;   
+   // ✅ add this
+}

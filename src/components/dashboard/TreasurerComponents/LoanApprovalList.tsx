@@ -1,66 +1,110 @@
 import React, { useState } from "react";
 import LoanApprovalCard from "./LoanApprovalCard";
 import LoanDetailModal from "./LoanDetailModal";
+import {
+  useGetLoansByStatusQuery,
+  useApproveLoanMutation,
+  useRejectLoanMutation,
+} from "@services/api/loanApi";
+import type { Loan } from "types/Loan";
+import { useSelector } from "react-redux";
+import type { RootState } from "@services/store/store";
 
-interface Loan {
-  name: string;
-  date: string;
-  amount: string;
-  reason: string;
-  previousLoans: string;
-  monthlyContribution: string;
-  employmentStatus: string;
+interface LoanWithExtra extends Loan {
+  previousLoans?: string;
+  monthlyContribution?: string;
+  employmentStatus?: string;
 }
 
 const LoanApprovalList: React.FC = () => {
-  const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
+  const [selectedLoan, setSelectedLoan] = useState<LoanWithExtra | null>(null);
+  const loggedInUser = useSelector((state: RootState) => state.auth.user);
 
-  const loans: Loan[] = [
-    {
-      name: "Paul Ndizihe",
-      date: "2025-01-05",
-      amount: "150,000 Frw",
-      reason: "Business Expansion",
-      previousLoans: "2 (all repaid on time)",
-      monthlyContribution: "250,000 Frw",
-      employmentStatus: "Self-employed",
-    },
-    {
-      name: "Marie Uwimana",
-      date: "2025-03-12",
-      amount: "75,000 Frw",
-      reason: "Medical emergency",
-      previousLoans: "1 (still repaying)",
-      monthlyContribution: "100,000 Frw",
-      employmentStatus: "Unemployed",
-    },
-  ];
+  // ✅ Fetch loans with status "pending"
+  const {
+    data: loans = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useGetLoansByStatusQuery("pending");
+
+  const [approveLoan] = useApproveLoanMutation();
+  const [rejectLoan] = useRejectLoanMutation();
+
+  // ✅ Filter loans by secretary’s group
+  const groupLoans = loggedInUser
+    ? loans.filter((loan: Loan) => loan.groupId === loggedInUser.groupId)
+    : loans;
+
+  // Approve handler
+  const handleApprove = async (loanId: string) => {
+    try {
+      await approveLoan(loanId).unwrap();
+      alert("✅ Loan approved by secretary");
+      refetch();
+    } catch (error) {
+      console.error("Approve failed:", error);
+      alert("❌ Failed to approve loan");
+    }
+  };
+
+  // Reject handler
+  const handleReject = async (loanId: string) => {
+    try {
+      await rejectLoan(loanId).unwrap();
+      alert("❌ Loan rejected by secretary");
+      refetch();
+    } catch (error) {
+      console.error("Reject failed:", error);
+      alert("⚠️ Failed to reject loan");
+    }
+  };
+
+  if (isLoading) return <p className="text-white">Loading loans...</p>;
+  if (isError) return <p className="text-red-500">Failed to fetch loans</p>;
 
   return (
     <div className="space-y-6">
-      {loans.map((loan, idx) => (
-        <LoanApprovalCard
-          key={idx}
-          name={loan.name}
-          date={loan.date}
-          amount={loan.amount}
-          reason={loan.reason}
-          onView={() => setSelectedLoan(loan)}
-          onApprove={() => alert("Approved")}
-          onReject={() => alert("Rejected")}
-        />
-      ))}
+      {groupLoans.length > 0 ? (
+        groupLoans.map((loan) => (
+          <LoanApprovalCard
+            key={loan.id}
+            loanId={loan.id}
+            name={
+              (loan as any).userName ?? (loan as any).memberName ?? "Unknown"
+            }
+            date={new Date(loan.createdAt).toLocaleDateString()}
+            amount={`${loan.amount} Frw`}
+            reason={
+              (loan as any).reason ?? (loan as any).purpose ?? "Not provided"
+            }
+            onView={() =>
+              setSelectedLoan({
+                ...loan,
+                previousLoans: "N/A",
+                monthlyContribution: "N/A",
+                employmentStatus: "N/A",
+              })
+            }
+          />
+        ))
+      ) : (
+        <p className="text-white">No pending loans for your group.</p>
+      )}
 
-      {/* Modal */}
       {selectedLoan && (
         <LoanDetailModal
           isOpen={!!selectedLoan}
           onClose={() => setSelectedLoan(null)}
-          member={selectedLoan.name}
-          amountRequested={selectedLoan.amount}
-          previousLoans={selectedLoan.previousLoans}
-          monthlyContribution={selectedLoan.monthlyContribution}
-          employmentStatus={selectedLoan.employmentStatus}
+          member={
+            (selectedLoan as any).userName ??
+            (selectedLoan as any).memberName ??
+            "Unknown"
+          }
+          amountRequested={`${selectedLoan.amount} Frw`}
+          previousLoans={selectedLoan.previousLoans ?? "N/A"}
+          monthlyContribution={selectedLoan.monthlyContribution ?? "N/A"}
+          employmentStatus={selectedLoan.employmentStatus ?? "N/A"}
         />
       )}
     </div>
