@@ -1,14 +1,14 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { SendEmailRequest, SendEmailResponse } from "types/email";
+// import type { SendEmailRequest, SendEmailResponse } from "types/email";
 
 interface EmailState {
-  lastSent: SendEmailResponse | null;
+  // lastSent: SendEmailResponse | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: EmailState = {
-  lastSent: null,
+  // lastSent: null,
   loading: false,
   error: null,
 };
@@ -21,17 +21,17 @@ const emailSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    sendEmailSuccess: (state, action: PayloadAction<SendEmailResponse>) => {
-      state.lastSent = action.payload;
-      state.loading = false;
-      state.error = null;
-    },
+    // sendEmailSuccess: (state, action: PayloadAction<SendEmailResponse>) => {
+    //   state.lastSent = action.payload;
+    //   state.loading = false;
+    //   state.error = null;
+    // },
     sendEmailFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
       state.error = action.payload;
     },
     clearEmailState: (state) => {
-      state.lastSent = null;
+      // state.lastSent = null;
       state.loading = false;
       state.error = null;
     },
@@ -40,7 +40,7 @@ const emailSlice = createSlice({
 
 export const {
   sendEmailStart,
-  sendEmailSuccess,
+  // sendEmailSuccess,
   sendEmailFailure,
   clearEmailState,
 } = emailSlice.actions;
