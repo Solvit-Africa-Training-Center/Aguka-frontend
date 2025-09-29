@@ -57,7 +57,7 @@ export default function LoanProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-[#002F35] px-4 sm:px-6 md:px-10 lg:px-20 font-poppins flex flex-col">
+    <div className="min-h-screen bg-[#002F35] px-4 sm:px-6 md:px-10 lg:px-20 font-poppins flex flex-col pt-45">
       <div className="flex-1 p-4 sm:p-8 w-full max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
