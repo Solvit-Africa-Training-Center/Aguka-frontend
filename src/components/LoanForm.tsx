@@ -67,7 +67,7 @@ export default function LoanForm() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#003B42] p-4 sm:p-6 md:p-10 font-poppins">
+    <div className="min-h-screen flex flex-col items-center justify-center  p-4 sm:p-6 md:p-10 font-poppins">
       <div className="mb-6">
         <img
           src={logo}

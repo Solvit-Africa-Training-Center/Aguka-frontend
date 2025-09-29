@@ -13,6 +13,8 @@ interface LoanApprovalCardProps {
   amount: string;
   reason: string;
   onView: () => void;
+  onApprove: () => void; 
+  onReject: () => void;
 }
 
 const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({

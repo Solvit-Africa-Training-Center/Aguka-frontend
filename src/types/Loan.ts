@@ -10,10 +10,10 @@ export interface Loan {
   amount: number;
   durationMonths: number;
   status: LoanStatus;
-  approvedBy?: string;   // optional, only if approved
-  createdAt: string;     // ISO string
-  updatedAt: string;  
-  remainingBalance: number;   // ISO string
+  approvedBy?: string; // optional, only if approved
+  createdAt: string; // ISO string
+  updatedAt: string;
+  remainingBalance: number; // ISO string
 }
 
 // For requesting a loan
@@ -37,7 +37,6 @@ export interface LoanApprovalCardProps {
   amount: string;
   reason: string;
   onView: () => void;
-  onApprove: () => void;   // ✅ add this
-  onReject: () => void;   
-   // ✅ add this
+  onApprove: () => void; // ✅ add this
+  onReject: () => void;
 }

@@ -97,6 +97,7 @@ const AppRoutes = () => {
           <Route path="memberaccount" element={<MemberDashboard />} />
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanform" element={<LoanForm />} />
+          <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="notifications" element={<Notifications />} />
         </Route>
 
@@ -111,6 +112,7 @@ const AppRoutes = () => {
           <Route path="policyform" element={<PolicyForm />} />
           <Route path="contribution" element={<ContributionForm />} />
           <Route path="myaccount" element={<MemberDashboard />} />
+          <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanform" element={<LoanForm />} />
           <Route path="loanprofile" element={<LoanProfile />} />

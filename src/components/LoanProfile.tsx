@@ -50,19 +50,17 @@ export default function LoanProfile() {
 
   if (isLoansLoading || isRepaymentsLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white text-lg sm:text-xl">
-        Loading loan profile...
-      </div>
+      <div className="p-15 text-center text-white">Loading loan profile...</div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#002F35] px-4 sm:px-6 md:px-10 lg:px-20 font-poppins flex flex-col pt-45">
+    <div className="min-h-screen bg-[#002F35]  font-poppins flex flex-col pt-45">
       <div className="flex-1 p-4 sm:p-8 w-full max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
           <div>
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1">
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
               My loans
             </h2>
             <p className="text-gray-300 text-sm sm:text-base">
@@ -77,14 +75,14 @@ export default function LoanProfile() {
         </div>
 
         {/* Loan cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
           {/* Current Loan Balance */}
-          <div className="bg-[#004147] p-4 sm:p-6 rounded-xl text-white w-full flex flex-col justify-between">
+          <div className="bg-[#004147] p-6 rounded-xl text-white w-full flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm sm:text-base">Current Loan Balance</h3>
-              <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-[#B7B7B7]" />
+              <DollarSign className="w-6 h-6 text-[#B7B7B7]" />
             </div>
-            <p className="text-base sm:text-lg md:text-xl font-bold text-[#F9A825]">
+            <p className="text-lg sm:text-xl font-bold text-[#F9A825]">
               RWF {currentLoanBalance.toLocaleString()}
             </p>
             <p className="text-xs sm:text-sm mt-2 text-[#F4F4F4]">
@@ -93,15 +91,15 @@ export default function LoanProfile() {
           </div>
 
           {/* Repayment */}
-          <div className="bg-[#004147] p-4 sm:p-6 rounded-xl text-white w-full flex flex-col justify-between">
+          <div className="bg-[#004147] p-6 rounded-xl text-white w-full flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm sm:text-base">Repayment</h3>
-              <HandCoins className="w-5 h-5 sm:w-6 sm:h-6 text-[#B7B7B7]" />
+              <HandCoins className="w-6 h-6 text-[#B7B7B7]" />
             </div>
             <div className="flex">
               <Link
-                to="/loanpayment"
-                className="bg-[#F9A825] text-black font-semibold px-3 sm:px-4 py-2 rounded-lg w-auto inline-block text-sm sm:text-base">
+                to="payment"
+                className="bg-[#F9A825] text-black font-semibold px-4 py-2 rounded-lg w-auto inline-block">
                 Pay
               </Link>
             </div>
@@ -111,12 +109,12 @@ export default function LoanProfile() {
           </div>
 
           {/* Max Loan Amount */}
-          <div className="bg-[#004147] p-4 sm:p-6 rounded-xl text-white w-full flex flex-col justify-between">
+          <div className="bg-[#004147] p-6 rounded-xl text-white w-full flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm sm:text-base">Max Loan Amount</h3>
-              <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-[#B7B7B7]" />
+              <Clock className="w-6 h-6 text-[#B7B7B7]" />
             </div>
-            <p className="text-base sm:text-lg md:text-xl font-bold text-[#F9A825]">
+            <p className="text-lg sm:text-xl font-bold text-[#F9A825]">
               RWF {maxLoanAmount.toLocaleString()}
             </p>
             <p className="text-xs sm:text-sm mt-2 text-[#F4F4F4]">
@@ -125,12 +123,12 @@ export default function LoanProfile() {
           </div>
 
           {/* Pending Applications */}
-          <div className="bg-[#004147] p-4 sm:p-6 rounded-xl text-white w-full flex flex-col justify-between">
+          <div className="bg-[#004147] p-6 rounded-xl text-white w-full flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm sm:text-base">Pending Applications</h3>
-              <CircleCheckBig className="w-5 h-5 sm:w-6 sm:h-6 text-[#B7B7B7]" />
+              <CircleCheckBig className="w-6 h-6 text-[#B7B7B7]" />
             </div>
-            <p className="text-base sm:text-lg md:text-xl font-bold text-[#F9A825]">
+            <p className="text-lg sm:text-xl font-bold text-[#F9A825]">
               {pendingApplications}
             </p>
             <p className="text-xs sm:text-sm mt-2 text-[#F4F4F4]">
@@ -140,14 +138,14 @@ export default function LoanProfile() {
         </div>
 
         {/* Tabs */}
-        <div className="flex flex-col sm:flex-row bg-[#004147] rounded-lg overflow-hidden text-white text-center">
-          <button className="flex-1 px-2 sm:px-4 py-3 bg-[#212121] font-medium text-xs sm:text-sm md:text-base">
+        <div className="flex flex-col sm:flex-row bg-[#004147] rounded-lg overflow-hidden text-white">
+          <button className="flex-1 px-4 py-3 bg-[#212121] font-medium text-sm sm:text-base">
             Loan Applications
           </button>
-          <button className="flex-1 px-2 sm:px-4 py-3 hover:bg-[#212121] text-xs sm:text-sm md:text-base">
+          <button className="flex-1 px-4 py-3 hover:bg-[#212121] text-sm sm:text-base">
             Active Loans
           </button>
-          <button className="flex-1 px-2 sm:px-4 py-3 hover:bg-[#212121] text-xs sm:text-sm md:text-base">
+          <button className="flex-1 px-4 py-3 hover:bg-[#212121] text-sm sm:text-base">
             Loan History
           </button>
         </div>
