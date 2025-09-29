@@ -2,18 +2,18 @@ import React from "react";
 import { Users, Calendar, Bell, FileText } from "lucide-react";
 import CommunityFeed from "@components/dashboard/member/CommunityFeed";
 
-// ✅ Shared Status Type
+// Shared Status Type
 type Status = "Completed" | "Postponed" | "Scheduled";
 
-// ✅ Meeting Type
-interface Meeting {
-  title: string;
-  date: string;
-  attendees: number;
-  status: Status;
-}
+// //  Meeting Type
+// interface Meeting {
+//   title: string;
+//   date: string;
+//   attendees: number;
+//   status: Status;
+// }
 
-// ✅ Communication Type
+//  Communication Type
 interface Communication {
   title: string;
   type: "SMS" | "Email";
@@ -36,27 +36,27 @@ const getStatusClasses = (status: Status): string => {
   }
 };
 
-// ✅ Sample Meetings
-const meetings: Meeting[] = [
-  {
-    title: "Monthly General Meeting",
-    date: "2024-01-20",
-    attendees: 42,
-    status: "Completed",
-  },
-  {
-    title: "Loan Committee Meeting",
-    date: "2024-01-27",
-    attendees: 8,
-    status: "Completed",
-  },
-  {
-    title: "Board Meeting",
-    date: "2024-02-03",
-    attendees: 12,
-    status: "Scheduled",
-  },
-];
+// // ✅ Sample Meetings
+// const meetings: Meeting[] = [
+//   {
+//     title: "Monthly General Meeting",
+//     date: "2024-01-20",
+//     attendees: 42,
+//     status: "Completed",
+//   },
+//   {
+//     title: "Loan Committee Meeting",
+//     date: "2024-01-27",
+//     attendees: 8,
+//     status: "Completed",
+//   },
+//   {
+//     title: "Board Meeting",
+//     date: "2024-02-03",
+//     attendees: 12,
+//     status: "Scheduled",
+//   },
+// ];
 
 // ✅ Sample Communications
 const communications: Communication[] = [
