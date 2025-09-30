@@ -1,10 +1,13 @@
+import React from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Send } from "lucide-react";
 
 export default function CheckEmail() {
   const location = useLocation();
   const navigate = useNavigate();
-  const email = location.state?.email || "**********san@gmail.com";
+
+  // Get the email from the state passed by ForgotPassword component
+  const email = location.state?.email;
 
   return (
     <div className="min-h-screen w-full flex pt-20 justify-center font-poppins bg-[var(--color-primary-300)] p-4">
@@ -18,11 +21,11 @@ export default function CheckEmail() {
         </div>
 
         <p className="text-center text-2xl text-white w-full mb-6 font-bold">
-          We've sent an Email on the address
+          We've sent an email to the address
         </p>
 
         <p className="text-center text-xl text-[#F9A825] font-semibold mb-8">
-          {email}
+          {email || "**********san@gmail.com"}
         </p>
 
         <p className="text-center text-lg text-white mb-10">

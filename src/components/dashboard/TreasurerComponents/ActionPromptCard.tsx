@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface ActionPromptCardProps {
@@ -23,16 +22,7 @@ const ActionPromptCard: React.FC<ActionPromptCardProps> = ({
   buttonText = "Continue",
   placeholder = "Choose an option",
 }) => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
-  const handleDownload = () => {
-    // simulate a successful download (you can replace this with actual logic)
-    setTimeout(() => {
-      toast.success("Download successful!");
-    }, 500);
-  };
-
+  
   return (
     <div className="relative font-poppins p-10 rounded-xl shadow-md h-auto w-170 overflow-auto scrollbar-hide bg-[#003f46]">
       <div className="absolute inset-0 bg-black opacity-40 pointer-events-none z-0 rounded-xl"></div>

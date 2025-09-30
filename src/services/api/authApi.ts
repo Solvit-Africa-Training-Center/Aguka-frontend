@@ -1,8 +1,6 @@
 import { apiSlice } from "./apiSlice";
 import type { User } from "@models/User";
 
-
-
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -38,25 +36,21 @@ export const authApi = apiSlice.injectEndpoints({
         },
       }),
     }),
-  getUsers: builder.query<{ data: User[] }, void>({
-  query: () => ({
-    url: "/users",
-    method: "GET",
-        headers: {
-          // Authorization: `Bearer ${localStorage.getItem("token")}`, // if needed
-        },
+    getUsers: builder.query<{ data: User[] }, void>({
+      query: () => ({
+        url: "/users",
+        method: "GET",
       }),
+    }),
+    updateUser: builder.mutation<User, Partial<User> & { id: string }>({
+      query: ({ id, ...patch }) => ({
+        url: `/users/${id}`,
+        method: "PUT",
+        body: patch,
       }),
-      updateUser: builder.mutation<User, Partial<User> & { id: string }>({
-  query: ({ id, ...patch }) => ({
-    url: `/users/${id}`,
-    method: "PUT",
-    body: patch,
-  }),
-  invalidatesTags: ["Users"],
-}),
-
-approveUser: builder.mutation<User, string>({
+      invalidatesTags: ["Users"],
+    }),
+    approveUser: builder.mutation<User, string>({
       query: (id) => ({
         url: `/users/${id}`,
         method: "PUT",
@@ -64,16 +58,42 @@ approveUser: builder.mutation<User, string>({
       }),
       invalidatesTags: ["Users"],
     }),
-
-deleteUser: builder.mutation<{ success: boolean; id: string }, string>({
-  query: (id) => ({
-    url: `/users/${id}`,
-    method: "DELETE",
-  }),
-  invalidatesTags: ["Users"],
-}),
+    deleteUser: builder.mutation<{ success: boolean; id: string }, string>({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Users"],
     }),
 
+    // --- New endpoints ---
+    forgotPassword: builder.mutation<{ message: string }, { email: string }>({
+      query: (payload) => ({
+        url: "/forgot-password",
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    resetPassword: builder.mutation<
+      { message: string },
+      { token: string; newPassword: string }
+    >({
+      query: (payload) => ({
+        url: "/reset-password",
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    logout: builder.mutation<{ message: string }, void>({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }),
+    }),
+  }),
 });
 
 export const {
@@ -86,4 +106,7 @@ export const {
   useUpdateUserMutation,
   useApproveUserMutation,
   useDeleteUserMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+  useLogoutMutation,
 } = authApi;

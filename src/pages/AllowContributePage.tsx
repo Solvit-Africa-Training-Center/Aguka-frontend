@@ -1,14 +1,35 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ActionPromptCard from "@components/dashboard/TreasurerComponents/ActionPromptCard";
+import { useSelector } from "react-redux";
+import { useGetUsersQuery } from "@services/api/authApi";
+import type { RootState } from "@services/store/store";
+import type { User } from "@models/User";
 
 const AllowContributionPage = () => {
   const [selectedUser, setSelectedUser] = useState("");
 
-  const users = [
-    { value: "user1", label: "John Doe" },
-    { value: "user2", label: "Jane Smith" },
-    { value: "user3", label: "Patrick K." },
-  ];
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const currentGroupId = currentUser?.groupId;
+
+  // Fetch all users
+  const { data: usersData, isLoading: loadingUsers } = useGetUsersQuery();
+
+  // Filter users belonging to the current group
+  const users: { value: string; label: string }[] = useMemo(() => {
+    if (!usersData) return [];
+    const arr = Array.isArray(usersData)
+      ? usersData
+      : Array.isArray((usersData as any)?.data)
+      ? (usersData as any).data
+      : [];
+
+    return arr
+      .filter((u: User) => u.groupId === currentGroupId)
+      .map((u: User) => ({
+        value: u.id,
+        label: u.name,
+      }));
+  }, [usersData, currentGroupId]);
 
   const handleContinue = () => {
     if (!selectedUser) {

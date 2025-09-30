@@ -1,4 +1,3 @@
-
 import { useSelector } from "react-redux";
 import type { RootState } from "services/store/store";
 import { DollarSign, HandCoins, Clock, CircleCheckBig } from "lucide-react";
@@ -14,55 +13,63 @@ export default function LoanProfile() {
 
   // Fetch loans and repayments
   const { data: loans = [], isLoading: isLoansLoading } = useGetLoansQuery();
-  const { data: repayments = [], isLoading: isRepaymentsLoading } = useGetRepaymentsQuery();
+  const { data: repayments = [], isLoading: isRepaymentsLoading } =
+    useGetRepaymentsQuery();
 
   const userLoans: Loan[] = loans.filter((loan) => loan.userId === userId);
 
-// Only approved loans should be considered
-const approvedLoans: Loan[] = userLoans.filter(
-  (loan) => loan.status?.toLowerCase() === "approved"
-);
+  // Only approved loans should be considered
+  const approvedLoans: Loan[] = userLoans.filter(
+    (loan) => loan.status?.toLowerCase() === "approved"
+  );
 
-const totalBorrowed = approvedLoans.reduce((sum, loan) => sum + loan.amount, 0);
+  const totalBorrowed = approvedLoans.reduce(
+    (sum, loan) => sum + loan.amount,
+    0
+  );
 
-const currentLoanBalance = approvedLoans.reduce((sum, loan) => {
-  const DEFAULT_RATE = 0.05;
-  const duration = loan.durationMonths ?? 0;
-  const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
+  const currentLoanBalance = approvedLoans.reduce((sum, loan) => {
+    const DEFAULT_RATE = 0.05;
+    const duration = loan.durationMonths ?? 0;
+    const totalPayable = loan.amount + loan.amount * DEFAULT_RATE * duration;
 
-  const totalRepayments = repayments
-    .filter((r: Repayment) => r.loanId === loan.id)
-    .reduce((rSum, r) => rSum + r.amount, 0);
+    const totalRepayments = repayments
+      .filter((r: Repayment) => r.loanId === loan.id)
+      .reduce((rSum, r) => rSum + r.amount, 0);
 
-  const remainingBalance = totalPayable - totalRepayments;
+    const remainingBalance = totalPayable - totalRepayments;
 
-  return sum + remainingBalance;
-}, 0);
-
+    return sum + remainingBalance;
+  }, 0);
 
   // Max loan amount and pending applications
   const maxLoanAmount = 800000;
-  const pendingApplications = userLoans.filter((loan) => loan.status.toLowerCase() === "pending").length;
+  const pendingApplications = userLoans.filter(
+    (loan) => loan.status.toLowerCase() === "pending"
+  ).length;
 
   if (isLoansLoading || isRepaymentsLoading) {
-    return <div className="p-15 text-center text-white">Loading loan profile...</div>;
+    return (
+      <div className="p-15 text-center text-white">Loading loan profile...</div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-[#002F35] p-15 font-poppins flex flex-col">
+    <div className="min-h-screen bg-[#002F35]  font-poppins flex flex-col pt-45">
       <div className="flex-1 p-4 sm:p-8 w-full max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3">
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">My loans</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-1">
+              My loans
+            </h2>
             <p className="text-gray-300 text-sm sm:text-base">
               Manage your loan applications and active loans
             </p>
           </div>
           <Link
-            to="/loanform"
-            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 text-sm sm:text-base inline-block"
-          >
+            to="/memberdashboard/loanform"
+            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 text-sm sm:text-base inline-block">
             + Apply for Loan
           </Link>
         </div>
@@ -91,13 +98,14 @@ const currentLoanBalance = approvedLoans.reduce((sum, loan) => {
             </div>
             <div className="flex">
               <Link
-                to="/loanpayment"
-                className="bg-[#F9A825] text-black font-semibold px-4 py-2 rounded-lg w-auto inline-block"
-              >
+                to="payment"
+                className="bg-[#F9A825] text-black font-semibold px-4 py-2 rounded-lg w-auto inline-block">
                 Pay
               </Link>
             </div>
-            <p className="text-xs sm:text-sm mt-3 text-[#F4F4F4]">Pay your loan on time</p>
+            <p className="text-xs sm:text-sm mt-3 text-[#F4F4F4]">
+              Pay your loan on time
+            </p>
           </div>
 
           {/* Max Loan Amount */}
@@ -109,7 +117,9 @@ const currentLoanBalance = approvedLoans.reduce((sum, loan) => {
             <p className="text-lg sm:text-xl font-bold text-[#F9A825]">
               RWF {maxLoanAmount.toLocaleString()}
             </p>
-            <p className="text-xs sm:text-sm mt-2 text-[#F4F4F4]">Based on Contributions</p>
+            <p className="text-xs sm:text-sm mt-2 text-[#F4F4F4]">
+              Based on Contributions
+            </p>
           </div>
 
           {/* Pending Applications */}
@@ -121,7 +131,9 @@ const currentLoanBalance = approvedLoans.reduce((sum, loan) => {
             <p className="text-lg sm:text-xl font-bold text-[#F9A825]">
               {pendingApplications}
             </p>
-            <p className="text-xs sm:text-sm mt-2 text-[#F4F4F4]">Awaiting Approval</p>
+            <p className="text-xs sm:text-sm mt-2 text-[#F4F4F4]">
+              Awaiting Approval
+            </p>
           </div>
         </div>
 
