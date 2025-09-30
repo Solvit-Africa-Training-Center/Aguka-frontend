@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import LoanApprovalCard from "./LoanApprovalCard";
+import LoanApprovalCard from "../PresidentComponents/ApprovalCard";
 import LoanDetailModal from "./LoanDetailModal";
-
-
 
 const LoanApprovalList: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

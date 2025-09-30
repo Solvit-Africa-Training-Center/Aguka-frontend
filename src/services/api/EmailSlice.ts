@@ -1,4 +1,8 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+<<<<<<< HEAD
+=======
+import type { SendEmailResponse } from "types/email";
+>>>>>>> features/auth
 
 interface EmailState {
   // lastSent: SendEmailResponse | null;
