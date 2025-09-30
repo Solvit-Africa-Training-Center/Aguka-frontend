@@ -61,9 +61,10 @@ const AppRoutes = () => {
         <Route path="/loanform" element={<LoanForm />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/loanpayment" element={<LoanPayment />} />
+         <Route path="/ScheduleMeetingForm" element={<ScheduleMeetingForm />} />
 
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
-          <Route index element={<PresidentDashboard />} /> {/* /president */}
+          <Route index element={<PresidentDashboard />} /> 
           <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="approvals" element={<ApprovalPage />} />
           <Route path="contribution" element={<ContributionForm />} />
@@ -73,6 +74,7 @@ const AppRoutes = () => {
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanform" element={<LoanForm />} />
           <Route path="memberdashboard" element={<MemberDashboard />} />
+         
         </Route>
 
         <Route path="/memberdashboard" element={<MemberDashboardLayout />}>
@@ -83,6 +85,7 @@ const AppRoutes = () => {
           <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="loanform" element={<LoanForm />} />
           <Route path="userprofile" element={<UserProfile />} />
+         
         </Route>
 
         <Route
@@ -95,7 +98,7 @@ const AppRoutes = () => {
           <Route path="AttendanceReport" element={<AttendanceReport />} />
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="ScheduleMeetingForm" element={<ScheduleMeetingForm />} />
-          <Route path="memberaccount" element={<MemberDashboard />} />
+          <Route path="member" element={<MemberDashboard />} />
         </Route>
 
         <Route

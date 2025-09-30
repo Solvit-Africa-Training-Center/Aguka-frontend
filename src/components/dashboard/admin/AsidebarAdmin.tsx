@@ -45,12 +45,12 @@ const AsidebarAdmin: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <LayoutDashboard size={20} />
           Dashboard
         </Link>
-        <Link
-          to="/loan"
+        {/* <Link
+          to="/contributions"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BookMinus size={20} />
           Contributions
-        </Link>
+        </Link> */}
         <Link
           to="/payment"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
