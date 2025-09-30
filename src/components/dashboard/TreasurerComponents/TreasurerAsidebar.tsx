@@ -69,6 +69,12 @@ const TreasurerAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Loan
         </Link>
         <Link
+          to="/treasurerdashboard/payment"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700 ">
+          <UserPen size={20} />
+          payment
+        </Link>
+        <Link
           to="/treasurerdashboard/myaccount"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <User size={20} />
