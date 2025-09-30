@@ -56,8 +56,9 @@ const AppRoutes = () => {
         <Route path="/registergroup" element={<RegisterGroup />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorPage />} />
-        <Route path="/admindashboard" element={<AdminDashboard />} />
 
+  <Route path="/admindashboard" element={<AdminDashboard />} />
+      <Route path="/admindashboard/userprofile" element={<UserProfile />} />
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
           <Route index element={<PresidentDashboard />} /> 
           <Route path="loanprofile" element={<LoanProfile />} />
@@ -76,9 +77,9 @@ const AppRoutes = () => {
           <Route index element={<MemberDashboard />} />
           <Route path="memberdashboard" element={<MemberDashboard />} />
           <Route path="contribution" element={<ContributionForm />} />
-          <Route path="payment" element={<LoanPayment />} />
+          <Route path="/memberdashboard/payment" element={<LoanPayment />} />
           <Route path="loanprofile" element={<LoanProfile />} />
-          <Route path="loanform" element={<LoanForm />} />
+          <Route path="/memberdashboard/loanform" element={<LoanForm />} />
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="notifications" element={<Notifications />} />
         </Route>

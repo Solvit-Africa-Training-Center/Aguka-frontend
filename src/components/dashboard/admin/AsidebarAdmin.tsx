@@ -2,8 +2,6 @@ import React from "react";
 import {
   X,
   LayoutDashboard,
-  BookMinus,
-  BadgeDollarSign,
   UserPen,
   LogOut,
 } from "lucide-react";
@@ -51,14 +49,14 @@ const AsidebarAdmin: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <BookMinus size={20} />
           Contributions
         </Link> */}
-        <Link
+        {/* <Link
           to="/payment"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
           Calendar
-        </Link>
+        </Link> */}
         <Link
-          to="/loanprofile"
+          to="/admindashboard/userprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <UserPen size={20} />
           User Profile
