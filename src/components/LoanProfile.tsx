@@ -68,13 +68,12 @@ export default function LoanProfile() {
             </p>
           </div>
           <Link
-            to="/memberdashboard/loanform"
+            to="../loanform"
             className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 text-sm sm:text-base inline-block">
             + Apply for Loan
           </Link>
         </div>
 
-        {/* Loan cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-6">
           {/* Current Loan Balance */}
           <div className="bg-[#004147] p-6 rounded-xl text-white w-full flex flex-col justify-between">

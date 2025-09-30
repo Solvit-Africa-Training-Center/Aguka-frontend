@@ -21,7 +21,7 @@ const SecretaryNavbar: React.FC = () => {
 
   return (
     <>
-      <div className="w-full bg-[#003B42] flex justify-between font-poppins p-4 fixed z-10 shadow-lg">
+      <div className="w-full bg-[#003B42] flex justify-between font-poppins p-2 fixed z-10 shadow-lg">
         <div className="w-full p-2 flex items-center gap-10">
           <button onClick={() => setIsSidebarOpen(true)}>
             <Menu className="text-white size-10 hover:text-secondary-300" />

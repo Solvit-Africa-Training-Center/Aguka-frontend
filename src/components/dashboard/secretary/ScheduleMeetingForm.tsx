@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -19,7 +18,11 @@ type MeetingFormData = {
   agenda: string;
 };
 
-const ScheduleMeetingForm: React.FC = () => {
+const ScheduleMeetingForm: React.FC = ({
+  className,
+}: {
+  className?: string;
+}) => {
   const [formData, setFormData] = useState<MeetingFormData>({
     title: "",
     date: "",
@@ -78,7 +81,8 @@ const ScheduleMeetingForm: React.FC = () => {
 
   return (
     <Dialog>
-      <DialogTrigger className="flex gap-2 bg-white text-primary-300">
+      <DialogTrigger
+        className={`flex gap-2 bg-white text-primary-300 p-4 rounded-md text-1xl hover:bg-gradient-to-l from-primary-200 to-primary-700 hover:text-white font-bold ${className}`}>
         <Plus className="w-6 h-6" />
         <span>Schedule Meeting</span>
       </DialogTrigger>

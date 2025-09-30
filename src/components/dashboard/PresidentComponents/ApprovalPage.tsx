@@ -21,7 +21,6 @@ const ApprovalPage: React.FC = () => {
   const [approveUser] = useApproveUserMutation();
   const [rejectUser] = useDeleteUserMutation();
 
-  // Filter loans for logged-in user's group
   const loanList = Array.isArray(loans)
     ? loans
     : loans && typeof loans === "object" && "data" in loans
