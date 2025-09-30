@@ -9,6 +9,7 @@ interface ApprovalCardProps {
   requestCategory?: string;
   onApprove?: () => void;
   onReject?: () => void;
+  onView?: () => void;
 }
 
 const ApprovalCard: React.FC<ApprovalCardProps> = ({
@@ -66,14 +67,12 @@ const ApprovalCard: React.FC<ApprovalCardProps> = ({
       <div className="flex space-x-3 justify-end">
         <button
           onClick={onApprove}
-          className="px-4 py-1 rounded border border-[#F9A825] text-green-500 hover:bg-[#002F35] hover:text-white transition"
-        >
+          className="px-4 py-1 rounded border border-[#F9A825] text-green-500 hover:bg-[#002F35] hover:text-white transition">
           Approve
         </button>
         <button
           onClick={onReject}
-          className="px-4 py-1 rounded border border-[#F9A825] text-red-500 hover:bg-red-800 hover:text-white transition"
-        >
+          className="px-4 py-1 rounded border border-[#F9A825] text-red-500 hover:bg-red-800 hover:text-white transition">
           Reject
         </button>
       </div>

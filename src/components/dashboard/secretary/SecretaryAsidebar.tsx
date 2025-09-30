@@ -51,7 +51,7 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           Dashboard
         </Link>
         <Link
-          to="/secretarydashboard/member"
+          to="/secretarydashboard/memberaccount"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <LayoutDashboard size={20} />
           my account

@@ -1,90 +1,95 @@
-// LoanApprovalCard.tsx
 import React from "react";
-import { Eye, Check, X } from "lucide-react";
-import {
-  useApproveLoanMutation,
-  useRejectLoanMutation,
-} from "@services/api/loanApi";
+import { User, DollarSign } from "lucide-react";
 
-interface LoanApprovalCardProps {
-  loanId: string;
+interface ApprovalCardProps {
   name: string;
-  date: string;
-  amount: string;
-  reason: string;
-  onView: () => void;
-  onApprove: () => void; 
-  onReject: () => void;
+  type: string; // "loan", "member", "contribution", etc.
+  amount?: string;
+  time: string;
+  requestCategory?: string;
+  onApprove?: () => void;
+  onReject?: () => void;
+  onView?: () => void;
 }
 
-const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
-  loanId,
+const ApprovalCard: React.FC<ApprovalCardProps> = ({
   name,
-  date,
+  type,
   amount,
-  reason,
+  time,
+  requestCategory,
+  onApprove,
+  onReject,
   onView,
 }) => {
-  const [approveLoan, { isLoading: approving }] = useApproveLoanMutation();
-  const [rejectLoan, { isLoading: rejecting }] = useRejectLoanMutation();
+  const inferredCategory =
+    requestCategory ??
+    (/loan/i.test(type)
+      ? "Loan request"
+      : /application|member|saving|join/i.test(type)
+      ? "Member request"
+      : "Request");
 
-  const handleApprove = async () => {
-    try {
-      await approveLoan(loanId).unwrap();
-      alert("Loan approved ");
-    } catch (error) {
-      console.error("Failed to approve loan:", error);
-    }
-  };
-
-  const handleReject = async () => {
-    try {
-      await rejectLoan(loanId).unwrap();
-      alert("Loan rejected ");
-    } catch (error) {
-      console.error("Failed to reject loan:", error);
-    }
-  };
+  const isLoan = /loan/i.test(type);
 
   return (
-    <div className="p-4">
-      {/* Header */}
-      <div className="grid grid-cols-3 text-center">
-        <div className="text-left mt-2">
-          <p className="text-white text-2xl font-bold">{name}</p>
-          <p className="text-white text-sm">Applied on {date}</p>
+    <div className="grid grid-cols-1 md:grid-cols-4 items-center gap-4 bg-[#003B42] text-white px-4 py-3 font-poppins rounded-md shadow-md">
+      {/* Icon */}
+      <div className="flex items-center justify-center">
+        <div className="w-10 h-10 rounded-md border-2 border-[#F9A825] flex items-center justify-center">
+          {isLoan ? (
+            <DollarSign className="w-5 h-5 text-[#F9A825]" />
+          ) : (
+            <User className="w-5 h-5 text-[#F9A825]" />
+          )}
         </div>
-        <p className="text-white mt-2 text-2xl font-semibold">{amount}</p>
-        <p className="text-white mt-2 text-xl text-left mt-3">{reason}</p>
+      </div>
+
+      {/* Name + Category */}
+      <div>
+        <p className="font-semibold">{name}</p>
+        <span className="mt-1 inline-block text-xs uppercase tracking-wide px-2 py-0.5 text-white rounded">
+          {inferredCategory}
+        </span>
+      </div>
+
+      {/* Details */}
+      <div className="text-sm text-gray-300">
+        <p>{type}</p>
+        {amount && (
+          <p className="mt-1">
+            Amount: <span className="text-white font-medium">{amount}</span>
+          </p>
+        )}
+        <p className="mt-1">{time}</p>
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3 mt-2 mb-5">
-        <button
-          onClick={onView}
-          className="flex items-center gap-2 bg-gradient-to-b from-[#B0C2C4] to-[#545D5E] 
-             text-white px-4 py-2 rounded-lg font-bold
-             hover:from-[#C8D6D8] hover:to-[#6B7576] hover:scale-105 
-             transition-all duration-200">
-          <Eye className="text-black size-8" /> View Detail
-        </button>
-
-        <button
-          onClick={handleApprove}
-          disabled={approving}
-          className="flex items-center gap-2 bg-[#3C9040] font-bold text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50">
-          <Check size={16} /> {approving ? "Approving..." : "Approve"}
-        </button>
-
-        <button
-          onClick={handleReject}
-          disabled={rejecting}
-          className="flex items-center gap-2 bg-[#CE3330] font-bold text-white px-4 py-2 rounded-lg hover:bg-red-700 disabled:opacity-50">
-          <X size={16} /> {rejecting ? "Rejecting..." : "Reject"}
-        </button>
+      <div className="flex space-x-3 justify-end">
+        {onView && (
+          <button
+            onClick={onView}
+            className="px-4 py-1 rounded border border-[#F9A825] text-blue-400 hover:bg-[#002F35] hover:text-white transition">
+            View
+          </button>
+        )}
+        {onApprove && (
+          <button
+            onClick={onApprove}
+            className="px-4 py-1 rounded border border-[#F9A825] text-green-500 hover:bg-green-700 hover:text-white transition">
+            Approve
+          </button>
+        )}
+        {onReject && (
+          <button
+            onClick={onReject}
+            className="px-4 py-1 rounded border border-[#F9A825] text-red-500 hover:bg-red-700 hover:text-white transition">
+            Reject
+          </button>
+        )}
       </div>
     </div>
   );
 };
 
-export default LoanApprovalCard;
+export default ApprovalCard;
