@@ -3,7 +3,6 @@ import type { Loan, LoanRequest, LoanStatus } from "types/Loan";
 
 export const loanApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-  
     requestLoan: builder.mutation<Loan, LoanRequest>({
       query: (loanData) => ({
         url: "/loans/request",
@@ -13,7 +12,6 @@ export const loanApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Loan"],
     }),
 
-    
     getLoans: builder.query<Loan[], void>({
       query: () => "/loans",
       providesTags: ["Loan"],
@@ -24,21 +22,20 @@ export const loanApi = apiSlice.injectEndpoints({
       providesTags: (_result, _error, id) => [{ type: "Loan", id }],
     }),
 
-    
     getLoansByStatus: builder.query<Loan[], LoanStatus>({
       query: (status) => `/loans/status/${status}`,
       providesTags: ["Loan"],
     }),
 
-    
-     approveLoan: builder.mutation<Loan, string>({ // string = loan id
+    approveLoan: builder.mutation<Loan, string>({
+      // string = loan id
       query: (id) => ({
         url: `/loans/${id}/approve`,
         method: "PATCH",
       }),
     }),
-   
-     rejectLoan: builder.mutation<Loan, string>({
+
+    rejectLoan: builder.mutation<Loan, string>({
       query: (id) => ({
         url: `/loans/${id}/deny`,
         method: "PATCH",
