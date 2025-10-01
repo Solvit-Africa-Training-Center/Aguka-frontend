@@ -130,7 +130,12 @@ const DashboardStats: React.FC = () => {
     }, 0);
   }, [approvedLoans, repayments]);
 
-  
+  // Total loan repaid
+  // const totalLoanRepaid = useMemo(() => {
+  //   return repayments.reduce((sum, r) => sum + Number(r.amount), 0);
+  // }, [repayments]);
+
+  // Pending requests: pending users + pending loans
   const pendingRequestsCount = useMemo(() => {
     const pendingUsers = users.filter((u) => !u.isApproved);
     const pendingGroupLoans = pendingLoans.filter((loan) =>
@@ -169,7 +174,11 @@ const DashboardStats: React.FC = () => {
           }
           icon={ArrowUpCircle}
         />
-        
+        {/* <StatsCard
+          title="Total Loan Repaid"
+          value={`Frw ${totalLoanRepaid.toLocaleString()}`}
+          icon={ArrowUpCircle}
+        /> */}
         <StatsCard
           title="Pending Requests"
           value={
