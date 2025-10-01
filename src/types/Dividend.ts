@@ -15,3 +15,13 @@ export interface DividendResponse {
   message: string;
   data: Dividend[];
 }
+export interface UserDividend {
+  userContributions: number;
+  userShare: number;
+  userLoanBalance: number | null;
+  userDividend: number;
+  userSharePercent: number;
+  groupContributions: number;
+  groupLoanInterest: number;
+  groupPenalties: number | null;
+}

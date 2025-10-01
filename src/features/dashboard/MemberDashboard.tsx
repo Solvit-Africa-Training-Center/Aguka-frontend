@@ -17,7 +17,7 @@ import { useGetLoansQuery } from "services/api/loanApi";
 import type { Contribution } from "@models/Contribution";
 import { useGetRepaymentsQuery } from "@services/api/repaymentApi";
 import type { Repayment } from "types/Repayment";
-
+import { useGetUserDividendsQuery } from "@services/api/dividendApi";
 const MemberDashboard: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const userId = user?.id || "";
@@ -81,11 +81,15 @@ const MemberDashboard: React.FC = () => {
         return sum + remaining;
       }, 0);
   }, [userLoans, userRepayments]);
+  //fetch dividend
+  const { data, isLoading } = useGetUserDividendsQuery();
 
-  const totalDividends = 5000;
+  const totalDividend = data?.userDividend ?? 0;
+
+  //find current balance
   const currentBalance = useMemo(() => {
-    return totalContribution + totalDividends - totalLoan;
-  }, [totalContribution, totalDividends, totalLoan]);
+    return totalContribution + totalDividend - totalLoan;
+  }, [totalContribution, totalDividend, totalLoan]);
 
   return (
     <div className="w-full min-h-screen bg-[#00353B] font-poppins">
@@ -96,10 +100,8 @@ const MemberDashboard: React.FC = () => {
             <LineChartDashboard />
           </div>
 
-          {/* Dashboard Cards */}
           <div>
             <div className="text-white grid grid-cols-2 gap-10 mt-20 w-150 ml-30">
-              {/* Current Balance */}
               <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
                 <div className="flex space-x-5">
                   <h2 className="capitalize text-xl font-bold">
@@ -107,7 +109,7 @@ const MemberDashboard: React.FC = () => {
                   </h2>
                   <Wallet className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
                 </div>
-                <span className="font-bold text-4xl text-center capitalize">
+                <span className="font-bold text-3xl text-center capitalize">
                   rwf {currentBalance.toLocaleString()}
                 </span>
                 <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
@@ -125,7 +127,7 @@ const MemberDashboard: React.FC = () => {
                   </h2>
                   <TrendingUp className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
                 </div>
-                <span className="font-bold text-4xl text-center capitalize">
+                <span className="font-bold text-3xl text-center capitalize">
                   rwf {totalContribution.toLocaleString()}
                 </span>
                 <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
@@ -137,19 +139,28 @@ const MemberDashboard: React.FC = () => {
 
               {/* Dividend Payout */}
               <div className="w-70 h-80 border-0 border-[#F9A825] rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-                <div className="flex space-x-5 ">
-                  <h2 className="capitalize text-xl font-bold ">
+                <div className="flex space-x-5">
+                  <h2 className="capitalize text-xl font-bold">
                     dividend payout
                   </h2>
                   <WalletMinimal className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
                 </div>
-                <span className="font-bold text-4xl text-center capitalize">
-                  rwf {totalDividends.toLocaleString()}
-                </span>
-                <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                  sept 20
-                </span>
-                <span>Next expected Payout</span>
+
+                {isLoading ? (
+                  <p>Loading...</p>
+                ) : !data ? (
+                  <p>No data available</p>
+                ) : (
+                  <>
+                    <span className="font-bold text-3xl text-center capitalize">
+                      rwf {totalDividend.toLocaleString()}
+                    </span>
+                    <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
+                      sept 20
+                    </span>
+                    <span>Next expected Payout</span>
+                  </>
+                )}
               </div>
 
               {/* Total Loan */}
@@ -175,7 +186,7 @@ const MemberDashboard: React.FC = () => {
           </div>
 
           {/* Community Feeds */}
-          <div className="w-full max-w-3xl text-[#b2b2b2] border overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg h-[480px] rounded-2xl mt-15 p-4">
+          <div className="w-full max-w-3xl text-[#b2b2b2] border border-accent-50 overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg h-[480px] rounded-2xl mt-15 p-4">
             <h2 className="text-left text-3xl capitalize p-2 text-[#F9A825] font-bold">
               community feeds
             </h2>
@@ -184,7 +195,7 @@ const MemberDashboard: React.FC = () => {
         </div>
         {/* Footer */}
         <div className="place-items-center">
-          <hr className="w-300 text-[#D4D4D4] p-5" />
+          <hr className="w-300 text-primary-white p-5" />
           <div className="text-sm text-center pt-15 capitalize text-[#D4D4D4] p-4 ">
             <span>
               &copy; 2025 Aguka. All rights reserved. Building wealth through
