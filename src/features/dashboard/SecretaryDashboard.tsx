@@ -1,19 +1,14 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Users, Calendar, Bell, FileText } from "lucide-react";
 import CommunityFeed from "@components/dashboard/member/CommunityFeed";
-
-// Shared Status Type
+import { useSelector } from "react-redux";
+import type { RootState } from "@services/store/store";
+import { useGetUsersQuery } from "@services/api/authApi";
+import { isSameMonth, parseISO } from "date-fns";
+import type { User } from "@models/User";
+import { Plus } from "lucide-react";
+import ScheduleMeetingForm from "@components/dashboard/secretary/ScheduleMeetingForm";
 type Status = "Completed" | "Postponed" | "Scheduled";
-
-// //  Meeting Type
-// interface Meeting {
-//   title: string;
-//   date: string;
-//   attendees: number;
-//   status: Status;
-// }
-
-//  Communication Type
 interface Communication {
   title: string;
   type: "SMS" | "Email";
@@ -36,29 +31,6 @@ const getStatusClasses = (status: Status): string => {
   }
 };
 
-// // ✅ Sample Meetings
-// const meetings: Meeting[] = [
-//   {
-//     title: "Monthly General Meeting",
-//     date: "2024-01-20",
-//     attendees: 42,
-//     status: "Completed",
-//   },
-//   {
-//     title: "Loan Committee Meeting",
-//     date: "2024-01-27",
-//     attendees: 8,
-//     status: "Completed",
-//   },
-//   {
-//     title: "Board Meeting",
-//     date: "2024-02-03",
-//     attendees: 12,
-//     status: "Scheduled",
-//   },
-// ];
-
-// ✅ Sample Communications
 const communications: Communication[] = [
   {
     title: "Payment Reminder",
@@ -84,25 +56,49 @@ const communications: Communication[] = [
 ];
 
 const SecretaryDashboard: React.FC = () => {
-  return (
-    <div className="p-10 bg-[#043c44] min-h-screen text-white font-poppins">
-      {/* Header */}
-      <h1 className="text-4xl font-bold mt-45 capitalize">
-        Secretary Dashboard
-      </h1>
-      <p className="text-gray-300">
-        Manage records, meetings and communications
-      </p>
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const currentGroupId = currentUser?.groupId;
 
-      {/* Stats Cards */}
+  const { data: usersData, isLoading: loadingUsers } = useGetUsersQuery();
+  const users: User[] = useMemo(() => {
+    if (!usersData) return [];
+    const arr = Array.isArray(usersData)
+      ? usersData
+      : Array.isArray((usersData as any)?.data)
+      ? (usersData as any).data
+      : [];
+    return arr.filter((u: User) => u.groupId === currentGroupId);
+  }, [usersData, currentGroupId]);
+
+  const totalUsersInGroup = users.length;
+  const now = new Date();
+
+  const newUsersThisMonth = users.filter(
+    (user) => user.createdAt && isSameMonth(parseISO(user.createdAt), now)
+  ).length;
+  return (
+    <div className="p-10 bg-[#043c44] min-h-screen text-white font-poppins pt-45">
+      <div className="flex justify-between items-center mb-10">
+        <div>
+          <h1 className="text-4xl font-bold capitalize">Secretary Dashboard</h1>
+          <p className="text-gray-300 mt-2">
+            Manage records, meetings, and communications
+          </p>
+        </div>
+        <ScheduleMeetingForm />
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-6">
         <div className="bg-[#D9E9EB] rounded-xl p-4 flex flex-col space-y-4">
           <div className="flex items-center justify-between">
             <span className="text-[#003D42]">Total Members</span>
             <Users size={20} className="text-[#F9A825]" />
           </div>
-          <p className="text-3xl font-bold mt-2 text-[#003D42]">45</p>
-          <p className="text-sm text-[#555555]">3 new this month</p>
+          <p className="text-4xl font-bold mt-2 text-[#003D42]">
+            {totalUsersInGroup}
+          </p>
+          <p className="text-sm text-[#555555]">
+            {newUsersThisMonth} new on this month
+          </p>
         </div>
 
         <div className="bg-[#D9E9EB] rounded-xl p-4 flex flex-col space-y-4">

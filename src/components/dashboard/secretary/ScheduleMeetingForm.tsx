@@ -1,5 +1,15 @@
 import React, { useState } from "react";
 import { useCreateAnnouncementMutation } from "@services/api/announcementApi";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@components/ui/dialog";
+import { Plus } from "lucide-react";
 
 type MeetingFormData = {
   title: string;
@@ -32,15 +42,12 @@ const ScheduleMeetingForm: React.FC = () => {
     e.preventDefault();
 
     try {
-      // ✅ Call API
       await createAnnouncement({
         title: formData.title,
         meetingDate: formData.date,
         meetingTime: formData.time,
         location: formData.location,
         agenda: formData.agenda,
-        // 👇 if announcements need groupId, pass it here
-        // groupId: "your-current-group-id"
       }).unwrap();
 
       alert("Meeting scheduled successfully ✅");
@@ -55,7 +62,7 @@ const ScheduleMeetingForm: React.FC = () => {
       });
     } catch (error) {
       console.error("Failed to schedule meeting:", error);
-      alert("Error scheduling meeting ❌");
+      alert("Error scheduling meeting ");
     }
   };
 
@@ -70,16 +77,18 @@ const ScheduleMeetingForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#00333D] text-white p-6 rounded-md w-full font-poppins">
-      <div className="max-w-xl mx-auto pt-40">
-        <h2 className="text-2xl font-bold mb-6 text-4xl">
-          Schedule New Meeting
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-10">
+    <Dialog>
+      <DialogTrigger className="flex gap-2 bg-white text-primary-300">
+        <Plus className="w-6 h-6" />
+        <span>Schedule Meeting</span>
+      </DialogTrigger>
+      <DialogContent className="p-12 sm:max-w-[35rem]">
+        <DialogHeader>
+          <DialogTitle className="text-2xl">Schedule New Meeting</DialogTitle>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block font-semibold mb-1 text-2xl">
-              Meeting Title
-            </label>
+            <label className="block mb-1">Meeting Title</label>
             <input
               type="text"
               name="title"
@@ -93,7 +102,7 @@ const ScheduleMeetingForm: React.FC = () => {
 
           <div className="flex space-x-4">
             <div className="flex-1">
-              <label className="block font-semibold mb-1 text-2xl">Date</label>
+              <label className="block ">Date</label>
               <input
                 type="date"
                 name="date"
@@ -104,7 +113,7 @@ const ScheduleMeetingForm: React.FC = () => {
               />
             </div>
             <div className="flex-1">
-              <label className="block font-semibold mb-1 text-2xl">Time</label>
+              <label className="block ">Time</label>
               <input
                 type="time"
                 name="time"
@@ -117,7 +126,7 @@ const ScheduleMeetingForm: React.FC = () => {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1 text-2xl">Location</label>
+            <label className="block ">Location</label>
             <input
               type="text"
               name="location"
@@ -130,7 +139,7 @@ const ScheduleMeetingForm: React.FC = () => {
           </div>
 
           <div>
-            <label className="block font-semibold mb-1 text-xl">Agenda</label>
+            <label className="block ">Agenda</label>
             <textarea
               name="agenda"
               value={formData.agenda}
@@ -141,25 +150,25 @@ const ScheduleMeetingForm: React.FC = () => {
             />
           </div>
 
-          <div className="flex justify-between mt-6">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="px-20 py-4 border border-[#D4D4D4] font-bold border-white text-xl rounded hover:bg-white hover:text-[#00333D]"
-            >
-              Cancel
-            </button>
+          <div className="flex justify-between gap-4 mt-6">
+            <DialogClose asChild>
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="px-20 py-4 border border-[#D4D4D4] font-bold border-white  rounded hover:bg-white hover:text-[#00333D]">
+                Cancel
+              </button>
+            </DialogClose>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-10 py-4 font-bold bg-gradient-to-r text-xl from-primary-600 to-[#006D75] text-white rounded hover:opacity-90"
-            >
+              className="text-nowrap px-10 py-4 font-bold bg-gradient-to-r  from-primary-600 to-[#006D75] text-white rounded hover:opacity-90">
               {isLoading ? "Scheduling..." : "Schedule Meeting"}
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

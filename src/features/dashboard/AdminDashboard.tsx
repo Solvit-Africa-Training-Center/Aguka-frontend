@@ -6,62 +6,22 @@ import { LuShield } from "react-icons/lu";
 import AdminTrendChart from "@components/dashboard/admin/AdminTrendChart";
 import RecentActivities from "@components/dashboard/admin/RecentActivities";
 import CurrentStatistics from "@components/dashboard/admin/CurrentStatics";
-import { useGetUsersQuery } from "@services/api/UserApi";
-import { useGetGroupsQuery } from "@services/api/groupApi";
-import type { User } from "types/User";
-import type { Group } from "types/auth";
+
+import { useGetAdminOverviewQuery } from "@services/api/adminApi";
 
 const AdminDashboard = () => {
-  // ✅ Auto-refresh with polling + focus
-  const { data: usersResponse, isLoading: usersLoading, isError: usersError } =
-    useGetUsersQuery(undefined, {
-      refetchOnMountOrArgChange: true,
-      refetchOnFocus: true,
-      refetchOnReconnect: true,
-      pollingInterval: 10000,
-    });
 
-  const { data: groupsResponse, isLoading: groupsLoading, isError: groupsError } =
-    useGetGroupsQuery(undefined, {
-      refetchOnMountOrArgChange: true,
-      refetchOnFocus: true,
-      refetchOnReconnect: true,
-      pollingInterval: 10000,
-    });
-
-  const isLoading = usersLoading || groupsLoading;
-  const isError = usersError || groupsError;
-
-  // ✅ Support both raw array or { data: [] } response
-  const userList: User[] = Array.isArray(usersResponse)
-    ? usersResponse
-    : Array.isArray((usersResponse as any)?.data)
-    ? (usersResponse as any).data
-    : [];
-
-  const groupList: Group[] = Array.isArray(groupsResponse)
-    ? groupsResponse
-    : Array.isArray((groupsResponse as any)?.data)
-    ? (groupsResponse as any).data
-    : [];
-
-  // ✅ Derived statistics
-  const totalUsers = userList.length;
-  const totalGroups = groupList.length;
-
-  const usersPerGroup = groupList.map((g: Group) =>
-    userList.filter((u: User) => u.groupId === g.id).length || 0
-  );
-
-  const groupPresidents = userList.filter((u: User) => u.role === "president");
-
+  
+  const { data: overview, isLoading, isError } = useGetAdminOverviewQuery();
+  console.log(overview);
   const cards = [
     {
       title: "Total Users",
       icon: (
         <HiUsers className="w-11 h-11 bg-[#005159] p-2 rounded-full text-secondary-300" />
       ),
-      value: totalUsers || "--",
+
+      value: overview?.data.totalUsers ?? "--",
       subtitle: "Users in the system",
     },
     {
@@ -69,7 +29,8 @@ const AdminDashboard = () => {
       icon: (
         <TbWaveSawTool className="w-11 h-11 p-2 rounded-full text-[#006D75]" />
       ),
-      value: totalGroups || "--",
+
+      value: overview?.data.totalGroups ?? "--",
       subtitle: "Registered groups",
     },
     {
@@ -77,13 +38,17 @@ const AdminDashboard = () => {
       icon: (
         <LuShield className="w-11 h-11 p-2 rounded-full text-secondary-300" />
       ),
-      value: usersPerGroup.reduce((a, b) => a + b, 0) || "--",
-      subtitle: "Total users in groups",
+
+      value: overview?.data.usersPerGroup?.length ?? "--",
+      subtitle: "Groups with users",
     },
     {
       title: "Group Presidents",
       icon: <GoAlert className="w-11 h-11 p-2 rounded-full text-[#E53935]" />,
-      value: groupPresidents.length || "--",
+
+      value: overview?.data?.groupStats
+        ? overview.data.groupStats.filter((g) => g.president !== null).length
+        : "--",
       subtitle: "Presidents with contacts",
     },
   ];
@@ -108,9 +73,7 @@ const AdminDashboard = () => {
     );
   }
 
-  // ✅ Debug: log actual responses
-  console.log("Users response:", usersResponse);
-  console.log("Groups response:", groupsResponse);
+
 
   return (
     <div className="font-poppons bg-[#003B42] min-h-screen">

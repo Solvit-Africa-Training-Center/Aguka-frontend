@@ -11,12 +11,12 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  password?: string; // optional if your backend doesn't send it
-  phoneNumber: string; // add this
-  location: string; // add this
+  password?: string; 
+  phoneNumber: string; 
+  location: string;
   role: string;
   groupId?: string | null;
-  isApproved: boolean; // add this
+  isApproved: boolean; // add thi
   createdAt: string; // add this
   updatedAt: string; // add this
   profilePicture?: string | null; // optional if your backend sends it

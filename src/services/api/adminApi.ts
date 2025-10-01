@@ -5,7 +5,7 @@ import type { AdminOverview, User, GroupDistribution } from "types/Admin";
 
 export const adminApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAdminOverview: builder.query<AdminOverview, void>({
+    getAdminOverview: builder.query<{ data: AdminOverview }, void>({
       query: () => "/admin/overview",
       providesTags: ["AdminOverview"],
     }),
@@ -19,7 +19,6 @@ export const adminApi = apiSlice.injectEndpoints({
       query: () => "/admin/group-distribution",
       providesTags: ["GroupDistribution"],
     }),
-    
   }),
   overrideExisting: true,
 });
@@ -28,5 +27,4 @@ export const {
   useGetAdminOverviewQuery,
   useGetInactiveUsersQuery,
   useGetGroupDistributionQuery,
-  
 } = adminApi;

@@ -3,16 +3,28 @@
 export interface AdminOverview {
   totalUsers: number;
   totalGroups: number;
-  usersPerGroup: {
-    groupId: string;
-    count: number;
-  }[];
-  groupPresidents: {
-    groupId: string;
-    name: string;
-    contact: string;
-  }[];
+  groupStats: GroupStat[];
+  usersPerGroup: UsersPerGroup[];
 }
+
+export interface GroupStat {
+  groupId: string;
+  groupName: string;
+  userCount: number;
+  president: {
+    id: string;
+    name: string;
+    email?: string;
+    phone?: string;
+  } | null;
+ 
+}
+
+export interface UsersPerGroup {
+  groupId: string;
+  count: number;
+}
+
 
 export interface User {
   id: string;

@@ -170,8 +170,6 @@ const MemberDashboard: React.FC = () => {
           </div>
 
           {/* Recent Transactions */}
-
-          {/* Recent Transactions */}
           <div className="w-full max-w-3xl">
             <RecentTransactions />
           </div>
