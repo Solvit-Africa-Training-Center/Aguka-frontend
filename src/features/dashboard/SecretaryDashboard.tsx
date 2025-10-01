@@ -7,7 +7,10 @@ import { useGetUsersQuery } from "@services/api/authApi";
 import { isSameMonth, parseISO } from "date-fns";
 import type { User } from "@models/User";
 import { Plus } from "lucide-react";
+
 import ScheduleMeetingForm from "@components/dashboard/secretary/ScheduleMeetingForm";
+
+
 type Status = "Completed" | "Postponed" | "Scheduled";
 interface Communication {
   title: string;
@@ -76,6 +79,7 @@ const SecretaryDashboard: React.FC = () => {
   const newUsersThisMonth = users.filter(
     (user) => user.createdAt && isSameMonth(parseISO(user.createdAt), now)
   ).length;
+
   return (
     <div className="p-10 bg-[#043c44] min-h-screen text-white font-poppins pt-45">
       <div className="flex justify-between items-center mb-10">

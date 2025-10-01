@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const AgukaJourney = () => {
   return (
-    <div className="w-full pt-[90px] pr-[20px] pl-[20px] sm:pr-[120px] sm:pl-[120px] pb-[90px] bg-[#003B42CC] place-items-center text-white font-poppins">
+    <div className="w-full pt-[10px] pr-[20px] pl-[20px] sm:pr-[120px] sm:pl-[120px] pb-[90px] bg-[#003B42CC] place-items-center text-white font-poppins">
       <div className="pt-[50px] pl-[20px] pr-[20px] sm:pl-[131px] sm:pr-[131px] pb-[50px] sm:pb-[131px] border-0 rounded-2xl bg-[#456E73] w-full sm:w-200 h-auto sm:h-80 space-y-10 text-left">
         <div className="grid gap-6 sm:gap-[50px]">
           <div>
