@@ -36,8 +36,9 @@ import PolicyForm from "@components/dashboard/TreasurerComponents/PolicyForm";
 import TreasurerDashboard from "@features/dashboard/TreasurerDashboard";
 import TreasurerDashboardLayout from "@components/dashboardLayout/TreasurerDashboardLayout";
 import ReportsPage from "@pages/ReportPage";
-import LoanApprovalPage from "@pages/LoanApproalPage";
+
 import AllowContributionPage from "@pages/AllowContributePage";
+import LoanApprovalList from "@components/dashboard/TreasurerComponents/LoanApprovalList";
 
 const AppRoutes = () => {
   return (
@@ -57,10 +58,10 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<ErrorPage />} />
 
-  <Route path="/admindashboard" element={<AdminDashboard />} />
-      <Route path="/admindashboard/userprofile" element={<UserProfile />} />
+        <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="/admindashboard/userprofile" element={<UserProfile />} />
         <Route path="/presidentdashboard" element={<PresidentLayout />}>
-          <Route index element={<PresidentDashboard />} /> 
+          <Route index element={<PresidentDashboard />} />
           <Route path="loanprofile" element={<LoanProfile />} />
           <Route path="approvals" element={<ApprovalPage />} />
           <Route path="contribution" element={<ContributionForm />} />
@@ -109,7 +110,7 @@ const AppRoutes = () => {
           <Route index element={<TreasurerDashboard />} />
           <Route path="report" element={<ReportsPage />} />
           <Route path="userprofile" element={<UserProfile />} />
-          <Route path="loanapproval" element={<LoanApprovalPage />} />
+          <Route path="loanapproval" element={<LoanApprovalList />} />
           <Route path="allowcontribution" element={<AllowContributionPage />} />
           <Route path="policyform" element={<PolicyForm />} />
           <Route path="contribution" element={<ContributionForm />} />
