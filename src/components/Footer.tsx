@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div>
-      <div className="p-10 flex flex-col md:flex-row gap-10 font-poppins w-full text-white md:space-x-20">
+    <div className="">
+      <div className="p-10 flex flex-col md:flex-row gap-10 font-poppins w-full text-white md:space-x-20 bg-[[#456E73]]">
         {/* Logo + Description */}
         <div className="md:ml-30 flex-1">
           <div>
@@ -33,7 +33,7 @@ const Footer = () => {
         </div>
 
         {/* Legal */}
-        <div className="flex flex-col capitalize mt-10 flex-1">
+        <div className="flex flex-col capitalize mt-10 flex-1 ">
           <h2 className="text-2xl md:text-3xl capitalize mb-5">legal</h2>
           <Link to="/faq" className="text-lg md:text-xl hover:underline">
             privancy policy
@@ -84,7 +84,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="w-full text-accent-100 p-5 relative">
+      <div className="w-full text-primary-400 p-15 relative  ">
         <hr className="w-full md:w-300 mx-auto" />
         <div className="text-xs md:text-sm text-center pt-6 capitalize">
           <span>
