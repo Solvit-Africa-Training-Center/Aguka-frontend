@@ -28,7 +28,8 @@ const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
 }) => {
   return (
     <div className="p-4">
-      {/* Header */}
+
+
       <div className="grid grid-cols-3 text-center">
         <div className="text-left mt-2">
           <p className="text-white text-2xl font-bold">{name}</p>
@@ -38,7 +39,6 @@ const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
         <p className="text-white mt-2 text-xl text-left mt-3">{reason}</p>
       </div>
 
-      {/* Actions */}
       <div className="flex gap-3 mt-2 mb-5">
         <button
           onClick={onView}
@@ -60,5 +60,6 @@ const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
     </div>
   );
 };
+
 
 export default LoanApprovalCard;
