@@ -84,7 +84,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="w-full text-primary-400 p-15 relative  ">
+      <div className="w-full text-accent-200 p-15 relative  ">
         <hr className="w-full md:w-300 mx-auto" />
         <div className="text-xs md:text-sm text-center pt-6 capitalize">
           <span>
