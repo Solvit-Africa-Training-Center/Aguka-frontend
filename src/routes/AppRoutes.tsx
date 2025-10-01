@@ -38,7 +38,7 @@ import TreasurerDashboardLayout from "@components/dashboardLayout/TreasurerDashb
 import ReportsPage from "@pages/ReportPage";
 
 import AllowContributionPage from "@pages/AllowContributePage";
-import LoanApprovalList from "@components/dashboard/TreasurerComponents/LoanApprovalList";
+import LoanApprovalPage from "@pages/LoanApproalPage";
 
 const AppRoutes = () => {
   return (
@@ -110,7 +110,7 @@ const AppRoutes = () => {
           <Route index element={<TreasurerDashboard />} />
           <Route path="report" element={<ReportsPage />} />
           <Route path="userprofile" element={<UserProfile />} />
-          <Route path="loanapproval" element={<LoanApprovalList />} />
+          <Route path="loanapproval" element={<LoanApprovalPage />} />
           <Route path="allowcontribution" element={<AllowContributionPage />} />
           <Route path="policyform" element={<PolicyForm />} />
           <Route path="contribution" element={<ContributionForm />} />

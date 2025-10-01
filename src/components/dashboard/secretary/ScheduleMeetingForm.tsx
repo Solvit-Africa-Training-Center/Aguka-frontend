@@ -159,7 +159,7 @@ const ScheduleMeetingForm: React.FC = ({
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-20 py-4 border border-[#D4D4D4] font-bold border-white  rounded hover:bg-white hover:text-[#00333D]">
+                className="px-20 py-4 border border-[#D4D4D4] font-bold rounded hover:bg-white hover:text-[#00333D]">
                 Cancel
               </button>
             </DialogClose>

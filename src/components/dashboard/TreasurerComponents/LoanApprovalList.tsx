@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import LoanApprovalCard from "./LoanApprovalCard";
+
 import LoanDetailModal from "./LoanDetailModal";
+import LoanApprovalCard from "./LoanApprovalCard";
 
 
 
@@ -10,15 +11,14 @@ const LoanApprovalList: React.FC = () => {
   return (
     <div>
       <LoanApprovalCard
-        name="Paul Ndizihe"
-        date="2025-01-05"
-        amount="150,000 Frw"
+        name="John Doe"
+        date="2025-10-01"
+        amount="$5,000"
         reason="Business Expansion"
-        onView={() => setIsOpen(true)}
-        onApprove={() => alert("Approved")}
-        onReject={() => alert("Rejected")}
+        onView={() => console.log("View clicked")}
+        onApprove={() => console.log("Approved")}
+        onReject={() => console.log("Rejected")}
       />
-
       <LoanDetailModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
