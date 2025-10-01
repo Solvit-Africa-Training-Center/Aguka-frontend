@@ -31,12 +31,9 @@
     "recharts": "^3.2.0",
     "remixicon": "^4.6.0",
 
-    "tailwind-merge": "^3.3.1",
 
     "tailwind-scrollbar": "^4.0.2",
-=======
     "tailwind-merge": "^3.3.1",
->>>>>>> 2c9c93b (added change on dashboard)
     "tailwind-scrollbar-hide": "^4.0.0",
     "tailwindcss": "^4.1.12"
   },
