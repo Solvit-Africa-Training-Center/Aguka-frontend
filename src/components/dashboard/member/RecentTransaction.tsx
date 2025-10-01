@@ -9,6 +9,7 @@ interface Transaction {
   amount: number;
   status: "success" | "Pending" | "Rejected";
   balance: number;
+
 }
 
 const RecentTransactions: React.FC = () => {
@@ -29,14 +30,15 @@ const RecentTransactions: React.FC = () => {
   const isLoading = loadingContributions || loadingLoans;
   const isError = errorContributions || errorLoans;
 
-  const contributionTransactions: Transaction[] = contributions.map((c) => ({
-    id: c.id,
-    date: new Date(c.createdAt).toLocaleDateString(),
-    type: c.type || "Contribution",
-    amount: c.amount,
-    status: c.status || "success",
-    balance: c.balance || 0,
-  }));
+  const contributionTransactions: Transaction[] = contributions.map((c: any) => ({
+  id: c.id,
+  date: c.createdAt ? new Date(c.createdAt).toLocaleDateString() : "",
+  type: c.type ?? "Contribution",
+  amount: c.amount ?? 0,
+  status: (c.status as Transaction["status"]) ?? "success",
+  balance: c.balance ?? 0,
+}));
+
 
   const loanTransactions: Transaction[] = loans.map((l) => ({
     id: l.id,

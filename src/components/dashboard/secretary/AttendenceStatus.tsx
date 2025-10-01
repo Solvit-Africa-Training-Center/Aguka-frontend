@@ -1,6 +1,7 @@
 import React from 'react';
 
-export type AttendanceStatusType = 'Present' | 'Absent';
+export type AttendanceStatusType = "Present" | "Absent";
+
 
 interface AttendanceStatusProps {
   status: AttendanceStatusType;

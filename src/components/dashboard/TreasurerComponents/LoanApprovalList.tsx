@@ -76,16 +76,21 @@ const LoanApprovalList: React.FC = () => {
         />
       ))}
       {selectedLoan && (
-        <LoanDetailModal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          member={selectedLoan.member ?? ""}
-          amountRequested={selectedLoan.amount}
-          previousLoans={selectedLoan.previousLoans ?? []}
-          monthlyContribution={selectedLoan.monthlyContribution ?? 0}
-          employmentStatus={selectedLoan.employmentStatus ?? ""}
-        />
-      )}
+  <LoanDetailModal
+    isOpen={isOpen}
+    onClose={() => setIsOpen(false)}
+    member={selectedLoan.member ?? ""}
+    amountRequested={String(selectedLoan.amount)} // convert number → string
+    previousLoans={
+      selectedLoan.previousLoans
+        ? selectedLoan.previousLoans.map(l => l.amount).join(", ")
+        : "None"
+    } // convert Loan[] → string
+    monthlyContribution={String(selectedLoan.monthlyContribution ?? 0)} // number → string
+    employmentStatus={selectedLoan.employmentStatus ?? ""}
+  />
+)}
+
     </div>
   );
 };

@@ -50,7 +50,7 @@ const AllowContributionPage: React.FC = () => {
         userId,
         groupId: currentGroupId,
         amount: amountValue,
-        paymentMethod: "Cash",
+        paymentMethod: "cash",
         contributionDate: new Date().toISOString(),
       };
 

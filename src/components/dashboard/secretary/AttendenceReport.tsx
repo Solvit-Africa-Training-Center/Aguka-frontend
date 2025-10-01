@@ -3,13 +3,16 @@ import React from "react";
 import AttendanceRow from "./AttendenceRow";
 import { useGetGroupMembersQuery } from "@services/api/groupApi"; // Fetch members
 import { useGetGroupContributionsTodayQuery } from "@services/api/ContributionApi"; // Fetch contributions
+import { useParams } from "react-router-dom";
+import type { AttendanceStatusType } from "./AttendenceStatus";
 
 const AttendanceReport: React.FC = () => {
   const currentMonth = new Date().toLocaleString("default", { month: "long" });
-
+   
+  const { groupId } = useParams<{ groupId: string }>();
   // Fetch members
   const { data: members, isLoading: membersLoading } =
-    useGetGroupMembersQuery();
+    useGetGroupMembersQuery(groupId!);
 
   // Fetch contributions for current month
   const { data: contributions, isLoading: contributionsLoading } =
@@ -25,16 +28,17 @@ const AttendanceReport: React.FC = () => {
 
   // Map member attendance dynamically
   const data =
-    members?.map((member) => {
-      const contributed = contributions?.some(
-        (c: any) => c.userId === member.id
-      );
-      return {
-        name: member.name,
-        status: contributed ? "Present" : "Absent",
-        total: contributed ? "1/1" : "0/1", // update if counting multiple contributions
-      };
-    }) || [];
+  members?.map((member) => {
+    const contributed = contributions?.some(
+      (c: any) => c.userId === member.id
+    );
+    return {
+      name: member.name,
+      status: contributed ? ("Present" as AttendanceStatusType) 
+                          : ("Absent" as AttendanceStatusType),
+      total: contributed ? "1/1" : "0/1",
+    };
+  }) || [];
 
   return (
     <section className="bg-[#003B42] text-white pt-30 h-screen font-poppins">
@@ -55,12 +59,13 @@ const AttendanceReport: React.FC = () => {
               <tbody>
                 {data.map((member, idx) => (
                   <AttendanceRow
-                    key={idx}
-                    name={member.name}
-                    november={member.status} // just reuse the prop for current month
-                    december={member.status} // keep as placeholder, can rename prop later
-                    total={member.total}
-                  />
+  key={idx}
+  name={member.name}
+  november={member.status}
+  december={member.status}
+  total={member.total}
+/>
+
                 ))}
               </tbody>
             </table>
