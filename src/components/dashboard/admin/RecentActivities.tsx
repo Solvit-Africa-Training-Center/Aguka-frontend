@@ -1,5 +1,9 @@
 import React from "react";
-import { ListChecks, Megaphone, MessageCircle, DollarSign } from "lucide-react";
+import { ListChecks, Megaphone } from "lucide-react";
+import { useGetUsersQuery } from "@services/api/UserApi";
+import { useGetGroupsQuery } from "@services/api/groupApi";
+import type { User } from "types/User";
+import type { Group } from "types/auth";
 
 interface Activity {
   time: string;
@@ -10,49 +14,74 @@ interface Activity {
   color: string;
 }
 
-const activities: Activity[] = [
-  {
-    time: "42 mins ago",
-    title: "Task Updated",
-    user: "Sandra",
-    description: "Updated a task",
-    icon: <ListChecks className="w-6 h-6 text-white" />,
-    color: "bg-yellow-600",
-  },
-  {
-    time: "1 hour ago",
-    title: "Published Announcement",
-    user: "David",
-    description: "Given announcement",
-    icon: <Megaphone className="w-6 h-6 text-white" />,
-    color: "bg-cyan-600",
-  },
-  {
-    time: "9 hours ago",
-    title: "Replayed Comment",
-    user: "Merci",
-    description: "Added a comment",
-    icon: <MessageCircle className="w-6 h-6 text-white" />,
-    color: "bg-teal-600",
-  },
-  {
-    time: "1 day ago",
-    title: "Loan Asked",
-    icon: <DollarSign className="w-6 h-6 text-white" />,
-    color: "bg-red-700",
-  },
-];
-
 const RecentActivities: React.FC = () => {
+  const { data: usersResponse } = useGetUsersQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    pollingInterval: 10000,
+  });
+
+  const { data: groupsResponse } = useGetGroupsQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    pollingInterval: 10000,
+  });
+
+  const userList: User[] = Array.isArray(usersResponse)
+    ? usersResponse
+    : Array.isArray((usersResponse as any)?.data)
+    ? (usersResponse as any).data
+    : [];
+
+  const groupList: Group[] = Array.isArray(groupsResponse)
+    ? groupsResponse
+    : Array.isArray((groupsResponse as any)?.data)
+    ? (groupsResponse as any).data
+    : [];
+
+  const userActivities: Activity[] = userList
+    .filter(u => u.createdAt)
+    .slice(-5)
+    .map((u) => ({
+      time: new Date(u.createdAt!).toLocaleString(),
+      title: "New User Registered",
+      user: u.name,
+      description: `User joined the system`,
+      icon: <ListChecks className="w-6 h-6 text-white" />,
+      color: "bg-yellow-600",
+    }));
+
+  const groupActivities: Activity[] = groupList
+    .filter(g => g.createdAt)
+    .slice(-5)
+    .map((g) => ({
+      time: new Date(g.createdAt!).toLocaleString(),
+      title: "New Group Created",
+      user: g.user?.name || "President",
+      description: `Group "${g.name}" was added`,
+      icon: <Megaphone className="w-6 h-6 text-white" />,
+      color: "bg-cyan-600",
+    }));
+
+  const activities = [...userActivities, ...groupActivities].sort(
+    (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
+  );
+
   return (
-    <div className=" p-6 rounded-lg  text-white border border-secondary-400 w-150 h-115 mt-25 capitalize ">
-      <h2 className="text-2xl font-bold mb-4 ">Recent Activities</h2>
-      <div className="space-y-6 space-x-5 items-center">
+    <div className="w-full text-white md:w-150 mt-15">
+      {/* Title outside border */}
+      <h2 className="text-4xl font-bold mb-10 text-white">Recent Activities</h2>
+
+      {/* Scrollable box */}
+      <div className="p-4 rounded-lg border border-secondary-400 bg-primary-400 max-h-96 overflow-y-auto scrollbar-hide space-y-4">
         {activities.map((activity, index) => (
-          <div key={index} className="flex items-start space-x-10">
-            <p className="text-gray-400 min-w-[90px]">{activity.time}</p>
+          <div key={index} className="flex items-start space-x-4">
+            <p className="text-[#929292] min-w-[90px]">{activity.time}</p>
             <div
-              className={`flex items-center justify-center w-10 h-10 rounded-full ${activity.color}`}>
+              className={`flex items-center justify-center w-10 h-10 rounded-full ${activity.color}`}
+            >
               {activity.icon}
             </div>
             <div>
@@ -60,9 +89,7 @@ const RecentActivities: React.FC = () => {
               {activity.user && (
                 <p className="text-1xl text-[#F4F4F4]">
                   <span className="font-semibold">{activity.user}</span>{" "}
-                  <span className="text-sm text-[#929292]">
-                    {activity.description}
-                  </span>
+                  <span className="text-sm text-[#929292]">{activity.description}</span>
                 </p>
               )}
             </div>

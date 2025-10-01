@@ -62,7 +62,7 @@ export default function LoanForm() {
       setDurationMonths(null);
     } catch (err) {
       console.error(err);
-      alert("Loan submission failed.");
+      alert("You have an active loan. You have to clear your loan!");
     }
   };
 

@@ -97,7 +97,7 @@ export default function LoanProfile() {
             </div>
             <div className="flex">
               <Link
-                to="payment"
+                to="/memberdashboard/payment"
                 className="bg-[#F9A825] text-black font-semibold px-4 py-2 rounded-lg w-auto inline-block">
                 Pay
               </Link>
