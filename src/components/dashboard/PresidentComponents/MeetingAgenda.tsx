@@ -13,6 +13,7 @@ const MeetingAgenda: React.FC<MeetingAgendaProps> = ({ groupId }) => {
     page: 1,
     limit: 100,
   });
+
   const announcements: Announcement[] = Array.isArray(data) ? data : [];
   const filteredAnnouncements = groupId
     ? announcements.filter((a) => a.groupId === groupId)
@@ -37,7 +38,8 @@ const MeetingAgenda: React.FC<MeetingAgendaProps> = ({ groupId }) => {
           <p className="text-white mt-2">Upcoming meetings & schedules</p>
         </div>
 
-        <ScheduleMeetingForm className="border border-[#F9A825] mt-2 !bg-transparent !from-transparent !to-transparent  !text-[#F9A825] px-4 py-1 !rounded-full text-sm hover:!bg-[#F9A825] hover:!text-[#00353B] transition !size-fit" />
+        {/* Modal Trigger Button */}
+        <ScheduleMeetingForm className="border border-[#F9A825] mt-2 !bg-transparent !from-transparent !to-transparent !text-[#F9A825] px-4 py-1 !rounded-full text-sm hover:!bg-[#F9A825] hover:!text-[#00353B] transition !size-fit" />
       </div>
 
       {/* Meetings List */}
@@ -46,7 +48,8 @@ const MeetingAgenda: React.FC<MeetingAgendaProps> = ({ groupId }) => {
           {filteredAnnouncements.map((m: Announcement, idx: number) => (
             <div
               key={idx}
-              className="flex flex-col gap-3 bg-[#004045] rounded-xl p-4 shadow">
+              className="flex flex-col gap-3 bg-[#004045] rounded-xl p-4 shadow"
+            >
               {/* Title */}
               <div className="flex items-center gap-3">
                 <div className="bg-white p-2 rounded-md">

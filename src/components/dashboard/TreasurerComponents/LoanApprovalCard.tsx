@@ -1,8 +1,21 @@
 // LoanApprovalCard.tsx
 import React from "react";
 import { Eye, Check, X } from "lucide-react";
+import { useGetLoansByStatusQuery } from "@services/api/loanApi";
 
-import type { LoanApprovalCardProps } from "types/Loan";
+interface LoanApprovalCardProps {
+  name: string;
+  date: string;
+  amount: number;
+  reason: string;
+  onView: () => void;
+  onApprove: () => void;
+  onReject: () => void;
+}
+
+
+
+
 
 const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
   name,
@@ -15,15 +28,17 @@ const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
 }) => {
   return (
     <div className="p-4">
+      {/* Header */}
       <div className="grid grid-cols-3 text-center">
         <div className="text-left mt-2">
           <p className="text-white text-2xl font-bold">{name}</p>
           <p className="text-white text-sm">Applied on {date}</p>
         </div>
         <p className="text-white mt-2 text-2xl font-semibold">{amount}</p>
-        <p className="text-white mt-2 text-xl text-left">{reason}</p>
+        <p className="text-white mt-2 text-xl text-left mt-3">{reason}</p>
       </div>
 
+      {/* Actions */}
       <div className="flex gap-3 mt-2 mb-5">
         <button
           onClick={onView}

@@ -4,10 +4,11 @@ import CommunityFeed from "@components/dashboard/member/CommunityFeed";
 import { useSelector } from "react-redux";
 import type { RootState } from "@services/store/store";
 import { useGetUsersQuery } from "@services/api/authApi";
-import { isSameMonth, parseISO } from "date-fns";
+import { useGetAnnouncementsQuery } from "@services/api/announcementApi";
+import { isSameMonth, parseISO, isBefore } from "date-fns";
 import type { User } from "@models/User";
-import { Plus } from "lucide-react";
 import ScheduleMeetingForm from "@components/dashboard/secretary/ScheduleMeetingForm";
+
 type Status = "Completed" | "Postponed" | "Scheduled";
 interface Communication {
   title: string;
@@ -30,35 +31,11 @@ const getStatusClasses = (status: Status): string => {
   }
 };
 
-const communications: Communication[] = [
-  {
-    title: "Payment Reminder",
-    type: "SMS",
-    date: "2024-01-15",
-    recipients: 45,
-    status: "Completed",
-  },
-  {
-    title: "Monthly Newsletter",
-    type: "Email",
-    date: "2024-01-10",
-    recipients: 42,
-    status: "Postponed",
-  },
-  {
-    title: "Meeting Notification",
-    type: "SMS",
-    date: "2024-06-05",
-    recipients: 46,
-    status: "Scheduled",
-  },
-];
-
 const SecretaryDashboard: React.FC = () => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
   const currentGroupId = currentUser?.groupId;
 
-  const { data: usersData, isLoading: loadingUsers } = useGetUsersQuery();
+  const { data: usersData } = useGetUsersQuery();
   const users: User[] = useMemo(() => {
     if (!usersData) return [];
     const arr = Array.isArray(usersData)
@@ -71,10 +48,43 @@ const SecretaryDashboard: React.FC = () => {
 
   const totalUsersInGroup = users.length;
   const now = new Date();
-
   const newUsersThisMonth = users.filter(
     (user) => user.createdAt && isSameMonth(parseISO(user.createdAt), now)
   ).length;
+
+  // 🔥 Announcements as meetings / communications
+  const { data: announcementsData } = useGetAnnouncementsQuery({
+    page: 1,
+    limit: 100,
+  });
+  const announcements = announcementsData || [];
+
+  const communications: Communication[] = useMemo(() => {
+    return announcements.map((a: any) => {
+      const meetingDate = a.meetingDate ? parseISO(a.meetingDate) : now;
+      let status: Status = "Scheduled";
+
+      if (a.meetingDate && isBefore(meetingDate, now)) status = "Completed";
+
+      return {
+        title: a.title || "No title",
+        type: a.type || "Meeting",
+        date: a.meetingDate || "",
+        recipients: a.recipients || 0,
+        status,
+      };
+    });
+  }, [announcements, now]);
+
+  const meetingsThisMonth = announcements.filter(
+    (a: any) => a.meetingDate && isSameMonth(parseISO(a.meetingDate), now)
+  ).length;
+
+  const communicationsSent = communications.length;
+
+  const getStatusCount = (status: Status) =>
+    communications.filter((c) => c.status === status).length;
+
   return (
     <div className="p-10 bg-[#043c44] min-h-screen text-white font-poppins pt-45">
       <div className="flex justify-between items-center mb-10">
@@ -86,6 +96,8 @@ const SecretaryDashboard: React.FC = () => {
         </div>
         <ScheduleMeetingForm />
       </div>
+
+      {/* Summary cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-6">
         <div className="bg-[#D9E9EB] rounded-xl p-4 flex flex-col space-y-4">
           <div className="flex items-center justify-between">
