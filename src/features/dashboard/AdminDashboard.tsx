@@ -10,8 +10,6 @@ import CurrentStatistics from "@components/dashboard/admin/CurrentStatics";
 import { useGetAdminOverviewQuery } from "@services/api/adminApi";
 
 const AdminDashboard = () => {
-
-  
   const { data: overview, isLoading, isError } = useGetAdminOverviewQuery();
   console.log(overview);
   const cards = [
@@ -38,7 +36,6 @@ const AdminDashboard = () => {
       icon: (
         <LuShield className="w-11 h-11 p-2 rounded-full text-secondary-300" />
       ),
-
       value: overview?.data.usersPerGroup?.length ?? "--",
       subtitle: "Groups with users",
     },
@@ -72,7 +69,6 @@ const AdminDashboard = () => {
       </div>
     );
   }
-
 
 
   return (
