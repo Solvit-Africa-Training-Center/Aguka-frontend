@@ -1,10 +1,4 @@
 {
-<<<<<<< HEAD
-  "buildCommand": "vite build"
-  
-  
-=======
   "buildCommand": "vite build",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
->>>>>>> dashboard
 }

@@ -4,6 +4,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -81,8 +82,7 @@ const ScheduleMeetingForm: React.FC = ({
 
   return (
     <Dialog>
-      <DialogTrigger
-        className={`flex gap-2 bg-white text-primary-300 p-4 rounded-md text-1xl hover:bg-gradient-to-l from-primary-200 to-primary-700 hover:text-white font-bold ${className}`}>
+      <DialogTrigger className="flex gap-2 bg-white text-primary-300">
         <Plus className="w-6 h-6" />
         <span>Schedule Meeting</span>
       </DialogTrigger>
@@ -159,7 +159,7 @@ const ScheduleMeetingForm: React.FC = ({
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-20 py-4 border border-[#D4D4D4] font-bold rounded hover:bg-white hover:text-[#00333D]">
+                className="px-20 py-4 border border-[#D4D4D4] font-bold border-white  rounded hover:bg-white hover:text-[#00333D]">
                 Cancel
               </button>
             </DialogClose>
