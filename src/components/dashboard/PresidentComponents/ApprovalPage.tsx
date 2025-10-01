@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import ApprovalCard from "./ApprovalCard";
-import { useGetLoansByStatusQuery, useApproveLoanMutation, useRejectLoanMutation } from "@services/api/loanApi";
-import { useGetUsersQuery, useApproveUserMutation, useDeleteUserMutation } from "@services/api/authApi";
+import {
+  useGetLoansByStatusQuery,
+  useApproveLoanMutation,
+  useRejectLoanMutation,
+} from "@services/api/loanApi";
+import {
+  useGetUsersQuery,
+  useApproveUserMutation,
+  useDeleteUserMutation,
+} from "@services/api/authApi";
 import type { Loan } from "types/Loan";
 import type { User } from "types/User";
 import { useSelector } from "react-redux";
@@ -12,12 +20,22 @@ const ApprovalPage: React.FC = () => {
   const loggedInUser = useSelector((state: RootState) => state.auth.user);
 
   // Loans
-  const { data: loans, isLoading: loadingLoans, isError: errorLoans, refetch: refetchLoans } = useGetLoansByStatusQuery("pending");
+  const {
+    data: loans,
+    isLoading: loadingLoans,
+    isError: errorLoans,
+    refetch: refetchLoans,
+  } = useGetLoansByStatusQuery("pending");
   const [approveLoan] = useApproveLoanMutation();
   const [rejectLoan] = useRejectLoanMutation();
 
   // Users
-  const { data: users, isLoading: loadingUsers, isError: errorUsers, refetch: refetchUsers } = useGetUsersQuery();
+  const {
+    data: users,
+    isLoading: loadingUsers,
+    isError: errorUsers,
+    refetch: refetchUsers,
+  } = useGetUsersQuery();
   const [approveUser] = useApproveUserMutation();
   const [rejectUser] = useDeleteUserMutation();
 
@@ -28,17 +46,21 @@ const ApprovalPage: React.FC = () => {
     ? (loans as { data: Loan[] }).data
     : [];
 
-  const groupLoans = loggedInUser && users?.data
-    ? loanList.filter((loan: Loan) => {
-        const loanUser = users.data.find((u: User) => u.id === loan.userId);
-        return loanUser?.groupId === loggedInUser.groupId && loanUser?.isApproved;
-      })
-    : [];
+  const groupLoans =
+    loggedInUser && users?.data
+      ? loanList.filter((loan: Loan) => {
+          const loanUser = users.data.find((u: User) => u.id === loan.userId);
+          return (
+            loanUser?.groupId === loggedInUser.groupId && loanUser?.isApproved
+          );
+        })
+      : [];
 
   // Filter users for logged-in user's group
-  const pendingUsers = users?.data?.filter(
-    (u: User) => !u.isApproved && u.groupId === loggedInUser?.groupId
-  ) || [];
+  const pendingUsers =
+    users?.data?.filter(
+      (u: User) => !u.isApproved && u.groupId === loggedInUser?.groupId
+    ) || [];
 
   // Handlers for Loans
   const handleApproveLoan = async (loanId: string) => {
@@ -77,7 +99,6 @@ const ApprovalPage: React.FC = () => {
 
   const handleRejectUser = async (userId: string) => {
     try {
-      
       await rejectUser(userId).unwrap();
       alert("User rejected successfully!");
       refetchUsers();
@@ -97,15 +118,21 @@ const ApprovalPage: React.FC = () => {
         {/* Tabs */}
         <div className="flex space-x-4 mb-4">
           <button
-            className={`px-4 py-2 rounded ${activeTab === "loans" ? "bg-yellow-500 text-black" : "bg-gray-700 text-white"}`}
-            onClick={() => setActiveTab("loans")}
-          >
+            className={`px-4 py-2 rounded ${
+              activeTab === "loans"
+                ? "bg-yellow-500 text-black"
+                : "bg-gray-700 text-white"
+            }`}
+            onClick={() => setActiveTab("loans")}>
             Loan Approvals
           </button>
           <button
-            className={`px-4 py-2 rounded ${activeTab === "users" ? "bg-yellow-500 text-black" : "bg-gray-700 text-white"}`}
-            onClick={() => setActiveTab("users")}
-          >
+            className={`px-4 py-2 rounded ${
+              activeTab === "users"
+                ? "bg-yellow-500 text-black"
+                : "bg-gray-700 text-white"
+            }`}
+            onClick={() => setActiveTab("users")}>
             User Approvals
           </button>
         </div>
@@ -119,12 +146,16 @@ const ApprovalPage: React.FC = () => {
               <p className="text-red-500">Error loading loans.</p>
             ) : groupLoans.length > 0 ? (
               groupLoans.map((loan: Loan) => {
-                const loanUser = users?.data.find((u: User) => u.id === loan.userId);
+                const loanUser = users?.data.find(
+                  (u: User) => u.id === loan.userId
+                );
                 return (
                   <ApprovalCard
                     key={loan.id}
                     name={loanUser?.name || "Unknown"}
-                    type={`Loan request of ${loan.amount.toLocaleString()} Rwf for ${loan.durationMonths} months`}
+                    type={`Loan request of ${loan.amount.toLocaleString()} Rwf for ${
+                      loan.durationMonths
+                    } months`}
                     amount={loan.amount.toLocaleString()}
                     time={new Date(loan.createdAt).toLocaleString()}
                     onApprove={() => handleApproveLoan(loan.id)}
@@ -133,7 +164,9 @@ const ApprovalPage: React.FC = () => {
                 );
               })
             ) : (
-              <p className="text-white p-4">No pending loan approvals in your group.</p>
+              <p className="text-white p-4">
+                No pending loan approvals in your group.
+              </p>
             )}
           </>
         )}
@@ -157,7 +190,9 @@ const ApprovalPage: React.FC = () => {
                 />
               ))
             ) : (
-              <p className="text-white p-4">No pending user approvals in your group.</p>
+              <p className="text-white p-4">
+                No pending user approvals in your group.
+              </p>
             )}
           </>
         )}

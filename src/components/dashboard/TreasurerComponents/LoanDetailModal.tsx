@@ -33,13 +33,10 @@ const LoanDetailModal: React.FC<LoanDetailProps> = ({
   return (
     <div
       className="fixed inset-0 flex justify-center items-center z-50 font-poppins bg-black/60 bg-opacity-60"
-      onClick={onClose} // click outside closes modal
-    >
+      onClick={onClose}>
       <div
         className="bg-[#F4F9F9] p-6 w-100 h-160 relative animate-fadeIn"
-        onClick={(e) => e.stopPropagation()} // prevent close on inside click
-      >
-        {/* Loan Details */}
+        onClick={(e) => e.stopPropagation()}>
         <h2 className="text-3xl font-extrabold text-center text-[#F9A825] mb-4">
           Loan Detail
         </h2>
