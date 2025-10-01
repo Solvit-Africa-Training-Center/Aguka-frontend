@@ -60,7 +60,7 @@ const UserProfile: React.FC = () => {
         <div className="bg-[#F9A825] text-white w-20 h-20 flex items-center justify-center rounded-full text-4xl font-bold">
           {initials}
         </div>
-        <h2 className="text-4xl font-bold">{userData.email || "Unknown"}</h2>
+        <h2 className="text-xl font-bold">{userData.email || "unknown"}</h2>
         <p className="text-lg uppercase text-secondary-200">{userData.id}</p>
         <span
           className={`px-7 py-2 rounded-full text-xl font-bold ${

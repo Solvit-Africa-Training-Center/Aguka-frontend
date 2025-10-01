@@ -11,10 +11,8 @@ const AllowContributionPage = () => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
   const currentGroupId = currentUser?.groupId;
 
-  // Fetch all users
   const { data: usersData, isLoading: loadingUsers } = useGetUsersQuery();
 
-  // Filter users belonging to the current group
   const users: { value: string; label: string }[] = useMemo(() => {
     if (!usersData) return [];
     const arr = Array.isArray(usersData)
