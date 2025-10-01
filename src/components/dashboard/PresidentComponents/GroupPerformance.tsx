@@ -59,7 +59,7 @@ const GroupPerformance: React.FC = () => {
 
       <div className="overflow-x-auto max-h-[450px]">
         <table className="min-w-[600px] md:min-w-full table-auto border-collapse border border-white">
-          <thead>
+          <thead className="z-20">
             <tr>
               {["Name", "Contribution (Total)", "Loan Status", "Attendance"].map(
                 (header) => (
@@ -101,7 +101,7 @@ const GroupPerformance: React.FC = () => {
               const attendanceStatus = user.isApproved ? "Active" : "Inactive";
 
               return (
-                <tr key={user.id} className="hover:bg-[#005A66] transition-colors">
+                <tr key={user.id} className="hover:bg-[#005A66] transition-colors ">
                   <td className="py-3 px-4 border-r border-white">{user.name}</td>
                   <td className="py-3 px-4 border-r border-white">
                     Rwf {totalContribution.toLocaleString()}

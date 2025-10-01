@@ -36,8 +36,7 @@ const ContributionForm: React.FC = () => {
   };
 
   return (
-    <div className="place-items-center min-h-screen bg-[#00353B] pt-20 font-poppins px-4 sm:px-8">
-      {/* ✅ Success Popup */}
+    <div className="place-items-center min-h-screen bg-[#00353B] pt-35 font-poppins px-4 sm:px-8">
       {showPopup && <SuccessContribution onClose={() => setShowPopup(false)} />}
 
       {/* Logo */}
