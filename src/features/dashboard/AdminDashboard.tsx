@@ -10,8 +10,6 @@ import CurrentStatistics from "@components/dashboard/admin/CurrentStatics";
 import { useGetAdminOverviewQuery } from "@services/api/adminApi";
 
 const AdminDashboard = () => {
-
-  
   const { data: overview, isLoading, isError } = useGetAdminOverviewQuery();
   console.log(overview);
   const cards = [
@@ -38,7 +36,6 @@ const AdminDashboard = () => {
       icon: (
         <LuShield className="w-11 h-11 p-2 rounded-full text-secondary-300" />
       ),
-
       value: overview?.data.usersPerGroup?.length ?? "--",
       subtitle: "Groups with users",
     },
@@ -64,7 +61,7 @@ const AdminDashboard = () => {
 
   if (isError) {
     return (
-      <div className="font-poppons bg-[#003B42] min-h-screen text-white">
+      <div className="font-poppons bg-[#003B42] min-h-screen text-white ">
         <AdminNavbar />
         <div className="pt-45 text-red-500 text-2xl">
           Failed to load admin dashboard data.
@@ -74,9 +71,8 @@ const AdminDashboard = () => {
   }
 
 
-
   return (
-    <div className="font-poppons bg-[#003B42] min-h-screen">
+    <div className="font-poppons bg-[#003B42] min-h-screen ">
       <div className="fixed z-10">
         <AdminNavbar />
       </div>
@@ -88,18 +84,19 @@ const AdminDashboard = () => {
         </span>
       </div>
 
-      <div className="flex gap-10 overflow-x-auto text-white ml-15 mr-15 scrollbar-hide">
+      <div className="flex gap-10 overflow-x-auto text-white ml-15 mr-15 scrollbar-hide ">
         {cards.map((item, idx) => (
           <div
             key={idx}
-            className="min-w-[280px] h-50 rounded-md p-4 space-y-5 border border-secondary-300 shadow-[-3px_3px_2px_2px_#F9A825] flex-shrink-0"
-          >
+            className="min-w-[280px] h-50 rounded-md p-4 space-y-5 border border-secondary-300 shadow-[-3px_3px_2px_2px_#F9A825] flex-shrink-0">
             <div className="flex justify-between capitalize text-2xl">
               <span>{item.title}</span>
               {item.icon}
             </div>
             <div className="text-xl text-white grid">
-              <span className="text-center text-3xl font-bold">{item.value}</span>
+              <span className="text-center text-3xl font-bold">
+                {item.value}
+              </span>
               <span className="text-left mt-7 text-stone-400 text-xl">
                 {item.subtitle}
               </span>
@@ -108,7 +105,7 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      <div className="flex gap-20 mt-10">
+      <div className="flex gap-20">
         <AdminTrendChart />
         <RecentActivities />
       </div>
@@ -117,7 +114,7 @@ const AdminDashboard = () => {
         <CurrentStatistics />
       </div>
 
-      <div className="w-full text-accent-100 p-5 relative mt-10">
+      <div className="w-full text-accent-100 p-5 relative">
         <hr className="w-300 text-center absolute left-70" />
         <div className="text-sm text-center pt-15 capitalize">
           <span>
