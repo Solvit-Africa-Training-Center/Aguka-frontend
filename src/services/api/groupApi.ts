@@ -20,21 +20,21 @@ export const groupApi = apiSlice.injectEndpoints({
       providesTags: ["Groups"],
     }),
 
-    // ✅ Get group by ID
-    getGroupById: builder.query<Group, string>({
-      query: (id) => `/groups/${id}`,
-      providesTags: (result, error, id) => [{ type: "Groups", id }],
-    }),
+    // // ✅ Get group by ID
+    // getGroupById: builder.query<Group, string>({
+    //   query: (id) => `/groups/${id}`,
+    //   providesTags: (result, error, id) => [{ type: "Groups", id }],
+    // }),
 
-    // ✅ Update group by ID
-    updateGroup: builder.mutation<Group, { id: string; data: Partial<Group> }>({
-      query: ({ id, data }) => ({
-        url: `/groups/${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Groups", id }],
-    }),
+    // // ✅ Update group by ID
+    // updateGroup: builder.mutation<Group, { id: string; data: Partial<Group> }>({
+    //   query: ({ id, data }) => ({
+    //     url: `/groups/${id}`,
+    //     method: "PUT",
+    //     body: data,
+    //   }),
+    //   invalidatesTags: (result, error, { id }) => [{ type: "Groups", id }],
+    // }),
 
     // ✅ Join group
     joinGroup: builder.mutation<void, string>({
@@ -55,10 +55,10 @@ export const groupApi = apiSlice.injectEndpoints({
     }),
 
     // ✅ Get members of a group
-    getGroupMembers: builder.query<any[], string>({
-      query: (id) => `/groups/${id}/members`,
-      providesTags: (result, error, id) => [{ type: "Groups", id }],
-    }),
+    // getGroupMembers: builder.query<any[], string>({
+    //   query: (id) => `/groups/${id}/members`,
+    //   providesTags: (result, error, id) => [{ type: "Groups", id }],
+    // }),
   }),
   overrideExisting: true,
 });
@@ -66,9 +66,6 @@ export const groupApi = apiSlice.injectEndpoints({
 export const {
   useCreateGroupMutation,
   useGetGroupsQuery,
-  useGetGroupByIdQuery,
-  useUpdateGroupMutation,
   useJoinGroupMutation,
   useDeleteGroupMutation,
-  useGetGroupMembersQuery,
 } = groupApi;
