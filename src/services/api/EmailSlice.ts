@@ -1,6 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-
 interface EmailState {
   loading: boolean;
   error: string | null;

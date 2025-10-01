@@ -1,6 +1,5 @@
 import React from "react";
 import { Calendar, Clock, MapPin, FileText } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useGetAnnouncementsQuery } from "@services/api/announcementApi";
 import type { Announcement } from "types/Announcement";
 import ScheduleMeetingForm from "../secretary/ScheduleMeetingForm";
@@ -10,12 +9,6 @@ interface MeetingAgendaProps {
 }
 
 const MeetingAgenda: React.FC<MeetingAgendaProps> = ({ groupId }) => {
-  const navigate = useNavigate();
-
-  const handleNavigate = () => {
-    navigate("/ScheduleMeetingForm");
-  };
-
   const { data, isLoading, isError } = useGetAnnouncementsQuery({
     page: 1,
     limit: 100,

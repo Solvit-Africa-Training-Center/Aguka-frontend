@@ -122,7 +122,7 @@ export default function Login() {
 
       setSuccess("Login successful!");
 
-      if (!groupId && user.role!=="admin") {
+      if (!groupId && user.role !== "admin") {
         navigate("/fillbeforeregister");
       } else {
         redirectByRole(role);
@@ -219,8 +219,8 @@ export default function Login() {
                     value={form.identifier}
                     onChange={handleChange}
                     placeholder="Enter Your Email/Phone number"
-                    className="w-full p-4 rounded-[15px] border-2 placeholder:text-xl 
-                             border-[var(--color-border)] bg-transparent 
+                    className="w-full p-4 rounded-[15px]  border-2 placeholder:text-xl 
+                             border-[#948E8E]  bg-transparent 
                              text-[var(--color-secondary-50)] placeholder-gray-400 
                              focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
                   />
