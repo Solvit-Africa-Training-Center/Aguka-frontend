@@ -3,9 +3,11 @@ import {
   X,
   LayoutDashboard,
   UserPen,
+  BadgeDollarSign,
   LogOut,
 } from "lucide-react";
-import { HiOutlineSpeakerphone } from "react-icons/hi";
+BadgeDollarSign
+import { HiOutlineSpeakerphone, } from "react-icons/hi";
 import { FaMoneyCheck } from "react-icons/fa6";
 import { LuNotebook } from "react-icons/lu";
 import { TbUsersGroup } from "react-icons/tb";

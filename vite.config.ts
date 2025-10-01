@@ -9,12 +9,11 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://aguka.onrender.com",
+        target: "https://api-aguka.solvit.africa",
         changeOrigin: true,
         secure: false,
-         rewrite: (path) => path.replace(/^\/api/, ""), // <-- add this line
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },
-  
 });

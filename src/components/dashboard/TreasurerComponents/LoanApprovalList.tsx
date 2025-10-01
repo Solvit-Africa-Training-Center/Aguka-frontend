@@ -2,32 +2,88 @@ import React, { useState } from "react";
 
 import LoanDetailModal from "./LoanDetailModal";
 import LoanApprovalCard from "./LoanApprovalCard";
+import {
+  useGetLoansByStatusQuery,
+  useApproveLoanMutation,
+  useRejectLoanMutation,
+} from "@services/api/loanApi";
+import type { Loan, LoanStatus } from "types/Loan";
 
 
 
 const LoanApprovalList: React.FC = () => {
+  // State
+  const [selectedLoan, setSelectedLoan] = useState<Loan | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  // Fetch pending loans
+  const {
+    data: loans,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetLoansByStatusQuery("pending" as LoanStatus);
+
+  const [approveLoan, { isLoading: isApproving }] = useApproveLoanMutation();
+  const [rejectLoan, { isLoading: isRejecting }] = useRejectLoanMutation();
+
+  if (isLoading) return <p>Loading loans...</p>;
+  if (isError) return <p>Error loading loans.</p>;
+
+  const handleView = (loan: Loan) => {
+    setSelectedLoan(loan);
+    setIsOpen(true);
+  };
+
+  const handleApprove = async (loanId: string) => {
+    try {
+      await approveLoan(loanId).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("Failed to approve loan:", err);
+    }
+  };
+
+  const handleReject = async (loanId: string) => {
+    try {
+      await rejectLoan(loanId).unwrap();
+      refetch();
+    } catch (err) {
+      console.error("Failed to reject loan:", err);
+    }
+  };
 
   return (
     <div>
-      <LoanApprovalCard
-        name="John Doe"
-        date="2025-10-01"
-        amount="$5,000"
-        reason="Business Expansion"
-        onView={() => console.log("View clicked")}
-        onApprove={() => console.log("Approved")}
-        onReject={() => console.log("Rejected")}
-      />
-      <LoanDetailModal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        member="Paul Ndizihe"
-        amountRequested="150,000 Frw"
-        previousLoans="2 (all repaid on time)"
-        monthlyContribution="250,000 Frw"
-        employmentStatus="Self-employed"
-      />
+      <div className="flex justify-between ">
+        <span className="capitalize text-2xl font-bold">approval loan</span>
+        <span className="capitalize text-shadow-secondary-300 font-bold">
+          pending Loan
+        </span>
+      </div>
+      {loans?.map((loan) => (
+        <LoanApprovalCard
+          key={loan.id}
+          name={loan.member ?? loan.userId}
+          date={loan.createdAt}
+          amount={loan.amount} 
+          reason={loan.reason ?? ""}
+          onView={() => handleView(loan)}
+          onApprove={() => handleApprove(loan.id)}
+          onReject={() => handleReject(loan.id)}
+        />
+      ))}
+      {selectedLoan && (
+        <LoanDetailModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          member={selectedLoan.member ?? ""}
+          amountRequested={selectedLoan.amount}
+          previousLoans={selectedLoan.previousLoans ?? []}
+          monthlyContribution={selectedLoan.monthlyContribution ?? 0}
+          employmentStatus={selectedLoan.employmentStatus ?? ""}
+        />
+      )}
     </div>
   );
 };

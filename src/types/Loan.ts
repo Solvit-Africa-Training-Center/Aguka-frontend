@@ -1,42 +1,53 @@
-// src/types/loan.ts
-
+// Loan status type
 export type LoanStatus = "pending" | "approved" | "denied" | "paid";
-// extend with any other statuses your backend supports
 
+// Loan model
 export interface Loan {
   id: string;
   userId: string;
   groupId?: string;
-  amount: number;
+  amount: number; // <-- Use this instead of amountRequested
   durationMonths: number;
   status: LoanStatus;
-  approvedBy?: string; // optional, only if approved
-  createdAt: string; // ISO string
+  approvedBy?: string;
+  createdAt: string;
   updatedAt: string;
-  remainingBalance: number; // ISO string
+  remainingBalance: number;
+  reason?: string; 
+  member?: string; 
+  monthlyContribution?: number;
+  employmentStatus?: string;
+  previousLoans?: Loan[];
 }
 
-// For requesting a loan
 export interface LoanRequest {
   amount: number;
   durationMonths: number;
 }
-// src/types/loan.ts
-export type LoanResponse = Loan; // alias if you prefer
-
-// For creating a loan (same as LoanRequest in your case)
+export type LoanResponse = Loan;
 export type LoanCreate = LoanRequest;
 
-// For updating a loan
 export type LoanUpdate = Partial<Omit<Loan, "id" | "userId">> & {
   id: string;
 };
+
+export interface LoanDetailProps {
+  isOpen: boolean;
+  onClose: () => void;
+  member: string;
+  amountRequested: number; 
+  previousLoans: Loan[];   
+  monthlyContribution: number; 
+  employmentStatus: string;
+}
+
+// LoanApprovalCard props
 export interface LoanApprovalCardProps {
   name: string;
   date: string;
-  amount: string;
+  amount: number; 
   reason: string;
   onView: () => void;
-  onApprove: () => void; // ✅ add this
+  onApprove: () => void;
   onReject: () => void;
 }
