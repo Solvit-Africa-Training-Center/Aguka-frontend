@@ -1,6 +1,5 @@
 import React from "react";
 import { X } from "lucide-react";
-import { useGetLoansByStatusQuery } from "@services/api/loanApi";
  
 
 interface LoanDetailProps {

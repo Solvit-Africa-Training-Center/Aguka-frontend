@@ -2,7 +2,6 @@ import React from "react";
 import {
   X,
   LayoutDashboard,
-  BadgeDollarSign,
   UserPen,
   LogOut,
 } from "lucide-react";
