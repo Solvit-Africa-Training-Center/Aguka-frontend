@@ -87,7 +87,7 @@ const AppRoutes = () => {
         <Route
           path="/secretarydashboard"
           element={<SecretaryDashboardLayout />}>
-          <Route path="loanprofile" element={<LoanProfile />} />
+          {/* <Route path="loanprofile" element={<LoanProfile />} /> */}
           <Route index element={<SecretaryDashboard />} />
           <Route path="members" element={<MembersList />} />
           <Route path="AnnouncementNotice" element={<AnnouncementNotice />} />

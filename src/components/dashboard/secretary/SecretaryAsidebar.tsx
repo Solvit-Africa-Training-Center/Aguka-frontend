@@ -68,6 +68,12 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <TbUsersGroup size={20} />
           members
         </Link>
+          <Link
+          to="/secretarydashboard/loanprofile"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
+          <BadgeDollarSign size={20} />
+         Loan Profile
+        </Link>
         <Link
           to="/secretarydashboard/userprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
