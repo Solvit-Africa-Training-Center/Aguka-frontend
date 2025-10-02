@@ -35,7 +35,7 @@ import ScheduleMeetingForm from "@components/dashboard/secretary/ScheduleMeeting
 import PolicyForm from "@components/dashboard/TreasurerComponents/PolicyForm";
 import TreasurerDashboard from "@features/dashboard/TreasurerDashboard";
 import TreasurerDashboardLayout from "@components/dashboardLayout/TreasurerDashboardLayout";
-import ReportsPage from "@pages/ReportPage";
+import ReportsPage from "@pages/ReportsPage";
 
 import AllowContributionPage from "@pages/AllowContributePage";
 import LoanApprovalPage from "@pages/LoanApproalPage";

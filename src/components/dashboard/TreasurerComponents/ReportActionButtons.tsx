@@ -3,29 +3,39 @@ import React, { useState } from "react";
 import { FileDown, FileSpreadsheet } from "lucide-react";
 import PopupMessage from "./PopupMessage";
 
-const ReportActionButtons: React.FC = () => {
+interface ReportActionButtonsProps {
+  onExportPDF: () => void;
+  onExportExcel: () => void;
+}
+
+const ReportActionButtons: React.FC<ReportActionButtonsProps> = ({
+  onExportPDF,
+  onExportExcel,
+}) => {
   const [popupMessage, setPopupMessage] = useState<string | null>(null);
 
   const handleExportPDF = () => {
+    onExportPDF();
     setPopupMessage("PDF File Downloaded Successfully");
   };
 
   const handleExportExcel = () => {
+    onExportExcel(); 
     setPopupMessage("Excel File Downloaded Successfully");
   };
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-7">
       <button
         onClick={handleExportPDF}
         className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
-        <FileDown size={16} /> Export PDF
+        <FileDown size={20} /> Export PDF
       </button>
 
       <button
         onClick={handleExportExcel}
         className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
-        <FileSpreadsheet size={16} /> Export Excel
+        <FileSpreadsheet size={20} /> Export Excel
       </button>
 
       {/* Popup Message */}

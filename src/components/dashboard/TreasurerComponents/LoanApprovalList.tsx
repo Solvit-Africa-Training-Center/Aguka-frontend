@@ -53,17 +53,21 @@ const LoanApprovalList: React.FC = () => {
   return (
     <div>
       <div className="flex justify-between ">
-        <span className="capitalize text-2xl font-bold">approval loan</span>
-        <span className="capitalize text-shadow-secondary-300 font-bold">
-          pending Loan
-        </span>
+        <div>
+          <span className="capitalize text-3xl font-bold">approval loans</span>
+        </div>
+        <div>
+          <span className="capitalize text-xl text-secondary-300 font-bold">
+            pending Loans
+          </span>
+        </div>
       </div>
       {loans?.map((loan) => (
         <LoanApprovalCard
           key={loan.id}
           name={loan.member ?? loan.userId}
           date={loan.createdAt}
-          amount={loan.amount} 
+          amount={loan.amount}
           reason={loan.reason ?? ""}
           onView={() => handleView(loan)}
           onApprove={() => handleApprove(loan.id)}
