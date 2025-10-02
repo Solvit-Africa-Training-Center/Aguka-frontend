@@ -23,10 +23,7 @@ const LoanDetailModal: React.FC<LoanDetailProps> = ({
   if (!isOpen) return null;
 
   return (
-<<<<<<< HEAD
 
-=======
->>>>>>> dashboard
     <div className="fixed inset-0 bg-black/70 bg-opacity-50 flex justify-center items-center z-50 ">
       <div className="bg-[#F4F9F9] p-6 rounded-md shadow-xl w-100 relative">
         <button

@@ -1,8 +1,4 @@
 import React, { useState } from "react";
-<<<<<<< HEAD
-
-=======
->>>>>>> dashboard
 import LoanDetailModal from "./LoanDetailModal";
 import LoanApprovalCard from "./LoanApprovalCard";
 import {
@@ -11,11 +7,6 @@ import {
   useRejectLoanMutation,
 } from "@services/api/loanApi";
 import type { Loan, LoanStatus } from "types/Loan";
-<<<<<<< HEAD
-
-
-=======
->>>>>>> dashboard
 
 const LoanApprovalList: React.FC = () => {
   // State
@@ -62,12 +53,6 @@ const LoanApprovalList: React.FC = () => {
   return (
     <div>
       <div className="flex justify-between ">
-<<<<<<< HEAD
-        <span className="capitalize text-2xl font-bold">approval loan</span>
-        <span className="capitalize text-shadow-secondary-300 font-bold">
-          pending Loan
-        </span>
-=======
         <div>
           <span className="capitalize text-3xl font-bold">approval loans</span>
         </div>
@@ -76,18 +61,14 @@ const LoanApprovalList: React.FC = () => {
             pending Loans
           </span>
         </div>
->>>>>>> dashboard
+
       </div>
       {loans?.map((loan) => (
         <LoanApprovalCard
           key={loan.id}
           name={loan.member ?? loan.userId}
           date={loan.createdAt}
-<<<<<<< HEAD
-          amount={loan.amount} 
-=======
           amount={loan.amount}
->>>>>>> dashboard
           reason={loan.reason ?? ""}
           onView={() => handleView(loan)}
           onApprove={() => handleApprove(loan.id)}
