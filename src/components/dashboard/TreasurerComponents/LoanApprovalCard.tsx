@@ -1,9 +1,14 @@
 // LoanApprovalCard.tsx
 import React from "react";
 import { Eye, Check, X } from "lucide-react";
+<<<<<<< HEAD
 
 import type { LoanApprovalCardProps } from "types/Loan";
 
+=======
+import type { LoanApprovalCardProps } from "types/Loan";
+
+>>>>>>> dashboard
 const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
   name,
   date,
@@ -15,15 +20,21 @@ const LoanApprovalCard: React.FC<LoanApprovalCardProps> = ({
 }) => {
   return (
     <div className="p-4">
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> dashboard
       <div className="grid grid-cols-3 text-center">
         <div className="text-left mt-2">
           <p className="text-white text-2xl font-bold">{name}</p>
           <p className="text-white text-sm">Applied on {date}</p>
         </div>
         <p className="text-white mt-2 text-2xl font-semibold">{amount}</p>
+<<<<<<< HEAD
 
+=======
+>>>>>>> dashboard
         <p className="text-white mt-2 text-xl text-left">{reason}</p>
       </div>
 

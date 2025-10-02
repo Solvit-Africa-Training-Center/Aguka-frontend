@@ -1,13 +1,16 @@
 import CommunityFeed from "@components/dashboard/member/CommunityFeed";
 import StatCard from "@components/dashboard/TreasurerComponents/StatCard";
 import TransactionList from "@components/dashboard/TreasurerComponents/TransactionList";
+
 import { useGetAllContributionsByUserQuery } from "@services/api/ContributionApi";
 import { useGetLoansByStatusQuery } from "@services/api/loanApi";
 import { useGetGroupDividendsQuery } from "@services/api/dividendApi";
 import { useGetUsersQuery } from "@services/api/authApi";
+
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@services/store/store";
+
 import type { Contribution } from "@models/Contribution";
 import type { Loan } from "types/Loan";
 import type { Dividend } from "types/Dividend";
@@ -42,7 +45,7 @@ const TreasurerDashboard: React.FC = () => {
   }, [contributionsData]);
 
   const totalContribution = useMemo(
-    () => contributions.reduce((sum, c) => sum + Number(c.amount || 0), 0),
+    () => contributions.reduce((sum, c) => sum + Number(c.amount ?? 0), 0),
     [contributions]
   );
   const formattedTotalContribution = `Frw ${totalContribution.toLocaleString()}`;
@@ -50,21 +53,21 @@ const TreasurerDashboard: React.FC = () => {
   // ------------------- Loans -------------------
   const { data: approvedLoansData, isLoading: loadingApprovedLoans } =
     useGetLoansByStatusQuery("approved");
+
   const approvedLoans: Loan[] = useMemo(() => {
     if (!approvedLoansData) return [];
-    const allLoans = Array.isArray(approvedLoansData)
+    const arr = Array.isArray(approvedLoansData)
       ? approvedLoansData
       : Array.isArray((approvedLoansData as any)?.data)
       ? (approvedLoansData as any).data
       : [];
-    return allLoans.filter((loan: Loan) =>
-      users.some((u) => u.id === loan.userId)
-    );
+    // Filter loans by group members
+    return arr.filter((loan: Loan) => users.some((u) => u.id === loan.userId));
   }, [approvedLoansData, users]);
 
   const totalLoan = useMemo(
     () =>
-      approvedLoans.reduce((sum, loan) => sum + Number(loan.amount || 0), 0),
+      approvedLoans.reduce((sum, loan) => sum + Number(loan.amount ?? 0), 0),
     [approvedLoans]
   );
   const formattedTotalLoan = `Frw ${totalLoan.toLocaleString()}`;
@@ -82,12 +85,10 @@ const TreasurerDashboard: React.FC = () => {
       : [];
   }, [dividendsData]);
 
-  // Declare totalDividend before JSX
   const totalDividend = useMemo(
-    () => dividends.reduce((sum, d) => sum + Number(d.amount || 0), 0),
+    () => dividends.reduce((sum, d) => sum + Number(d.amount ?? 0), 0),
     [dividends]
   );
-
   const formattedTotalDividend = `Frw ${totalDividend.toLocaleString()}`;
 
   return (
@@ -119,7 +120,7 @@ const TreasurerDashboard: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <TransactionList />
-        <div className="font-poppins text-[#b2b2b2] mt-17 border border-b-0 overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg w-180 h-120 rounded-2xl p-4">
+        <div className="font-poppins border-white text-[#b2b2b2] mt-17 border border-b-0 overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg w-180 h-120 rounded-2xl p-4">
           <h2 className="text-left ml-10 text-3xl capitalize p-2 text-[#F9A825] font-bold">
             community feeds
           </h2>

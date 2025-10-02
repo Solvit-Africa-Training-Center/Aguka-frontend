@@ -6,7 +6,10 @@ import { LuShield } from "react-icons/lu";
 import AdminTrendChart from "@components/dashboard/admin/AdminTrendChart";
 import RecentActivities from "@components/dashboard/admin/RecentActivities";
 import CurrentStatistics from "@components/dashboard/admin/CurrentStatics";
+<<<<<<< HEAD
 
+=======
+>>>>>>> dashboard
 import { useGetAdminOverviewQuery } from "@services/api/adminApi";
 
 const AdminDashboard = () => {
@@ -18,7 +21,10 @@ const AdminDashboard = () => {
       icon: (
         <HiUsers className="w-11 h-11 bg-[#005159] p-2 rounded-full text-secondary-300" />
       ),
+<<<<<<< HEAD
 
+=======
+>>>>>>> dashboard
       value: overview?.data.totalUsers ?? "--",
       subtitle: "Users in the system",
     },
@@ -27,7 +33,10 @@ const AdminDashboard = () => {
       icon: (
         <TbWaveSawTool className="w-11 h-11 p-2 rounded-full text-[#006D75]" />
       ),
+<<<<<<< HEAD
 
+=======
+>>>>>>> dashboard
       value: overview?.data.totalGroups ?? "--",
       subtitle: "Registered groups",
     },
@@ -42,7 +51,10 @@ const AdminDashboard = () => {
     {
       title: "Group Presidents",
       icon: <GoAlert className="w-11 h-11 p-2 rounded-full text-[#E53935]" />,
+<<<<<<< HEAD
 
+=======
+>>>>>>> dashboard
       value: overview?.data?.groupStats
         ? overview.data.groupStats.filter((g) => g.president !== null).length
         : "--",
@@ -70,7 +82,10 @@ const AdminDashboard = () => {
     );
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> dashboard
   return (
     <div className="font-poppons bg-[#003B42] min-h-screen ">
       <div className="fixed z-10">

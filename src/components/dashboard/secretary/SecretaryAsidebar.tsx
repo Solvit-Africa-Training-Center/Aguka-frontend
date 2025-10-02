@@ -6,8 +6,9 @@ import {
   BadgeDollarSign,
   LogOut,
 } from "lucide-react";
-BadgeDollarSign;
-import { HiOutlineSpeakerphone } from "react-icons/hi";
+
+BadgeDollarSign
+import { HiOutlineSpeakerphone, } from "react-icons/hi";
 import { FaMoneyCheck } from "react-icons/fa6";
 import { LuNotebook } from "react-icons/lu";
 import { TbUsersGroup } from "react-icons/tb";
@@ -69,11 +70,12 @@ const SecretaryAsidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <TbUsersGroup size={20} />
           members
         </Link>
-        <Link
+
+          <Link
           to="/secretarydashboard/loanprofile"
           className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 text-gray-700">
           <BadgeDollarSign size={20} />
-          Loan Profile
+         Loan Profile
         </Link>
         <Link
           to="/secretarydashboard/userprofile"
