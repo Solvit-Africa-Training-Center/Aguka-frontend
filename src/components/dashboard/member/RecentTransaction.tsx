@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useGetContributionsByUserQuery } from "@services/api/ContributionApi";
+import { useGetLoansQuery } from "@services/api/loanApi";
 
 interface Transaction {
   id: string;
@@ -10,64 +12,82 @@ interface Transaction {
 }
 
 const RecentTransactions: React.FC = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  // Fetch contributions
+  const {
+    data: contributions = [],
+    isLoading: loadingContributions,
+    isError: errorContributions,
+  } = useGetContributionsByUserQuery();
 
-  // ✅ Demo Data (replace with fetch later)
-  useEffect(() => {
-    setTransactions([
-      {
-        id: "TXN001",
-        date: "2025-09-01",
-        type: "Deposit",
-        amount: 25000,
-        status: "success",
-        balance: 75000,
-      },
-      {
-        id: "TXN002",
-        date: "2025-09-02",
-        type: "Withdrawal",
-        amount: -10000,
-        status: "Pending",
-        balance: 65000,
-      },
-      {
-        id: "TXN003",
-        date: "2025-09-04",
-        type: "Contribution",
-        amount: 15000,
-        status: "success",
-        balance: 80000,
-      },
-    ]);
-  }, []);
+  // Fetch loans
+  const {
+    data: loans = [],
+    isLoading: loadingLoans,
+    isError: errorLoans,
+  } = useGetLoansQuery();
 
-  // ✅ Format amount with +/-
-  const formatAmount = (amount: number) => {
-    return amount > 0
+  const isLoading = loadingContributions || loadingLoans;
+  const isError = errorContributions || errorLoans;
+
+  const contributionTransactions: Transaction[] = contributions.map((c) => ({
+    id: c.id,
+    date: new Date(c.createdAt).toLocaleDateString(),
+    type: c.type || "Contribution",
+    amount: c.amount,
+    status: c.status || "success",
+    balance: c.balance || 0,
+  }));
+
+  const loanTransactions: Transaction[] = loans.map((l) => ({
+    id: l.id,
+    date: new Date(l.createdAt).toLocaleDateString(),
+    type: "Loan",
+    amount: l.amount,
+    status:
+      l.status === "approved"
+        ? "success"
+        : l.status === "pending"
+        ? "Pending"
+        : "Rejected",
+    balance: 0,
+  }));
+
+  const transactions: Transaction[] = [
+    ...contributionTransactions,
+    ...loanTransactions,
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const formatAmount = (amount: number) =>
+    amount > 0
       ? `+Rwf ${amount.toLocaleString()}`
       : `-Rwf ${Math.abs(amount).toLocaleString()}`;
-  };
 
-  // ✅ Status colors
   const statusColors: Record<string, string> = {
     success: "text-green-500",
     Pending: "text-yellow-500",
     Rejected: "text-red-500",
   };
 
+  if (isLoading) {
+    return <p className="text-gray-300">Loading transactions...</p>;
+  }
+
+  if (isError) {
+    return <p className="text-red-500">Failed to load transactions.</p>;
+  }
+
   return (
-    <div className="overflow-auto">
-      <div className=" ">
-        <h2 className="text-5xl font-bold text-[#F9A825] mb-4 ">
+    <div className="overflow-auto scrollbar-hide">
+      <div>
+        <h2 className="text-5xl font-bold text-[#F9A825] mb-4">
           Recent Transactions
         </h2>
         <div className="overflow-x-auto border border-[#F9A825] p-10 h-120 rounded-lg">
           <table className="min-w-full border-collapse border border-gray-400">
             <thead>
-              <tr className="text-left text-gray-300  border-gray-600">
-                <th className="p-3 border border-gray-400  text-left">Date</th>
-                <th className="p-3 border border-gray-400">Transaction Id</th> 
+              <tr className="text-left text-gray-300 border-gray-600">
+                <th className="p-3 border border-gray-400 text-left">Date</th>
+                <th className="p-3 border border-gray-400">Transaction Id</th>
                 <th className="p-3 border border-gray-400">Type</th>
                 <th className="p-3 border border-gray-400">Amount</th>
                 <th className="p-3 border border-gray-400">Status</th>
@@ -98,6 +118,15 @@ const RecentTransactions: React.FC = () => {
                   </td>
                 </tr>
               ))}
+              {transactions.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="p-3 text-center text-gray-400 border border-gray-400">
+                    No transactions found
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

@@ -31,18 +31,14 @@ const AnnouncementCard: FC<AnnouncementCardProps> = ({
 }) => {
   return (
     <div className="border border-white/30 p-4 rounded-lg text-white mb-4 font-poppins">
-      {/* Main row: left side content, right side (statuses + buttons stacked) */}
       <div className="flex justify-between items-start mb-4">
-        {/* Left side: title + snippet */}
         <div>
           <h3 className="font-semibold text-xl">{title}</h3>
           <p className="text-1xl text-neutral-400">{snippet}</p>
           <p className="text-1xl mt-2 text-neutral-400">{date}</p>
         </div>
 
-        {/* Right side: statuses above, buttons below */}
         <div className="flex flex-col items-end gap-2">
-          {/* Status badges */}
           <div className="flex gap-2">
             {status.map((s) => (
               <span

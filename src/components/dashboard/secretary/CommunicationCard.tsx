@@ -15,7 +15,7 @@ const CommunicationCard: React.FC<CommunicationCardProps> = ({
   date,
   recipients,
   status,
-  channel = "SMS", 
+  channel = "SMS",
 }) => {
   const statusColor =
     status === "Delivered" ? "bg-[#00B7C2]" : "bg-yellow-500 text-black";
