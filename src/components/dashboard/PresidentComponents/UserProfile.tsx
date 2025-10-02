@@ -54,7 +54,7 @@ const UserProfile: React.FC = () => {
       .toUpperCase() || "?";
 
   return (
-    <div className="min-h-screen bg-[#003B42] flex flex-col items-center pt-45 space-y-8 font-poppins pb-20">
+    <div className="min-h-screen  flex flex-col items-center pt-45 space-y-8 font-poppins pb-20">
       {/* Profile Header */}
       <div className="bg-[#002F35] text-white rounded-xl w-full max-w-xl p-8 flex flex-col items-center space-y-3 shadow-md">
         <div className="bg-[#F9A825] text-white w-20 h-20 flex items-center justify-center rounded-full text-4xl font-bold">

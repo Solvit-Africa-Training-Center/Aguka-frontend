@@ -6,8 +6,10 @@ const Hero = () => {
     <div className="flex w-full min-h-screen bg-cover bg-center bg-[url('/bg-gif.gif')]  font-poppins">
       <div className="space-y-7 inset-0 bg-[#003B42B2]/90 w-full mt-10 place-content-center items-center place-items-center">
         <div className="flex flex-col space-y-2  text-left">
-          <h2 className="text-[96px] text-white mt-40 capitalize  font-semibold">
-            save together,
+          <h2 className="text-[96px]  text-white mt-40 capitalize  font-semibold">
+            <span className="text-xl md:text-[96px] text-secondary-300 capitalize  font-semibold">
+              save together,
+            </span>
             <span className="text-[96px] text-secondary-300 capitalize  font-semibold">
               grow together
             </span>

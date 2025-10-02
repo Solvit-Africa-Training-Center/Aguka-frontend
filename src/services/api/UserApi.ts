@@ -26,10 +26,14 @@ export const userApi = apiSlice.injectEndpoints({
     }),
 
     // Approve user
-    approveUser: builder.mutation<void, string>({
+    approveUser: builder.mutation<
+      { success: boolean; message: string },
+      string
+    >({
       query: (id) => ({
-        url: `/users/${id}/approve`,
-        method: "PATCH",
+        url: `/users/${id}`,
+        method: "PUT",
+        body: { isApproved: true },
       }),
       invalidatesTags: ["Users"],
     }),
