@@ -2,7 +2,6 @@
 import { apiSlice } from "./apiSlice";
 import type { Repayment } from "types/Repayment";
 
-// Update the type to match the backend
 export interface RepaymentCreate {
   loanId: string;
   amount: number;
@@ -12,7 +11,6 @@ export interface RepaymentCreate {
 
 export const repaymentApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Create repayment
     createRepayment: builder.mutation<Repayment, RepaymentCreate>({
       query: (repayment) => ({
         url: "/repayments",
@@ -21,17 +19,14 @@ export const repaymentApi = apiSlice.injectEndpoints({
       }),
     }),
 
-    // Get all repayments
     getRepayments: builder.query<Repayment[], void>({
       query: () => "/repayments",
     }),
 
-    // Get repayment by ID
     getRepaymentById: builder.query<Repayment, string>({
       query: (id) => `/repayments/${id}`,
     }),
 
-    // Update repayment
     updateRepayment: builder.mutation<Repayment, { id: string; data: Partial<Repayment> }>({
       query: ({ id, data }) => ({
         url: `/repayments/${id}`,
@@ -40,7 +35,6 @@ export const repaymentApi = apiSlice.injectEndpoints({
       }),
     }),
 
-    // Delete repayment
     deleteRepayment: builder.mutation<void, string>({
       query: (id) => ({
         url: `/repayments/${id}`,
@@ -48,7 +42,6 @@ export const repaymentApi = apiSlice.injectEndpoints({
       }),
     }),
 
-    // Get remaining balance for a loan
     getLoanBalance: builder.query<{ balance: number }, string>({
       query: (loanId) => `/repayments/loan/${loanId}/balance`,
     }),

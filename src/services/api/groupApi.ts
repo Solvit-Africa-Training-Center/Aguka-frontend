@@ -1,10 +1,8 @@
-// services/api/groupApi.ts
 import { apiSlice } from "./apiSlice";
 import type { Group } from "types/auth";
 
 export const groupApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // ✅ Create group
     createGroup: builder.mutation<Group, FormData>({
       query: (formData) => ({
         url: "/groups",
@@ -14,29 +12,25 @@ export const groupApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Groups"],
     }),
 
-    // ✅ Get all groups
     getGroups: builder.query<Group[], void>({
       query: () => "/groups",
       providesTags: ["Groups"],
     }),
 
-    // // ✅ Get group by ID
-    // getGroupById: builder.query<Group, string>({
-    //   query: (id) => `/groups/${id}`,
-    //   providesTags: (result, error, id) => [{ type: "Groups", id }],
-    // }),
+    getGroupById: builder.query<Group, string>({
+      query: (id) => `/groups/${id}`,
+      providesTags: (_, __, id) => [{ type: "Groups", id }],
+    }),
 
-    // // ✅ Update group by ID
-    // updateGroup: builder.mutation<Group, { id: string; data: Partial<Group> }>({
-    //   query: ({ id, data }) => ({
-    //     url: `/groups/${id}`,
-    //     method: "PUT",
-    //     body: data,
-    //   }),
-    //   invalidatesTags: (result, error, { id }) => [{ type: "Groups", id }],
-    // }),
+    updateGroup: builder.mutation<Group, { id: string; data: Partial<Group> }>({
+      query: ({ id, data }) => ({
+        url: `/groups/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Groups", id }],
+    }),
 
-    // ✅ Join group
     joinGroup: builder.mutation<void, string>({
       query: (id) => ({
         url: `/groups/${id}/join`,
@@ -45,7 +39,6 @@ export const groupApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Groups"],
     }),
 
-    // ✅ Delete group
     deleteGroup: builder.mutation<void, string>({
       query: (id) => ({
         url: `/groups/${id}`,
@@ -54,11 +47,10 @@ export const groupApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Groups"],
     }),
 
-    // ✅ Get members of a group
-    // getGroupMembers: builder.query<any[], string>({
-    //   query: (id) => `/groups/${id}/members`,
-    //   providesTags: (result, error, id) => [{ type: "Groups", id }],
-    // }),
+    getGroupMembers: builder.query<any[], string>({
+      query: (id) => `/groups/${id}/members`,
+      providesTags: (_, __, id) => [{ type: "Groups", id }],
+    }),
   }),
   overrideExisting: true,
 });
@@ -66,6 +58,9 @@ export const groupApi = apiSlice.injectEndpoints({
 export const {
   useCreateGroupMutation,
   useGetGroupsQuery,
+  useGetGroupByIdQuery,
+  useUpdateGroupMutation,
   useJoinGroupMutation,
   useDeleteGroupMutation,
+  useGetGroupMembersQuery,
 } = groupApi;
