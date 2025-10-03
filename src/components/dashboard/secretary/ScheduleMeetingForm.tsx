@@ -18,11 +18,11 @@ type MeetingFormData = {
   agenda: string;
 };
 
-interface ScheduleMeetingFormProps {
-  className?: string; // ✅ Add this
-}
-
-const ScheduleMeetingForm: React.FC<ScheduleMeetingFormProps> = ({ className }) => {
+const ScheduleMeetingForm: React.FC = ({
+  className,
+}: {
+  className?: string;
+}) => {
   const [formData, setFormData] = useState<MeetingFormData>({
     title: "",
     date: "",
@@ -31,6 +31,7 @@ const ScheduleMeetingForm: React.FC<ScheduleMeetingFormProps> = ({ className }) 
     agenda: "",
   });
 
+  // 🔥 connect to RTK Query mutation
   const [createAnnouncement, { isLoading }] = useCreateAnnouncementMutation();
 
   const handleChange = (
@@ -54,52 +55,118 @@ const ScheduleMeetingForm: React.FC<ScheduleMeetingFormProps> = ({ className }) 
 
       alert("Meeting scheduled successfully ✅");
 
-      setFormData({ title: "", date: "", time: "", location: "", agenda: "" });
+      // Reset form
+      setFormData({
+        title: "",
+        date: "",
+        time: "",
+        location: "",
+        agenda: "",
+      });
     } catch (error) {
       console.error("Failed to schedule meeting:", error);
-      alert("Error scheduling meeting");
+      alert("Error scheduling meeting ");
     }
   };
 
   const handleCancel = () => {
-    setFormData({ title: "", date: "", time: "", location: "", agenda: "" });
+    setFormData({
+      title: "",
+      date: "",
+      time: "",
+      location: "",
+      agenda: "",
+    });
   };
 
   return (
     <Dialog>
       <DialogTrigger
-        asChild
-      >
-        <button
-          className={`flex gap-2 bg-white text-primary-300 p-4 rounded-md text-1xl hover:bg-gradient-to-l from-primary-200 to-primary-700 hover:text-white font-bold ${className}`}
-        >
-          <Plus className="w-6 h-6" />
-          <span>Schedule Meeting</span>
-        </button>
+        className={`flex gap-2 bg-white text-primary-300 p-4 rounded-md text-1xl hover:bg-gradient-to-l from-primary-200 to-primary-700 hover:text-white font-bold ${className}`}>
+        <Plus className="w-6 h-6" />
+        <span>Schedule Meeting</span>
       </DialogTrigger>
-
       <DialogContent className="p-12 sm:max-w-[35rem]">
         <DialogHeader>
           <DialogTitle className="text-2xl">Schedule New Meeting</DialogTitle>
         </DialogHeader>
-
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* ... rest of your form inputs ... */}
+          <div>
+            <label className="block mb-1">Meeting Title</label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Enter meeting title"
+              className="w-full p-3 rounded border border-[#D4D4D4] text-white outline-none"
+              required
+            />
+          </div>
+
+          <div className="flex space-x-4">
+            <div className="flex-1">
+              <label className="block ">Date</label>
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className="w-full p-3 rounded border border-[#D4D4D4] text-white outline-none"
+                required
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block ">Time</label>
+              <input
+                type="time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                className="w-full p-3 rounded border border-[#D4D4D4] text-white outline-none"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block ">Location</label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              placeholder="Meeting Location"
+              className="w-full p-3 rounded border text-white border-[#D4D4D4] outline-none"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block ">Agenda</label>
+            <textarea
+              name="agenda"
+              value={formData.agenda}
+              onChange={handleChange}
+              placeholder="Meeting Agenda"
+              rows={3}
+              className="w-full p-4 rounded border border-[#D4D4D4] text-white outline-none"
+            />
+          </div>
 
           <div className="flex justify-between gap-4 mt-6">
             <DialogClose asChild>
               <button
                 type="button"
                 onClick={handleCancel}
-                className="px-20 py-4 border border-[#D4D4D4] font-bold rounded hover:bg-white hover:text-[#00333D]">
+                className="px-20 py-4 border font-bold border-white  rounded hover:bg-white hover:text-[#00333D]">
                 Cancel
               </button>
             </DialogClose>
             <button
               type="submit"
               disabled={isLoading}
-              className="text-nowrap px-10 py-4 font-bold bg-gradient-to-r from-primary-600 to-[#006D75] text-white rounded hover:opacity-90"
-            >
+              className="text-nowrap px-10 py-4 font-bold bg-gradient-to-r  from-primary-600 to-[#006D75] text-white rounded hover:opacity-90">
               {isLoading ? "Scheduling..." : "Schedule Meeting"}
             </button>
           </div>

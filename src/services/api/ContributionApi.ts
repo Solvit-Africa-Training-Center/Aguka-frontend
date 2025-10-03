@@ -62,8 +62,14 @@ export const contributionApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Contributions"],
     }),
 
-    getGroupContributionsToday: builder.query<Contribution[], string>({
-      query: (groupId) => `/contributions/${groupId}/today`,
+    getGroupContributionsToday: builder.query<
+      Contribution[],
+      { id: string; isCode?: boolean }
+    >({
+      query: ({ id, isCode }) =>
+        isCode
+          ? `/contributions/code/${id}/today`
+          : `/contributions/${id}/today`,
       providesTags: ["Contributions"],
     }),
   }),

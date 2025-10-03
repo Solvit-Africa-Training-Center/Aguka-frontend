@@ -39,11 +39,11 @@ export const userApi = apiSlice.injectEndpoints({
     }),
 
     // Update user (profile updates)
-    updateUser: builder.mutation<User, { id: string; formData: FormData }>({
-      query: ({ id, formData }) => ({
+    updateUser: builder.mutation<User, { id: string; role: string }>({
+      query: ({ id, role }) => ({
         url: `/users/${id}`,
-        method: "PATCH",
-        body: formData,
+        method: "PUT",
+        body: { role },
       }),
       invalidatesTags: ["Users"],
     }),

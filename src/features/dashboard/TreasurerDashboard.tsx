@@ -1,8 +1,9 @@
 import CommunityFeed from "@components/dashboard/member/CommunityFeed";
 import StatCard from "@components/dashboard/TreasurerComponents/StatCard";
 import TransactionList from "@components/dashboard/TreasurerComponents/TransactionList";
+import { skipToken } from "@reduxjs/toolkit/query";
 
-import { useGetAllContributionsByUserQuery } from "@services/api/ContributionApi";
+import { useGetGroupContributionsTodayQuery } from "@services/api/ContributionApi";
 import { useGetLoansByStatusQuery } from "@services/api/loanApi";
 import { useGetGroupDividendsQuery } from "@services/api/dividendApi";
 import { useGetUsersQuery } from "@services/api/authApi";
@@ -33,23 +34,24 @@ const TreasurerDashboard: React.FC = () => {
   }, [usersData, currentGroupId]);
 
   // ------------------- Contributions -------------------
-  const { data: contributionsData, isLoading: loadingContributions } =
-    useGetAllContributionsByUserQuery(currentGroupId || "");
+  const { data, isLoading: loadingContributions } = useGetGroupContributionsTodayQuery(
+    currentGroupId ? { id: currentGroupId, isCode: false } : skipToken
+  );
   const contributions: Contribution[] = useMemo(() => {
-    if (!contributionsData) return [];
-    return Array.isArray(contributionsData)
-      ? contributionsData
-      : Array.isArray((contributionsData as any)?.data)
-      ? (contributionsData as any).data
+    if (!data) return [];
+    return Array.isArray(data)
+      ? data
+      : Array.isArray((data as any)?.data)
+      ? (data as any).data
       : [];
-  }, [contributionsData]);
+  }, [data]);
 
-  const totalContribution = useMemo(
+  const totalContributionToday = useMemo(
     () => contributions.reduce((sum, c) => sum + Number(c.amount ?? 0), 0),
     [contributions]
   );
-  const formattedTotalContribution = `Frw ${totalContribution.toLocaleString()}`;
 
+  const formattedTotalContributionToday = `Frw ${totalContributionToday.toLocaleString()}`;
   // ------------------- Loans -------------------
   const { data: approvedLoansData, isLoading: loadingApprovedLoans } =
     useGetLoansByStatusQuery("approved");
@@ -97,7 +99,9 @@ const TreasurerDashboard: React.FC = () => {
         <StatCard
           title="Total contribution"
           amount={
-            loadingContributions ? "Loading..." : formattedTotalContribution
+            loadingContributions
+              ? "Loading..."
+              : formattedTotalContributionToday
           }
           change="+12.5%"
           isPositive

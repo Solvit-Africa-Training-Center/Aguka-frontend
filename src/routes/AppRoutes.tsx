@@ -42,6 +42,7 @@ import AllowContributionPage from "@pages/AllowContributePage";
 import LoanApprovalPage from "@pages/LoanApproalPage";
 
 const AppRoutes = () => {
+  const newLocal = "/memberdashboard/loanform";
   return (
     <div>
       <Routes>
@@ -79,9 +80,9 @@ const AppRoutes = () => {
           <Route index element={<MemberDashboard />} />
           <Route path="memberdashboard" element={<MemberDashboard />} />
           <Route path="contribution" element={<ContributionForm />} />
-          <Route path="/memberdashboard/payment" element={<LoanPayment />} />
+          <Route path="payment" element={<LoanPayment />} />
           <Route path="loanprofile" element={<LoanProfile />} />
-          <Route path="/memberdashboard/loanform" element={<LoanForm />} />
+          <Route path={newLocal} element={<LoanForm />} />
           <Route path="userprofile" element={<UserProfile />} />
           <Route path="notifications" element={<Notifications />} />
         </Route>
@@ -89,7 +90,6 @@ const AppRoutes = () => {
         <Route
           path="/secretarydashboard"
           element={<SecretaryDashboardLayout />}>
-          {/* <Route path="loanprofile" element={<LoanProfile />} /> */}
           <Route index element={<SecretaryDashboard />} />
           <Route path="members" element={<MembersList />} />
           <Route path="AnnouncementNotice" element={<AnnouncementNotice />} />
@@ -100,7 +100,10 @@ const AppRoutes = () => {
           <Route path="memberaccount" element={<MemberDashboard />} />
           <Route path="payment" element={<LoanPayment />} />
           <Route path="loanform" element={<LoanForm />} />
-          <Route path="loanprofile" element={<LoanProfile />} />
+          <Route
+            path="loanprofile"
+            element={<LoanProfile />}
+          />
           <Route path="notifications" element={<Notifications />} />
           <Route path="member" element={<MemberDashboard />} />
         </Route>
