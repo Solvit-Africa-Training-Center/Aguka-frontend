@@ -3,26 +3,26 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="flex w-full min-h-screen bg-cover bg-center bg-[url('/bg-gif.gif')]  font-poppins">
+    <div className="flex w-full  min-h-screen bg-cover bg-center bg-[url('/bg-gif.gif')]  font-poppins">
       <div className="space-y-7 inset-0 bg-[#003B42B2]/90 w-full mt-10 place-content-center items-center place-items-center">
-        <div className="flex flex-col space-y-2  text-left">
-          <h2 className="text-[96px]  text-white mt-40 capitalize  font-semibold">
-            <span className="text-xl md:text-[96px] text-secondary-300 capitalize  font-semibold">
+        <div className="flex flex-col space-y-2 text-center md:text-left">
+          <h2 className="text-[96px]  text-white md:mt-40 capitalize  font-semibold">
+            <span className="text-2xl md:text-[96px] text-secondary-300 capitalize  font-semibold">
               save together,
             </span>
-            <span className="text-[96px] text-secondary-300 capitalize  font-semibold">
+            <span className="text-2xl md:text-[96px] text-secondary-300 capitalize  font-semibold">
               grow together
             </span>
           </h2>
 
-          <p className=" text-[#F4F4F4] text-[32px] w-380 font-poppins text-center  ">
+          <p className=" text-[#F4F4F4] text-xl md:text-[32px] w-150 md:w-380 px-30 font-poppins  md:text-center  ">
             Join thousands building wealth through community-powered tontine
             circles. Pool your savings, take turns receiving, and achieve your
             financial goals faster.
           </p>
 
           <div className=" text-white pt-15 flex gap-10  mt-5 relative justify-center">
-            <div className="flex gap-14 ">
+            <div className="flex gap-4 flex-col md:gap-14 md:gid-cols-2 md:grid md-14">
               <button className="bg-[rgba(0,59,66,1)] hover:bg-[#FFA629] p-6 w-60 rounded-xl capitalize text-xl flex  font-semibold">
                 <Link to="/registermember">start your circle </Link>
                 <span>
