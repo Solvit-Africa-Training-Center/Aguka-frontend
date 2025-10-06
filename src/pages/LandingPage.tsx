@@ -8,7 +8,7 @@ import { Outlet } from "react-router-dom";
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="bg-[#003B42B2] ">
+    <div className="bg-[#003B42B2]">
       <NavBar />
 
       <Hero />
