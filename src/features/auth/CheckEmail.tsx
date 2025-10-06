@@ -1,4 +1,3 @@
-import React from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { Send } from "lucide-react";
 
@@ -6,7 +5,6 @@ export default function CheckEmail() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Get the email from the state passed by ForgotPassword component
   const email = location.state?.email;
 
   return (

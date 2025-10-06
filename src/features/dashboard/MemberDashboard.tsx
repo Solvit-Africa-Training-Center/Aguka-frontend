@@ -131,7 +131,7 @@ const MemberDashboard: React.FC = () => {
                   rwf {totalContribution.toLocaleString()}
                 </span>
                 <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
-                  <span>+8.2</span>
+                  <span>{"+8.2"}</span>
                   <Percent className="size-8 font-bold " />
                 </div>
                 <span>Total contributed this year</span>

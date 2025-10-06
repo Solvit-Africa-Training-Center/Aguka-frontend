@@ -5,7 +5,6 @@ import type {
   ContributionCreate,
   ContributionCreateMe,
 } from "types/Contribution";
-
 export const contributionApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createContribution: builder.mutation<Contribution, ContributionCreate>({
