@@ -6,14 +6,14 @@ const Hero = () => {
     <div className="flex w-full min-h-screen bg-cover bg-center bg-[url('/bg-gif.gif')]  font-poppins">
       <div className="space-y-7 inset-0 bg-[#003B42B2]/90 w-full mt-10 place-content-center items-center place-items-center">
         <div className="flex flex-col space-y-2  text-left">
-          <h2 className="text-[96px] text-white mt-40 capitalize  font-semibold">
+          <h2 className="text-[48px] sm:text-[64px] md:text-[80px] lg:text-[96px] text-white mt-40 capitalize  font-semibold">
             save together,
             <span className="text-[96px] text-secondary-300 capitalize  font-semibold">
               grow together
             </span>
           </h2>
 
-          <p className=" text-[#F4F4F4] text-[32px] w-380 font-poppins text-center  ">
+          <p className=" text-[#F4F4F4] text-[18px] sm:text-[20px] md:text-[24px] lg:text-[28px] xl:text-[32px]  font-poppins text-center mx-auto ">
             Join thousands building wealth through community-powered tontine
             circles. Pool your savings, take turns receiving, and achieve your
             financial goals faster.
