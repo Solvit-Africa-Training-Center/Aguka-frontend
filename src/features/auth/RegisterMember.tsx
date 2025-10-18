@@ -1,7 +1,11 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import type { RegisterForm } from "types/auth";
 import logo from "assets/logo/agukalogo.png";
+
+import { useRegisterUserMutation } from "@services/api/authApi";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "@services/api/authSlice";
 
 interface ValidationErrors {
   fullName?: string;
@@ -11,7 +15,6 @@ interface ValidationErrors {
 
 const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
   const errors: ValidationErrors = {};
-
   if (!form.fullName.trim()) errors.fullName = "Full Name is required";
   if (!form.email.trim()) errors.email = "Email is required";
   else if (!/\S+@\S+\.\S+/.test(form.email))
@@ -19,11 +22,11 @@ const validateRegisterForm = (form: RegisterForm): ValidationErrors => {
   if (!form.password.trim()) errors.password = "Password is required";
   else if (form.password.length < 6)
     errors.password = "Password must be at least 6 characters";
-
   return errors;
 };
 
 export default function RegisterMember() {
+  const dispatch = useDispatch();
   const [form, setForm] = useState<RegisterForm>({
     fullName: "",
     email: "",
@@ -31,7 +34,40 @@ export default function RegisterMember() {
   });
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [success, setSuccess] = useState<string>("");
+
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
+  // 🔹 Handle Google redirect callback
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get("token");
+    const email = queryParams.get("email");
+    const name = queryParams.get("name");
+    const groupId = queryParams.get("groupId");
+    const isApproved = queryParams.get("isApproved");
+
+    if (token && email) {
+      localStorage.setItem("token", token);
+
+      const user = {
+        email,
+        name: name || "",
+        groupId: groupId || null,
+        isApproved: isApproved === "true",
+      };
+
+      // ✅ Conditional navigation
+      if (!user.groupId || !user.isApproved) {
+        navigate("/FillBeforeRegister", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    }
+  }, [location.search, navigate, dispatch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,56 +76,62 @@ export default function RegisterMember() {
     setSuccess("");
   };
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const formErrors = validateRegisterForm(form);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
 
-  const formErrors = validateRegisterForm(form);
-  if (Object.keys(formErrors).length > 0) {
-    setErrors(formErrors);
-    return;
-  }
-
-  try {
-    const response = await fetch("https://aguka.onrender.com/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-     body: JSON.stringify({
+    try {
+      const result = await registerUser({
         name: form.fullName,
         email: form.email,
         password: form.password,
-      }),
-    });
+      }).unwrap();
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Registration failed");
+      console.log("Registered successfully:", result);
+
+      // Try to get token and role from result.data or result.token
+      const user = result.data || result.user || {};
+      const token = result.data?.token || result.token || "";
+      const role = user.role || result.data?.role || "";
+
+      if (token) localStorage.setItem("token", token);
+      if (role) localStorage.setItem("role", role);
+      localStorage.setItem("user", JSON.stringify(user));
+    dispatch(
+  setCredentials({
+    token: result.data.token,
+    role: result.data.role,
+    user: result.data.user, 
+  })
+);
+
+      setSuccess("Your account has been created successfully!");
+      setForm({ fullName: "", email: "", password: "" });
+      // ✅ Conditional navigation
+      navigate("/login");
+    } catch (error: any) {
+      const message =
+        error?.data?.message || "Failed to register. Please try again.";
+      setErrors({ email: message });
     }
+  };
 
-    const data = await response.json();
-    console.log("Registered successfully:", data);
-
-    setSuccess("Your account has been created successfully!");
-    setForm({ fullName: "", email: "", password: "" });
-
-    setTimeout(() => navigate("/FillBeforeRegister"), 1000);
-  } catch (error: any) {
-    console.error("Error registering:", error.message);
-    setErrors({ email: error.message }); 
-  }
-};
-
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+  };
 
   return (
     <div className="w-full flex font-poppins h-screen">
       <div className="grid md:grid-cols-2 w-full h-screen">
-        {/* Left Section */}
         <div className="w-full relative h-screen">
           <img
             src="/photos/registermember.jpg"
             alt="Register"
-            className="w-full h-screen "
+            className="w-full h-screen"
           />
           <div className="absolute inset-0 bg-black opacity-70"></div>
           <div className="absolute top-1/4 left-16 w-[600px] grid gap-6 text-center text-white">
@@ -99,9 +141,7 @@ export default function RegisterMember() {
               className="w-36 h-36 rounded-full mx-auto"
             />
             <h1 className="text-6xl font-bold">Save Together,</h1>
-            <h1 className="text-6xl font-bold  text-[#F9A825] ">
-              Grow Together
-            </h1>
+            <h1 className="text-6xl font-bold text-[#F9A825]">Grow Together</h1>
             <p className="text-sm mt-2 w-200">
               Aguka empowers communities to build financial strength through
               collective savings. By pooling resources, members access
@@ -111,13 +151,15 @@ export default function RegisterMember() {
           </div>
         </div>
 
-        {/* Right Section */}
+        {/* Right Side (Form) */}
         <div className="flex flex-col bg-[#003B42] h-screen w-full justify-center px-32 py-10 relative">
           <h2 className="text-5xl text-white font-bold mb-8">
             Create an Account
           </h2>
 
+          {/* Register Form */}
           <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
+            {/* Full Name */}
             <div>
               <label htmlFor="fullName" className="text-2xl text-white mb-1">
                 Full Name
@@ -136,6 +178,7 @@ export default function RegisterMember() {
               )}
             </div>
 
+            {/* Email */}
             <div>
               <label htmlFor="email" className="text-2xl text-white mb-1">
                 Email
@@ -148,12 +191,14 @@ export default function RegisterMember() {
                 onChange={handleChange}
                 placeholder="Enter your email"
                 className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                autoComplete="email"
               />
               {errors.email && (
                 <p className="text-red-400 text-sm mt-1">{errors.email}</p>
               )}
             </div>
 
+            {/* Password */}
             <div>
               <label htmlFor="password" className="text-2xl text-white mb-1">
                 Password
@@ -166,16 +211,19 @@ export default function RegisterMember() {
                 onChange={handleChange}
                 placeholder="Enter your password"
                 className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                autoComplete="current-password"
               />
               {errors.password && (
                 <p className="text-red-400 text-sm mt-1">{errors.password}</p>
               )}
             </div>
 
+            {/* Submit Button */}
             <button
               type="submit"
+              disabled={isLoading}
               className="w-full py-4 rounded-lg font-semibold text-black bg-[#F9A825] hover:bg-secondary-600 transition">
-              Sign Up
+              {isLoading ? "Registering..." : "Sign Up"}
             </button>
 
             {success && (
@@ -185,20 +233,26 @@ export default function RegisterMember() {
             )}
           </form>
 
+          {/* Divider */}
           <div className="flex items-center my-6 text-gray-400 w-full max-w-md">
             <hr className="flex-grow border-gray-400" />
             <span className="mx-2 text-[#F9A825]">Or continue with</span>
             <hr className="flex-grow border-gray-400" />
           </div>
-          <div className=" w-100 justify-center place-items-center">
-            <button className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3  mb-6">
+
+          {/* Google Login */}
+          <div className="w-100 justify-center place-items-center">
+            <button
+              onClick={handleGoogleLogin}
+              className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6">
               <img
                 src="/image/gmail.png"
                 alt="Google login"
-                className="w-10 h-10 "
+                className="w-10 h-10"
               />
             </button>
           </div>
+
           <p className="text-center text-gray-300 w-150">
             Already have an account?{" "}
             <Link to="/login" className="text-[#F9A825] hover:underline">

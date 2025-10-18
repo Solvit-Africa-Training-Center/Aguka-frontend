@@ -1,57 +1,59 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { LockKeyhole, Eye, EyeOff } from "lucide-react";
+import { useResetPasswordMutation } from "@services/api/authApi";
 
 interface ResetPasswordForm {
   password: string;
   confirmPassword: string;
 }
 
-interface ResetPasswordProps {}
-
-const ResetPassword: React.FC<ResetPasswordProps> = () => {
+const ResetPassword: React.FC = () => {
   const [form, setForm] = useState<ResetPasswordForm>({
     password: "",
     confirmPassword: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const token = location.search.split("token=")[1]; // get token from query params
+
+  const [resetPassword] = useResetPasswordMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
+    if (!token) {
+      setError("Invalid or missing token.");
+      return;
+    }
 
     if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match!");
       return;
     }
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await resetPassword({ token, newPassword: form.password }).unwrap();
       alert("Password reset successful!");
       navigate("/login");
-    }, 1500);
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+    } catch (err: any) {
+      setError(err?.data?.message || "Failed to reset password.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -69,6 +71,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
           Enter your new password below
         </p>
 
+        {error && (
+          <p className="text-red-400 text-center font-semibold mb-4">{error}</p>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-10">
           <div className="relative">
             <input
@@ -83,7 +89,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
             />
             <button
               type="button"
-              onClick={togglePasswordVisibility}
+              onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]">
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -102,7 +108,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
             />
             <button
               type="button"
-              onClick={toggleConfirmPasswordVisibility}
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]">
               {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>

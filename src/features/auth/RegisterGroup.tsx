@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import { Upload, ImagePlus } from "lucide-react";
 import logo from "assets/logo/agukalogo.png";
 import type { GroupCreation } from "types/auth";
+import {
+  setGroupError,
+  setGroupSuccess,
+  clearGroupMessages,
+} from "@services/api/groupSlice";
+import { useCreateGroupMutation } from "@services/api/groupApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "@services/api/authSlice";
+import { useNavigate } from "react-router-dom";
+import type { RootState } from "@services/store/store";
 
 const RegisterGroup: React.FC = () => {
   const [formData, setFormData] = useState<GroupCreation>({
     name: "",
     description: "",
-    location: "",
+    location: [],
     profilePicture: null,
     meetingLocation: "",
     interestRate: undefined,
@@ -18,15 +28,35 @@ const RegisterGroup: React.FC = () => {
     agreementTerms: null,
   });
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [createGroup, { isLoading }] = useCreateGroupMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // NEW: Select messages from redux state
+  const { successMessage, errorMessage } = useSelector(
+    (state: RootState) => state.group
+  );
+
+  // NEW: Clear messages after 4 seconds
+  useEffect(() => {
+    if (successMessage || errorMessage) {
+      const timer = setTimeout(() => {
+        dispatch(clearGroupMessages());
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, errorMessage, dispatch]);
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        type === "number" ? (value === "" ? undefined : Number(value)) : value,
+      [name]: type === "number" ? Number(value) : value,
     }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,169 +69,277 @@ const RegisterGroup: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.name.trim()) newErrors.name = "Group name is required";
+    if (!formData.email?.trim()) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = "Enter a valid email";
+    if (!formData.minContribution || formData.minContribution <= 0)
+      newErrors.minContribution = "Min contribution must be greater than 0";
+    return newErrors;
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Submitted Data:", formData);
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    const data = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") {
+        let appendValue = value;
+        if (typeof value === "number") {
+          appendValue = value.toString();
+        }
+        data.append(key, appendValue as any);
+      }
+    });
+
+    try {
+      const result = await createGroup(data).unwrap();
+
+      // ✅ Dispatch success message
+      dispatch(
+        setGroupSuccess({
+          groupId: result.groupId || "", // Adjust if your response differs
+          message: "Group created successfully!",
+        })
+      );
+
+      navigate("/presidentdashboard");
+
+      // ✅ Store token if available
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+        dispatch(
+          setCredentials({
+            token: result.token,
+            role: result.role || "member",
+            user: result.user || null,
+          })
+        );
+      }
+
+      // ✅ Reset form
+      setFormData({
+        name: "",
+        description: "",
+        location: [],
+        profilePicture: null,
+        meetingLocation: "",
+        interestRate: undefined,
+        contact: "",
+        email: "",
+        minContribution: 0,
+        agreementTerms: null,
+      });
+    } catch (err: any) {
+      console.error("Error creating group:", err);
+
+      // ✅ Dispatch error message
+      dispatch(
+        setGroupError({
+          message: err?.data?.message || "Failed to create group.",
+        })
+      );
+    }
   };
 
   return (
-    <div className=" w-full min-h-screen font-poppins text-white relative">
+    <div className="relative w-full min-h-screen font-poppins flex items-center justify-center">
+      {/* NEW: Success and Error Messages */}
+      {successMessage && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+          {successMessage}
+        </div>
+      )}
+      {errorMessage && (
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+          {errorMessage}
+        </div>
+      )}
+
       <img
-        src="image/ibiceri  aguka.jpg "
+        src="image/ibiceri  aguka.jpg"
         alt="background"
-        className="absolute w-400 h-screen "
+        className="absolute inset-0 w-400 h-full "
       />
+      <div className="absolute inset-0 bg-[#CED6D8] opacity-90 ml-300"></div>
 
-      <div className="absolute inset-0 bg-[#CED6D8] opacity-90 left-280"></div>
-
+      {/* Logo */}
       <img
         src={logo}
         alt="logo"
-        className="absolute w-25 h-25 rounded-full left-10 top-10"
+        className="absolute w-25 h-25 rounded-full left-6 top-2 z-20"
       />
 
-      <div className="relative max-w-6xl mx-auto bg-[#003B42] rounded-3xl p-10 shadow-lg top-30">
-        <h1 className="text-4xl font-bold text-center ">Register your Group</h1>
+      {/* Form container */}
+      <div className="relative z-10 w-300 mx-auto bg-[#003B42] rounded-2xl p-8 shadow-lg mt-10">
+        <h1 className="text-3xl font-bold text-center mb-8 text-white">
+          Register your Group
+        </h1>
 
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-6 p-4">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
+          {/* Full Name */}
           <div>
-            <label className="block mb-2 text-xl">Full Name</label>
+            <label className="block mb-2 text-lg">Full Name</label>
             <input
               type="text"
               name="name"
-              placeholder="Aguka Developers"
+              placeholder="Enter your Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
+            {errors.name && <p className="text-red-400">{errors.name}</p>}
           </div>
 
           {/* Interest Rate */}
           <div>
-            <label className="block mb-2 text-xl">Interest Rate</label>
+            <label className="block mb-2 text-lg">Interest Rate</label>
             <input
               type="number"
               name="interestRate"
               placeholder="5.7"
               value={formData.interestRate ?? ""}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
           </div>
 
+          {/* Description */}
           <div>
-            <label className="block mb-2 text-xl">Description</label>
-            <input
-              type="text"
+            <label className="block mb-2 text-lg">Description</label>
+            <textarea
               name="description"
-              placeholder="Collaboration group for developers."
+              placeholder="Enter your Description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              rows={2}
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
           </div>
 
+          {/* Contact */}
           <div>
-            <label className="block mb-2 text-xl">Contact</label>
+            <label className="block mb-2 text-lg">Contact</label>
             <input
-              type="text"
+              type="tel"
               name="contact"
-              placeholder="0788800000"
+              placeholder="Input Your Telephone Number"
               value={formData.contact}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
           </div>
 
           {/* Location */}
           <div>
-            <label className="block mb-2 text-xl">Location</label>
+            <label className="block mb-2 text-lg">Location</label>
             <input
               type="text"
               name="location"
-              placeholder="Kigali,Gasabo,Ndera"
-              value={formData.location}
-              onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              placeholder="Enter your Province"
+              value={formData.location[0] ?? ""}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  location: [e.target.value],
+                }))
+              }
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
           </div>
 
           {/* Email */}
           <div>
-            <label className="block mb-2 text-xl">Email</label>
+            <label className="block mb-2 text-lg">Email</label>
             <input
               type="email"
               name="email"
               placeholder="group@example.com"
               value={formData.email}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
+            {errors.email && <p className="text-red-400">{errors.email}</p>}
           </div>
 
           {/* Profile Picture */}
           <div>
-            <label className="block mb-2 text-xl">Profile Picture</label>
+            <label className="block mb-2 text-lg">Profile Picture</label>
             <div className="relative">
               <input
                 type="file"
                 name="profilePicture"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none pr-10"
+                className="w-full rounded-md p-3 text-white border-1 border-[#948E8E] bg-transparent outline-none pr-10"
               />
-              <ImagePlus className="absolute right-3 top-3 text-gray-600" />
+              <ImagePlus className="absolute right-3 top-3 text-gray-300" />
             </div>
           </div>
 
           {/* Min Contribution */}
           <div>
-            <label className="block mb-2 text-xl">Min Contribution</label>
+            <label className="block mb-2 text-lg">Min Contribution</label>
             <input
-              type="number"
+              type="text"
               name="minContribution"
               placeholder="500"
               value={formData.minContribution}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
+            {errors.minContribution && (
+              <p className="text-red-400">{errors.minContribution}</p>
+            )}
           </div>
 
           {/* Meeting Location */}
           <div>
-            <label className="block mb-2 text-xl">Meeting Location</label>
+            <label className="block mb-2 text-lg">Meeting Location</label>
             <input
               type="text"
               name="meetingLocation"
               placeholder="Ndera"
               value={formData.meetingLocation}
               onChange={handleChange}
-              className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none"
+              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
             />
           </div>
 
+          {/* Agreement Terms */}
           <div>
-            <label className="block mb-2 text-xl">Agreement Terms</label>
+            <label className="block mb-2 text-lg">Agreement Terms</label>
             <div className="relative">
               <input
                 type="file"
                 name="agreementTerms"
                 accept=".pdf,.doc,.docx"
                 onChange={handleFileChange}
-                className="w-full rounded-md p-3  text-black border-2 border-gray-400 outline-none pr-10"
+                className="w-full rounded-md p-3 text-white border-1 border-[#948E8E] bg-transparent outline-none pr-10"
               />
-              <Upload className="absolute right-3 top-3 text-gray-600" />
+              <Upload className="absolute right-3 top-3 text-gray-300" />
             </div>
           </div>
-        </form>
 
-        <div className="flex justify-center mt-8">
-          <button
-            type="submit"
-            className="px-10 py-4 text-xl capitalize bg-[#F9A825] text-black font-bold rounded-md border-none">
-            Create Group
-          </button>
-        </div>
+          {/* Submit button */}
+          <div className="md:col-span-2 flex justify-center mt-6">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="px-10 py-4 text-xl bg-[#F9A825] text-black font-bold rounded-lg hover:bg-yellow-500 transition w-100">
+              {isLoading ? "Creating..." : "Create Group"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
