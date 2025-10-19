@@ -37,7 +37,7 @@ const Hero = () => {
               </a>
             </div>
 
-            <button className="fixed right-5 size-10  rounded-full items-center flex  mt-10 animate animate-bounce">
+            <button className="fixed right-5 size-10   items-center flex mt-25  md:mt-10  animate animate-bounce">
               <div className="flex flex-col items-center p-2">
                 <i className="ri-movie-2-ai-fill text-2xl md:text-4xl text-[#FFA629] " />
               </div>
