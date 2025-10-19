@@ -4,12 +4,12 @@ import { BsCreditCardFill } from "react-icons/bs";
 
 import { useCreateContributionMeMutation } from "@services/api/ContributionApi";
 import type { PaymentMethod } from "types/Contribution";
-import SuccessContribution from "./SuccessContribution"; // ✅ Import the popup
+import SuccessContribution from "./SuccessContribution"; 
 
 const ContributionForm: React.FC = () => {
   const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("bank");
-  const [showPopup, setShowPopup] = useState(false); // ✅ Popup state
+  const [showPopup, setShowPopup] = useState(false); 
 
   const [createContributionMe, { isLoading, error }] =
     useCreateContributionMeMutation();

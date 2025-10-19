@@ -7,10 +7,8 @@ const KeyMetrics: React.FC = () => {
         Key Metrics
       </h2>
 
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-center">
-        {/* Card 1 */}
-        <div className="bg-[#006C77] rounded-md p-10 flex flex-col items-center justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-center">
+        <div className="bg-[#006C77] rounded-xl p-10 flex flex-col items-center justify-center transition-transform hover:scale-105">
           <Users className="size-16 sm:size-20 mb-6 text-secondary-300" />
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
             10,000+
@@ -18,8 +16,7 @@ const KeyMetrics: React.FC = () => {
           <span className="mt-2 text-lg sm:text-xl">active members</span>
         </div>
 
-        {/* Card 2 */}
-        <div className="bg-[#006C77] rounded-md p-10 flex flex-col items-center justify-center">
+        <div className="bg-[#006C77] rounded-xl p-10 flex flex-col items-center justify-center transition-transform hover:scale-105">
           <DollarSign className="size-16 sm:size-20 mb-6 text-secondary-300" />
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase">
             $50m+
@@ -27,8 +24,7 @@ const KeyMetrics: React.FC = () => {
           <span className="mt-2 text-lg sm:text-xl">funds calculated</span>
         </div>
 
-        {/* Card 3 */}
-        <div className="bg-[#006C77] rounded-md p-10 flex flex-col items-center justify-center">
+        <div className="bg-[#006C77] rounded-xl p-10 flex flex-col items-center justify-center transition-transform hover:scale-105">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase text-secondary-300">
             98%
           </h2>
@@ -36,7 +32,7 @@ const KeyMetrics: React.FC = () => {
         </div>
 
         {/* Card 4 */}
-        <div className="bg-[#006C77] rounded-md p-10 flex flex-col items-center justify-center">
+        <div className="bg-[#006C77] rounded-xl p-10 flex flex-col items-center justify-center transition-transform hover:scale-105">
           <Users className="size-16 sm:size-20 mb-6 text-secondary-300" />
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase">
             10,000+
@@ -45,7 +41,7 @@ const KeyMetrics: React.FC = () => {
         </div>
 
         {/* Card 5 */}
-        <div className="bg-[#006C77] rounded-md p-10 flex flex-col items-center justify-center">
+        <div className="bg-[#006C77] rounded-xl p-10 flex flex-col items-center justify-center transition-transform hover:scale-105">
           <DollarSign className="size-16 sm:size-20 mb-6 text-secondary-300" />
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase">
             $1m+
@@ -54,7 +50,7 @@ const KeyMetrics: React.FC = () => {
         </div>
 
         {/* Card 6 */}
-        <div className="bg-[#006C77] rounded-md p-10 flex flex-col items-center justify-center">
+        <div className="bg-[#006C77] rounded-xl p-10 flex flex-col items-center justify-center transition-transform hover:scale-105">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase text-secondary-300">
             80%
           </h2>

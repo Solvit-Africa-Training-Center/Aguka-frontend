@@ -30,7 +30,7 @@ const NavBar: React.FC = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden  md:flex items-center space-x-20">
+          <div className="hidden  sm:flex items-center space-x-20">
             <div className="flex space-x-10 font-bold">
               <a href="/">Why Aguka</a>
               <NavLink to="service" className="capitalize">
@@ -60,7 +60,7 @@ const NavBar: React.FC = () => {
           </div>
 
           <button
-            className="lg:hidden md:hidden text-white mr-2"
+            className="sm:hidden md:hidden text-white mr-2"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={28} /> : <Menu size={28} />}
