@@ -22,7 +22,7 @@ const Hero = () => {
           </p>
 
           <div className=" text-white md:pt-15 flex  gap-10  md:mt-5 relative justify-center">
-            <div className="flex flex-col md:flex md:flex-cols gap-4">
+            <div className="flex flex-col md:grid md:grid-cols-2 md:space-x-10 gap-4">
               <button className="bg-[rgba(0,59,66,1)] hover:bg-[#FFA629] p-4 md:p-6  w-60 rounded-xl capitalize text-xl flex  font-semibold">
                 <Link to="/registermember">start your circle </Link>
                 <span>
