@@ -41,7 +41,6 @@ export default function RegisterMember() {
 
   const [registerUser, { isLoading }] = useRegisterUserMutation();
 
-  // 🔹 Handle Google redirect callback
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const token = queryParams.get("token");
@@ -60,7 +59,6 @@ export default function RegisterMember() {
         isApproved: isApproved === "true",
       };
 
-      // ✅ Conditional navigation
       if (!user.groupId || !user.isApproved) {
         navigate("/FillBeforeRegister", { replace: true });
       } else {
@@ -101,17 +99,16 @@ export default function RegisterMember() {
       if (token) localStorage.setItem("token", token);
       if (role) localStorage.setItem("role", role);
       localStorage.setItem("user", JSON.stringify(user));
-    dispatch(
-  setCredentials({
-    token: result.data.token,
-    role: result.data.role,
-    user: result.data.user, 
-  })
-);
+      dispatch(
+        setCredentials({
+          token: result.data.token,
+          role: result.data.role,
+          user: result.data.user,
+        })
+      );
 
       setSuccess("Your account has been created successfully!");
       setForm({ fullName: "", email: "", password: "" });
-      // ✅ Conditional navigation
       navigate("/login");
     } catch (error: any) {
       const message =
@@ -127,7 +124,7 @@ export default function RegisterMember() {
   return (
     <div className="w-full flex font-poppins h-screen">
       <div className="grid md:grid-cols-2 w-full h-screen">
-        <div className="w-full relative h-screen">
+        <div className="w-full relative h-screen hidden md:block">
           <img
             src="/photos/registermember.jpg"
             alt="Register"
@@ -142,7 +139,7 @@ export default function RegisterMember() {
             />
             <h1 className="text-6xl font-bold">Save Together,</h1>
             <h1 className="text-6xl font-bold text-[#F9A825]">Grow Together</h1>
-            <p className="text-sm mt-2 w-200">
+            <p className="text-sm mt-2 md:mt-0 md:w-180 mx-auto">
               Aguka empowers communities to build financial strength through
               collective savings. By pooling resources, members access
               opportunities to grow, achieve their goals, and support one
@@ -152,113 +149,120 @@ export default function RegisterMember() {
         </div>
 
         {/* Right Side (Form) */}
-        <div className="flex flex-col bg-[#003B42] h-screen w-full justify-center px-32 py-10 relative">
-          <h2 className="text-5xl text-white font-bold mb-8">
-            Create an Account
-          </h2>
 
-          {/* Register Form */}
-          <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
-            {/* Full Name */}
-            <div>
-              <label htmlFor="fullName" className="text-2xl text-white mb-1">
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={form.fullName}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              />
-              {errors.fullName && (
-                <p className="text-red-400 text-sm mt-1">{errors.fullName}</p>
-              )}
-            </div>
+        <div className="flex flex-col bg-[#003B42] h-screen w-full justify-center md:px-32 md:py-10 relative  ">
+          <div className="rounded-3xl border border-primary-50 md:border-none w-full">
+            <h2 className="md:text-5xl  font-bold mb-8 text-center text-3xl text-secondary-300 underline md:underline-0">
+              Create an Account
+            </h2>
 
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="text-2xl text-white mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="Enter your email"
-                className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                autoComplete="email"
-              />
-              {errors.email && (
-                <p className="text-red-400 text-sm mt-1">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="text-2xl text-white mb-1">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                autoComplete="current-password"
-              />
-              {errors.password && (
-                <p className="text-red-400 text-sm mt-1">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-4 rounded-lg font-semibold text-black bg-[#F9A825] hover:bg-secondary-600 transition">
-              {isLoading ? "Registering..." : "Sign Up"}
-            </button>
-
-            {success && (
-              <div className="mt-4 p-3 rounded-md bg-green-100 text-green-700 border border-green-400">
-                {success}
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6 md:w-full max-w-md  mx-auto  "
+            >
+              {/* Full Name */}
+              <div>
+                <label htmlFor="fullName" className="text-2xl text-white mb-1">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={form.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+                {errors.fullName && (
+                  <p className="text-red-400 text-sm mt-1">{errors.fullName}</p>
+                )}
               </div>
-            )}
-          </form>
 
-          {/* Divider */}
-          <div className="flex items-center my-6 text-gray-400 w-full max-w-md">
-            <hr className="flex-grow border-gray-400" />
-            <span className="mx-2 text-[#F9A825]">Or continue with</span>
-            <hr className="flex-grow border-gray-400" />
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="text-2xl text-white mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  autoComplete="email"
+                />
+                {errors.email && (
+                  <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Password */}
+              <div>
+                <label htmlFor="password" className="text-2xl text-white mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  className="w-full p-4 rounded-lg border border-gray-400 bg-transparent text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  autoComplete="current-password"
+                />
+                {errors.password && (
+                  <p className="text-red-400 text-sm mt-1">{errors.password}</p>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-4 rounded-lg font-semibold text-black bg-[#F9A825] hover:bg-secondary-600 transition"
+              >
+                {isLoading ? "Registering..." : "Sign Up"}
+              </button>
+
+              {success && (
+                <div className="mt-4 p-3 rounded-md bg-green-100 text-green-700 border border-green-400">
+                  {success}
+                </div>
+              )}
+            </form>
+
+            {/* Divider */}
+            <div className="flex items-center my-6 text-gray-400 w-full max-w-md">
+              <hr className="flex-grow border-gray-400" />
+              <span className="mx-2 text-[#F9A825]">Or continue with</span>
+              <hr className="flex-grow border-gray-400" />
+            </div>
+
+            {/* Google Login */}
+            <div className="w-100 justify-center place-items-center">
+              <button
+                onClick={handleGoogleLogin}
+                className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6"
+              >
+                <img
+                  src="/image/gmail.png"
+                  alt="Google login"
+                  className="w-10 h-10"
+                />
+              </button>
+            </div>
+
+            <p className="text-center text-gray-300 w-150">
+              Already have an account?{" "}
+              <Link to="/login" className="text-[#F9A825] hover:underline">
+                Login
+              </Link>
+            </p>
           </div>
-
-          {/* Google Login */}
-          <div className="w-100 justify-center place-items-center">
-            <button
-              onClick={handleGoogleLogin}
-              className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6">
-              <img
-                src="/image/gmail.png"
-                alt="Google login"
-                className="w-10 h-10"
-              />
-            </button>
-          </div>
-
-          <p className="text-center text-gray-300 w-150">
-            Already have an account?{" "}
-            <Link to="/login" className="text-[#F9A825] hover:underline">
-              Login
-            </Link>
-          </p>
         </div>
       </div>
     </div>
