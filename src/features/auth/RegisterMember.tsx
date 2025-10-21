@@ -122,24 +122,24 @@ export default function RegisterMember() {
   };
 
   return (
-    <div className="w-full flex font-poppins h-screen">
-      <div className="grid md:grid-cols-2 w-full h-screen">
-        <div className="w-full relative h-screen hidden md:block">
+    <div className="w-full flex font-poppins md:h-screen overflow-x-hidden md:overflow-auto min-h-screen">
+      <div className="grid md:grid-cols-2 w-full md:h-screen">
+        <div className="md:w-full relative h-screen mx-auto w-full ">
           <img
             src="/photos/registermember.jpg"
             alt="Register"
-            className="w-full h-screen"
+            className="md:w-full md:h-screen mx-auto"
           />
           <div className="absolute inset-0 bg-black opacity-70"></div>
-          <div className="absolute top-1/4 left-16 w-[600px] grid gap-6 text-center text-white">
+          <div className="absolute top-30 pr-24 w-130 md:top-1/4 md:left-16 md:w-[600px] grid gap-6 text-center text-white">
             <img
               src={logo}
               alt="Logo"
-              className="w-36 h-36 rounded-full mx-auto"
+              className="w-36 h-36 rounded-full mx-auto "
             />
-            <h1 className="text-6xl font-bold">Save Together,</h1>
-            <h1 className="text-6xl font-bold text-[#F9A825]">Grow Together</h1>
-            <p className="text-sm mt-2 md:mt-0 md:w-180 mx-auto">
+            <h1 className="md:text-6xl text-xl font-bold">Save Together,</h1>
+            <h1 className="md:text-6xl text-xl font-bold text-[#F9A825]">Grow Together</h1>
+            <p className="text-sm mt-2 md:mt-0 md:w-180 mx-auto w-100 pr-10 ">
               Aguka empowers communities to build financial strength through
               collective savings. By pooling resources, members access
               opportunities to grow, achieve their goals, and support one
@@ -150,9 +150,9 @@ export default function RegisterMember() {
 
         {/* Right Side (Form) */}
 
-        <div className="flex flex-col bg-[#003B42] h-screen w-full justify-center md:px-32 md:py-10 relative  ">
-          <div className="rounded-3xl border border-primary-50 md:border-none w-full">
-            <h2 className="md:text-5xl  font-bold mb-8 text-center text-3xl text-secondary-300 underline md:underline-0">
+        <div className="flex flex-col bg-[#003B42] h-screen w-100 md:full justify-center md:px-32 md:py-10 relative px-2 py-2">
+          <div className="rounded-3xl border border-primary-50 md:border-none w-full p-10">
+            <h2 className="md:text-5xl md:text-white  font-bold mb-8 text-center text-3xl text-secondary-300 underline md:underline-0">
               Create an Account
             </h2>
 
@@ -256,7 +256,7 @@ export default function RegisterMember() {
               </button>
             </div>
 
-            <p className="text-center text-gray-300 w-150">
+            <p className="text-center text-gray-300 md:w-150">
               Already have an account?{" "}
               <Link to="/login" className="text-[#F9A825] hover:underline">
                 Login
