@@ -138,7 +138,9 @@ export default function RegisterMember() {
               className="w-36 h-36 rounded-full mx-auto "
             />
             <h1 className="md:text-6xl text-xl font-bold">Save Together,</h1>
-            <h1 className="md:text-6xl text-xl font-bold text-[#F9A825]">Grow Together</h1>
+            <h1 className="md:text-6xl text-xl font-bold text-[#F9A825]">
+              Grow Together
+            </h1>
             <p className="text-sm mt-2 md:mt-0 md:w-180 mx-auto w-100 pr-10 ">
               Aguka empowers communities to build financial strength through
               collective savings. By pooling resources, members access
@@ -150,7 +152,7 @@ export default function RegisterMember() {
 
         {/* Right Side (Form) */}
 
-        <div className="flex flex-col bg-[#003B42] h-screen w-100 md:full justify-center md:px-32 md:py-10 relative px-2 py-2">
+        <div className="flex flex-col bg-[#003B42] h-screen w-100 md:full lg:w-full justify-center md:px-32 md:py-10 lg:px-10 lg:py-10 relative px-2 py-2">
           <div className="rounded-3xl border border-primary-50 md:border-none w-full p-10">
             <h2 className="md:text-5xl md:text-white  font-bold mb-8 text-center text-3xl text-secondary-300 underline md:underline-0">
               Create an Account
