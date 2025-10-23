@@ -248,7 +248,7 @@ export default function RegisterMember() {
             <div className="w-100 justify-center place-items-center">
               <button
                 onClick={handleGoogleLogin}
-                className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6"
+                className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6  md:mr-0 mr-30"
               >
                 <img
                   src="/image/gmail.png"
@@ -258,7 +258,7 @@ export default function RegisterMember() {
               </button>
             </div>
 
-            <p className="text-center text-gray-300 md:w-150">
+            <p className="text-center text-gray-300 md:w-150 ">
               Already have an account?{" "}
               <Link to="/login" className="text-[#F9A825] hover:underline">
                 Login
