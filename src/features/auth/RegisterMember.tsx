@@ -122,13 +122,13 @@ export default function RegisterMember() {
   };
 
   return (
-    <div className="w-full flex font-poppins md:h-screen overflow-x-hidden md:overflow-auto min-h-screen">
+    <div className="w-full flex font-poppins md:h-screen overflow-x-hidden h-screen md:overflow-auto min-h-screen">
       <div className="grid md:grid-cols-2 w-full md:h-screen">
         <div className="md:w-full relative h-screen mx-auto w-full ">
           <img
             src="/photos/registermember.jpg"
             alt="Register"
-            className="md:w-full md:h-screen mx-auto"
+            className="md:w-full md:h-screen mx-auto h-screen object-cover"
           />
           <div className="absolute inset-0 bg-black opacity-70"></div>
           <div className="absolute top-30 pr-24 w-130 md:top-1/4 md:left-16 md:w-[600px] grid gap-6 text-center text-white">
@@ -152,9 +152,9 @@ export default function RegisterMember() {
 
         {/* Right Side (Form) */}
 
-        <div className="flex flex-col bg-[#003B42] h-screen w-100 md:full lg:w-full justify-center md:px-32 md:py-10 lg:px-10 lg:py-10 relative px-2 py-2">
+        <div className="flex flex-col bg-[#003B42] md:h-screen  w-100 md:full lg:w-full justify-center md:px-32 md:py-10 lg:px-10 lg:py-10 relative px-8 py-2">
           <div className="rounded-3xl border border-primary-50 md:border-none w-full p-10">
-            <h2 className="md:text-5xl md:text-white  font-bold mb-8 text-center text-3xl text-secondary-300 underline md:underline-0">
+            <h2 className="md:text-5xl md:text-white  font-bold mb-8 text-center text-xl text-secondary-300 underline md:underline-0">
               Create an Account
             </h2>
 
