@@ -158,22 +158,22 @@ export default function Login() {
   };
 
   return (
-    <div className=" min-h-screen  w-full flex font-poppins md:overflow-auto overflow-hidden">
-      <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 grid-cols-1 w-full">
+    <div className="min-h-screen w-full flex font-poppins md:overflow-auto overflow-hidden">
+      <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 grid-cols-1 gap-10">
         {/* Left Section */}
-        <div className="relative w-full md:flex flex-col">
+        <div className="relative md:flex flex-col">
           <img
             src="photos/login.jpg"
             alt="Login"
-            className="relative w-full min-h-screen object-cover "
+            className="relative w-full md:min-h-screen lg:min-h-screen  md:block lg:block hidden object-cover "
           />
           <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="absolute top-10 md:top-[230px] md:left-[88px] grid md:gap-[67px] md:w-[700px] md:h-[389px]">
+          <div className="absolute top-0 md:top-[230px] lg:top-15 md:left-[88px] grid md:gap-[67px] md:w-[700px] md:h-[389px]">
             <div className="place-items-center">
               <img
                 src={logo}
                 alt="Logo"
-                className="w-30 h-30 mb-2 rounded-full object-cover ml-25"
+                className="w-30 h-30 mb-2 rounded-full object-cover md:ml-25"
               />
             </div>
             <div className="text-center">
@@ -184,7 +184,7 @@ export default function Login() {
                 Grow Together
               </h1>
             </div>
-            <div className="text-center md:w-180 text-sm w-80">
+            <div className="text-center md:w-150 lg:180 text-sm w-100">
               <p>
                 Aguka empowers communities to build financial strength through
                 collective savings. By pooling resources, members access
@@ -196,18 +196,18 @@ export default function Login() {
         </div>
 
         {/* Right Section */}
-        <div className="flex flex-col justify-center bg-[#003B42] min-h-screen relative">
-          <div className="absolute md:ml-[126px] md:w-[590px] ">
-            <h2 className="md:text-6xl text-4xl font-poppins text-[#FAFEFFFC] md:text-left mb-15 text-center">
+        <div className="bg-[#003B42] relative">
+          <div className="absolute  md:ml-10 lg:ml-5 top-10  W-100 mx-auto flex flex-col">
+            <h2 className="md:text-5xl text-3xl font-poppins text-[#FAFEFFFC] md:text-left mb-15 text-center">
               Join Aguka!
             </h2>
 
             {/* Form */}
-            <div className=" border border-primary-200 p-4 md:border-none m-4 md:w-120 w-80 rounded-md ">
-              <div className=" w-full justify-center ">
+            <div className=" border border-primary-200 p-4 md:border-none m-4 md:w-120 lg:w-full w-full rounded-md ">
+              <div className="justify-center ">
                 <form
                   onSubmit={handleSubmit}
-                  className="md:space-y-8 space-y-4"
+                  className="lg:space-y-8 space-y-4 h-70 w-full"
                 >
                   {/* Email / Phone */}
                   <div className="flex flex-col w-full ">
@@ -261,7 +261,6 @@ export default function Login() {
                     )}
                   </div>
 
-                  {/* Remember Me & Forgot Password */}
                   <div className="flex justify-between items-center mb-6">
                     <div className="flex items-center">
                       <input
@@ -294,7 +293,7 @@ export default function Login() {
                     type="submit"
                     disabled={isLoggingIn}
                     className="py-2 rounded-lg font-semibold w-full h-[60px] mt-2 
-           bg-[#F9A825] md:text-[24px] text-2xl text-black"
+                     bg-[#F9A825] md:text-[24px] text-2xl text-black"
                   >
                     {isLoggingIn ? "Logging in..." : "Login"}
                   </button>
