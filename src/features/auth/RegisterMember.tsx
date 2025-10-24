@@ -237,14 +237,12 @@ export default function RegisterMember() {
               )}
             </form>
 
-            {/* Divider */}
             <div className="flex items-center my-6 text-gray-400 w-full max-w-md">
               <hr className="flex-grow border-gray-400" />
               <span className="mx-2 text-[#F9A825]">Or continue with</span>
               <hr className="flex-grow border-gray-400" />
             </div>
 
-            {/* Google Login */}
             <div className="w-100 justify-center place-items-center">
               <button
                 onClick={handleGoogleLogin}

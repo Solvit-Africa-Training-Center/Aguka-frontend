@@ -158,17 +158,17 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex font-poppins">
-      <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 w-full">
+    <div className=" min-h-screen  w-full flex font-poppins md:overflow-auto overflow-hidden">
+      <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 grid-cols-1 w-full">
         {/* Left Section */}
         <div className="relative w-full md:flex flex-col">
           <img
             src="photos/login.jpg"
             alt="Login"
-            className="relative w-full min-h-screen object-cover"
+            className="relative w-full min-h-screen object-cover "
           />
           <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="absolute top-[230px] left-[88px] grid gap-[67px] w-[700px] h-[389px]">
+          <div className="absolute top-10 md:top-[230px] md:left-[88px] grid md:gap-[67px] md:w-[700px] md:h-[389px]">
             <div className="place-items-center">
               <img
                 src={logo}
@@ -177,14 +177,14 @@ export default function Login() {
               />
             </div>
             <div className="text-center">
-              <h1 className="text-7xl font-extrabold text-[var(--color-secondary-50)]">
+              <h1 className="md:text-7xl  text-2xl font-extrabold text-[var(--color-secondary-50)]">
                 Save Together,
               </h1>
-              <h1 className="text-7xl font-extrabold text-[var(--color-warning)] mt-2">
+              <h1 className="md:text-7xl text-2xl font-extrabold text-[var(--color-warning)] mt-2">
                 Grow Together
               </h1>
             </div>
-            <div className="text-center w-180 text-sm">
+            <div className="text-center md:w-180 text-sm w-80">
               <p>
                 Aguka empowers communities to build financial strength through
                 collective savings. By pooling resources, members access
@@ -197,137 +197,151 @@ export default function Login() {
 
         {/* Right Section */}
         <div className="flex flex-col justify-center bg-[#003B42] min-h-screen relative">
-          <div className="absolute ml-[126px] w-[590px] ">
-            <h2 className="text-6xl font-poppins text-[#FAFEFFFC] text-left mb-15">
+          <div className="absolute md:ml-[126px] md:w-[590px] ">
+            <h2 className="md:text-6xl text-4xl font-poppins text-[#FAFEFFFC] md:text-left mb-15 text-center">
               Join Aguka!
             </h2>
 
             {/* Form */}
-            <div className="w-120">
-              <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Email / Phone */}
-                <div className="flex flex-col w-full ">
-                  <label
-                    htmlFor="identifier"
-                    className="text-2xl text-[#FFFCFCFC] py-2">
-                    Email/Phone number
-                  </label>
-                  <input
-                    type="text"
-                    id="identifier"
-                    name="identifier"
-                    value={form.identifier}
-                    onChange={handleChange}
-                    placeholder="Enter Your Email/Phone number"
-                    className="w-full p-4 rounded-[15px]  border-2 placeholder:text-xl 
+            <div className=" border border-primary-200 p-4 md:border-none m-4 md:w-120 w-80 rounded-md ">
+              <div className=" w-full justify-center ">
+                <form
+                  onSubmit={handleSubmit}
+                  className="md:space-y-8 space-y-4"
+                >
+                  {/* Email / Phone */}
+                  <div className="flex flex-col w-full ">
+                    <label
+                      htmlFor="identifier"
+                      className="md:text-2xl text-1xl text-[#FFFCFCFC] py-2"
+                    >
+                      Email/Phone number
+                    </label>
+                    <input
+                      type="text"
+                      id="identifier"
+                      name="identifier"
+                      value={form.identifier}
+                      onChange={handleChange}
+                      placeholder="Enter Your Email/Phone number"
+                      className="w-full md:p-4 p-2 rounded-[15px]  border-2 placeholder:text-sm md:placeholder:text-xl 
                              border-[#948E8E]  bg-transparent 
                              text-[var(--color-secondary-50)] placeholder-gray-400 
                              focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
-                  />
-                  {errors.identifier && (
-                    <p className="text-red-400 text-sm">{errors.identifier}</p>
-                  )}
-                </div>
+                    />
+                    {errors.identifier && (
+                      <p className="text-red-400 text-sm">
+                        {errors.identifier}
+                      </p>
+                    )}
+                  </div>
 
-                {/* Password */}
-                <div className="flex flex-col w-full space-y-2">
-                  <label
-                    htmlFor="password"
-                    className="text-2xl text-[#FFFCFCFC] ">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={form.password}
-                    onChange={handleChange}
-                    placeholder="Enter your password"
-                    className="w-full p-4 rounded-[15px] border-2 border-[#948E8E] 
-                             bg-transparent text-[var(--color-secondary-50)] 
-                             placeholder-gray-400 placeholder:text-xl 
-                             focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
-                  />
-                  {errors.password && (
-                    <p className="text-red-400 text-sm">{errors.password}</p>
-                  )}
-                </div>
-
-                {/* Remember Me & Forgot Password */}
-                <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center">
+                  {/* Password */}
+                  <div className="flex flex-col w-full space-y-2">
+                    <label
+                      htmlFor="password"
+                      className="md:text-2xl text-1xl text-[#FFFCFCFC] "
+                    >
+                      Password
+                    </label>
                     <input
-                      type="checkbox"
-                      id="rememberMe"
-                      name="rememberMe"
-                      checked={form.rememberMe}
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={form.password}
                       onChange={handleChange}
-                      className="peer h-6 w-6 rounded-lg border border-[#F4F4F4]  
+                      placeholder="Enter your password"
+                      className="w-full md:p-4 p-2 rounded-[15px] border-2 border-[#948E8E] 
+                             bg-transparent text-[var(--color-secondary-50)] 
+                             placeholder-gray-400 md:placeholder:text-xl placeholder:text-sm 
+                             focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
+                    />
+                    {errors.password && (
+                      <p className="text-red-400 text-sm">{errors.password}</p>
+                    )}
+                  </div>
+
+                  {/* Remember Me & Forgot Password */}
+                  <div className="flex justify-between items-center mb-6">
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id="rememberMe"
+                        name="rememberMe"
+                        checked={form.rememberMe}
+                        onChange={handleChange}
+                        className="peer h-3 w-3 md:h-6 md:w-6 rounded-lg border border-[#F4F4F4]  
                                bg-transparent checked:bg-none checked:border-[#F4F4F4] 
                                focus:outline-none"
-                    />
-                    <label
-                      htmlFor="rememberMe"
-                      className="ml-2 text-xl text-[#FFF8F8FC]">
-                      Remember me
-                    </label>
+                      />
+                      <label
+                        htmlFor="rememberMe"
+                        className="md:ml-2 md:text-xl text-sm text-[#FFF8F8FC]"
+                      >
+                        Remember me
+                      </label>
+                    </div>
+                    <Link
+                      to="/forgotpassword"
+                      className="md:text-xl text-sm text-[#FFF8F8FC] underline hover:underline hover:text-[#F9A825]"
+                    >
+                      Forgot Password?
+                    </Link>
                   </div>
-                  <Link
-                    to="/forgotpassword"
-                    className="text-xl text-[#FFF8F8FC] underline hover:underline hover:text-[#F9A825]">
-                    Forgot Password?
-                  </Link>
-                </div>
 
-                {/* Submit */}
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    disabled={isLoggingIn}
+                    className="py-2 rounded-lg font-semibold w-full h-[60px] mt-2 
+           bg-[#F9A825] md:text-[24px] text-2xl text-black"
+                  >
+                    {isLoggingIn ? "Logging in..." : "Login"}
+                  </button>
+
+                  {success && (
+                    <div className="mt-4 p-3 rounded-md bg-green-100 text-green-700 border border-green-400">
+                      {success}
+                    </div>
+                  )}
+                </form>
+              </div>
+
+              {/* Divider */}
+              <div className="flex items-center md:my-6  text-gray-400 md:w-120">
+                <hr className="flex-grow border-[var(--color-border)]" />
+                <span className="mx-2 text-xl md:text-[20px] text-[#F9A825] capitalize">
+                  Or continue with
+                </span>
+                <hr className="flex-grow border-[var(--color-border)]" />
+              </div>
+
+              {/* Google Button */}
+              <div className="md:w-120  justify-center place-items-center">
                 <button
-                  type="submit"
-                  disabled={isLoggingIn}
-                  className="py-2 rounded-lg font-semibold w-full h-[60px] mt-2 
-           bg-[#F9A825] text-[24px] text-black">
-                  {isLoggingIn ? "Logging in..." : "Login"}
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  className="md:w-25 md:h-10 w-18 h-8 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6"
+                >
+                  <img
+                    src="/image/gmail.png"
+                    alt="Google login"
+                    className="w-10 h-10 "
+                  />
                 </button>
+              </div>
 
-                {success && (
-                  <div className="mt-4 p-3 rounded-md bg-green-100 text-green-700 border border-green-400">
-                    {success}
-                  </div>
-                )}
-              </form>
+              {/* Sign up link */}
+              <p className="md:text-center md:mt-6 text-gray-400 md:text-[24px] text-1xl">
+                Don&apos;t have an account?{" "}
+                <Link
+                  to="/registermember"
+                  className="text-[#F9A825] hover:underline"
+                >
+                  Sign Up
+                </Link>
+              </p>
             </div>
-
-            {/* Divider */}
-            <div className="flex items-center my-6 text-gray-400 w-120">
-              <hr className="flex-grow border-[var(--color-border)]" />
-              <span className="mx-2 text-[20px] text-[#F9A825] capitalize">
-                Or continue with
-              </span>
-              <hr className="flex-grow border-[var(--color-border)]" />
-            </div>
-
-            {/* Google Button */}
-            <div className="w-120 justify-center place-items-center">
-              <button
-                type="button"
-                onClick={handleGoogleLogin}
-                className="w-25 h-10 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6">
-                <img
-                  src="/image/gmail.png"
-                  alt="Google login"
-                  className="w-10 h-10 "
-                />
-              </button>
-            </div>
-
-            {/* Sign up link */}
-            <p className="text-center mt-6 text-gray-400 text-[24px]">
-              Don&apos;t have an account?{" "}
-              <Link
-                to="/registermember"
-                className="text-[#F9A825] hover:underline">
-                Sign Up
-              </Link>
-            </p>
           </div>
         </div>
       </div>
