@@ -57,77 +57,98 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex pt-20 justify-center font-poppins bg-[var(--color-primary-300)] p-4">
-      <div className="bg-[var(--color-primary-300)] pt-15 rounded-xl border border-[#F9A825] w-full max-w-xl h-150 p-8 space-y-8">
-        <h2 className="text-5xl text-center font-bold text-[#F9A825] mb-6">
+    <div className="min-h-screen w-full flex items-start justify-center font-poppins bg-[var(--color-primary-300)] px-4 py-8 sm:py-12 md:py-20">
+      <div className="bg-[var(--color-primary-300)] rounded-xl border border-[#F9A825] w-full max-w-md sm:max-w-lg md:max-w-xl p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl text-center font-bold text-[#F9A825]">
           Reset Password
         </h2>
 
-        <div className="place-items-center">
-          <LockKeyhole className="size-12 text-[#F9A825]" />
+        <div className="flex justify-center">
+          <LockKeyhole className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-[#F9A825]" />
         </div>
 
-        <p className="text-center text-2xl text-white w-full mb-6 font-bold">
+        <p className="text-center text-lg sm:text-xl md:text-2xl text-white font-bold">
           Enter your new password below
         </p>
 
         {error && (
-          <p className="text-red-400 text-center font-semibold mb-4">{error}</p>
+          <div className="bg-red-500/10 border border-red-500 rounded-lg p-3">
+            <p className="text-red-400 text-center text-sm sm:text-base font-semibold">
+              {error}
+            </p>
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-10">
-          <div className="relative">
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              value={form.password}
-              onChange={handleChange}
-              placeholder="New Password"
-              required
-              className="w-full pl-4 pr-10 py-3 border-2 border-[#948E8E] text-white bg-transparent rounded-lg focus:ring-2 focus:ring-[#003B42] outline-none transition"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]">
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+          <div className="space-y-4">
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={form.password}
+                onChange={handleChange}
+                placeholder="New Password"
+                required
+                className="w-full pl-4 pr-10 py-3 text-sm sm:text-base border-2 border-[#948E8E] 
+                       text-white bg-transparent rounded-lg outline-none transition-all duration-200
+                       focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825]/50
+                       placeholder:text-gray-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]
+                         hover:text-[#E09721] transition-colors"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
 
-          <div className="relative">
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              value={form.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirm New Password"
-              required
-              className="w-full pl-4 pr-10 py-3 border-2 border-[#948E8E] text-white bg-transparent rounded-lg focus:ring-2 focus:ring-[#003B42] outline-none transition"
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]">
-              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
+            <div className="relative">
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={form.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm New Password"
+                required
+                className="w-full pl-4 pr-10 py-3 text-sm sm:text-base border-2 border-[#948E8E] 
+                       text-white bg-transparent rounded-lg outline-none transition-all duration-200
+                       focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825]/50
+                       placeholder:text-gray-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#F9A825]
+                         hover:text-[#E09721] transition-colors"
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full text-3xl text-white py-3 rounded-lg font-bold bg-[#F9A825] border-2 border-[#948E8E]">
+            className="w-full py-3 text-lg sm:text-xl md:text-2xl text-black font-bold 
+                   bg-[#F9A825] rounded-lg transition-all duration-200
+                   hover:bg-[#E09721] disabled:opacity-70 disabled:cursor-not-allowed
+                   focus:ring-4 focus:ring-[#F9A825]/50"
+          >
             {isLoading ? "Saving..." : "Submit"}
           </button>
         </form>
 
-        <div className="text-center mt-6">
-          <p className="text-white text-lg">
+        <div className="text-center pt-4">
+          <p className="text-white text-sm sm:text-base md:text-lg">
             Remember Password?{" "}
             <Link
               to="/login"
-              className="text-[#F9A825] hover:underline font-semibold">
+              className="text-[#F9A825] hover:text-[#E09721] font-semibold transition-colors"
+            >
               Login
             </Link>
           </p>

@@ -158,62 +158,60 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex font-poppins md:overflow-auto overflow-hidden">
-      <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 grid-cols-1 gap-10">
+    <div className="min-h-screen w-full flex font-poppins overflow-x-hidden">
+      <div className="text-[var(--color-secondary-50)] grid md:grid-cols-2 grid-cols-1 gap-0 w-full">
         {/* Left Section */}
-        <div className="relative md:flex flex-col">
+        <div className="relative hidden md:flex flex-col">
           <img
             src="photos/login.jpg"
             alt="Login"
-            className="relative w-full md:min-h-screen lg:min-h-screen  md:block lg:block hidden object-cover "
+            className="w-full h-screen object-cover"
           />
           <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="absolute top-0 md:top-[230px] lg:top-15 md:left-[88px] grid md:gap-[67px] md:w-[700px] md:h-[389px]">
-            <div className="place-items-center">
+          <div className="absolute inset-0 flex flex-col justify-center items-center px-8">
+            <div className="max-w-2xl mx-auto text-center space-y-8">
               <img
                 src={logo}
                 alt="Logo"
-                className="w-30 h-30 mb-2 rounded-full object-cover md:ml-25"
+                className="w-24 h-24 mx-auto mb-4 rounded-full object-cover"
               />
-            </div>
-            <div className="text-center">
-              <h1 className="md:text-7xl  text-2xl font-extrabold text-[var(--color-secondary-50)]">
-                Save Together,
-              </h1>
-              <h1 className="md:text-7xl text-2xl font-extrabold text-[var(--color-warning)] mt-2">
-                Grow Together
-              </h1>
-            </div>
-            <div className="text-center md:w-150 lg:180 text-sm w-100">
-              <p>
-                Aguka empowers communities to build financial strength through
-                collective savings. By pooling resources, members access
-                opportunities to grow, achieve their goals, and support one
-                another.
-              </p>
+              <div>
+                <h1 className="text-4xl lg:text-7xl font-extrabold text-[var(--color-secondary-50)]">
+                  Save Together,
+                </h1>
+                <h1 className="text-4xl lg:text-7xl font-extrabold text-[var(--color-warning)] mt-2">
+                  Grow Together
+                </h1>
+              </div>
+
+              <div className="max-w-xl mx-auto">
+                <p className="text-base lg:text-lg text-[var(--color-secondary-50)]">
+                  Aguka empowers communities to build financial strength through
+                  collective savings. By pooling resources, members access
+                  opportunities to grow, achieve their goals, and support one
+                  another.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Right Section */}
-        <div className="bg-[#003B42] relative">
-          <div className="absolute  md:ml-10 lg:ml-5 top-10  W-100 mx-auto flex flex-col">
-            <h2 className="md:text-5xl text-3xl font-poppins text-[#FAFEFFFC] md:text-left mb-15 text-center">
+        <div className="bg-[#003B42] min-h-screen relative flex items-center justify-center px-4 py-8 md:px-8">
+          <div className="w-full max-w-md mx-auto">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-poppins text-[#FAFEFFFC] text-center md:text-left mb-8">
               Join Aguka!
             </h2>
 
             {/* Form */}
-            <div className=" border border-primary-200 p-4 md:border-none m-4 md:w-120 lg:w-full w-full rounded-md ">
-              <div className="justify-center ">
-                <form
-                  onSubmit={handleSubmit}
-                  className="lg:space-y-8 space-y-4 h-70 w-full"
-                >
+            <div className="w-full">
+              <div className="bg-transparent border border-primary-200 md:border-none rounded-lg p-6">
+                <form onSubmit={handleSubmit} className="space-y-6 w-full">
                   {/* Email / Phone */}
-                  <div className="flex flex-col w-full ">
+                  <div className="space-y-2">
                     <label
                       htmlFor="identifier"
-                      className="md:text-2xl text-1xl text-[#FFFCFCFC] py-2"
+                      className="block text-base sm:text-lg md:text-xl text-[#FFFCFCFC]"
                     >
                       Email/Phone number
                     </label>
@@ -224,23 +222,22 @@ export default function Login() {
                       value={form.identifier}
                       onChange={handleChange}
                       placeholder="Enter Your Email/Phone number"
-                      className="w-full md:p-4 p-2 rounded-[15px]  border-2 placeholder:text-sm md:placeholder:text-xl 
-                             border-[#948E8E]  bg-transparent 
-                             text-[var(--color-secondary-50)] placeholder-gray-400 
-                             focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
+                      className="w-full p-3 rounded-lg border-2 border-[#948E8E] bg-transparent
+                             text-[var(--color-secondary-50)] placeholder-gray-400 text-sm sm:text-base
+                             focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)] transition-all"
                     />
                     {errors.identifier && (
-                      <p className="text-red-400 text-sm">
+                      <p className="text-red-400 text-sm mt-1">
                         {errors.identifier}
                       </p>
                     )}
                   </div>
 
                   {/* Password */}
-                  <div className="flex flex-col w-full space-y-2">
+                  <div className="space-y-2">
                     <label
                       htmlFor="password"
-                      className="md:text-2xl text-1xl text-[#FFFCFCFC] "
+                      className="block text-base sm:text-lg md:text-xl text-[#FFFCFCFC]"
                     >
                       Password
                     </label>
@@ -251,38 +248,39 @@ export default function Login() {
                       value={form.password}
                       onChange={handleChange}
                       placeholder="Enter your password"
-                      className="w-full md:p-4 p-2 rounded-[15px] border-2 border-[#948E8E] 
-                             bg-transparent text-[var(--color-secondary-50)] 
-                             placeholder-gray-400 md:placeholder:text-xl placeholder:text-sm 
-                             focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)]"
+                      className="w-full p-3 rounded-lg border-2 border-[#948E8E] bg-transparent
+                             text-[var(--color-secondary-50)] placeholder-gray-400 text-sm sm:text-base
+                             focus:outline-none focus:ring-2 focus:ring-[var(--color-warning)] transition-all"
                     />
                     {errors.password && (
-                      <p className="text-red-400 text-sm">{errors.password}</p>
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.password}
+                      </p>
                     )}
                   </div>
 
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="flex items-center">
+                  <div className="flex flex-wrap justify-between items-center gap-4">
+                    <div className="flex items-center space-x-2">
                       <input
                         type="checkbox"
                         id="rememberMe"
                         name="rememberMe"
                         checked={form.rememberMe}
                         onChange={handleChange}
-                        className="peer h-3 w-3 md:h-6 md:w-6 rounded-lg border border-[#F4F4F4]  
-                               bg-transparent checked:bg-none checked:border-[#F4F4F4] 
-                               focus:outline-none"
+                        className="w-4 h-4 rounded border-2 border-[#F4F4F4] bg-transparent
+                               checked:bg-[#F9A825] checked:border-[#F9A825] 
+                               focus:ring-2 focus:ring-[#F9A825] transition-colors"
                       />
                       <label
                         htmlFor="rememberMe"
-                        className="md:ml-2 md:text-xl text-sm text-[#FFF8F8FC]"
+                        className="text-sm sm:text-base text-[#FFF8F8FC]"
                       >
                         Remember me
                       </label>
                     </div>
                     <Link
                       to="/forgotpassword"
-                      className="md:text-xl text-sm text-[#FFF8F8FC] underline hover:underline hover:text-[#F9A825]"
+                      className="text-sm sm:text-base text-[#FFF8F8FC] hover:text-[#F9A825] transition-colors"
                     >
                       Forgot Password?
                     </Link>
@@ -292,8 +290,9 @@ export default function Login() {
                   <button
                     type="submit"
                     disabled={isLoggingIn}
-                    className="py-2 rounded-lg font-semibold w-full h-[60px] mt-2 
-                     bg-[#F9A825] md:text-[24px] text-2xl text-black"
+                    className="w-full py-3 px-4 rounded-lg font-semibold text-base sm:text-lg
+                     bg-[#F9A825] text-black hover:bg-[#E09721] transition-colors
+                     disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {isLoggingIn ? "Logging in..." : "Login"}
                   </button>
@@ -304,42 +303,46 @@ export default function Login() {
                     </div>
                   )}
                 </form>
-              </div>
 
-              {/* Divider */}
-              <div className="flex items-center md:my-6  text-gray-400 md:w-120">
-                <hr className="flex-grow border-[var(--color-border)]" />
-                <span className="mx-2 text-xl md:text-[20px] text-[#F9A825] capitalize">
-                  Or continue with
-                </span>
-                <hr className="flex-grow border-[var(--color-border)]" />
-              </div>
+                {/* Divider */}
+                <div className="relative my-8">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-[var(--color-border)]"></div>
+                  </div>
+                  <div className="relative flex justify-center">
+                    <span className="px-4 text-sm sm:text-base text-[#F9A825] bg-[#003B42]">
+                      Or continue with
+                    </span>
+                  </div>
+                </div>
 
-              {/* Google Button */}
-              <div className="md:w-120  justify-center place-items-center">
-                <button
-                  type="button"
-                  onClick={handleGoogleLogin}
-                  className="md:w-25 md:h-10 w-18 h-8 border border-gray-300 rounded-lg max-w-md flex items-center justify-center py-3 mb-6"
-                >
-                  <img
-                    src="/image/gmail.png"
-                    alt="Google login"
-                    className="w-10 h-10 "
-                  />
-                </button>
-              </div>
+                {/* Google Button */}
+                <div className="flex justify-center">
+                  <button
+                    type="button"
+                    onClick={handleGoogleLogin}
+                    className="flex items-center justify-center px-6 py-3 border-2 
+                             border-gray-300 rounded-lg hover:bg-gray-700/10 transition-colors"
+                  >
+                    <img
+                      src="/image/gmail.png"
+                      alt="Google login"
+                      className="w-6 h-6"
+                    />
+                  </button>
+                </div>
 
-              {/* Sign up link */}
-              <p className="md:text-center md:mt-6 text-gray-400 md:text-[24px] text-1xl">
-                Don&apos;t have an account?{" "}
-                <Link
-                  to="/registermember"
-                  className="text-[#F9A825] hover:underline"
-                >
-                  Sign Up
-                </Link>
-              </p>
+                {/* Sign up link */}
+                <p className="mt-8 text-center text-sm sm:text-base text-gray-400">
+                  Don&apos;t have an account?{" "}
+                  <Link
+                    to="/registermember"
+                    className="text-[#F9A825] hover:text-[#E09721] transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
         </div>

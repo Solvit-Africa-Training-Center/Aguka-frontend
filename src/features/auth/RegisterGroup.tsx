@@ -102,17 +102,15 @@ const RegisterGroup: React.FC = () => {
     try {
       const result = await createGroup(data).unwrap();
 
-      // ✅ Dispatch success message
       dispatch(
         setGroupSuccess({
-          groupId: result.groupId || "", // Adjust if your response differs
+          groupId: result.groupId || "",
           message: "Group created successfully!",
         })
       );
 
       navigate("/presidentdashboard");
 
-      // ✅ Store token if available
       if (result.token) {
         localStorage.setItem("token", result.token);
         dispatch(
@@ -140,7 +138,6 @@ const RegisterGroup: React.FC = () => {
     } catch (err: any) {
       console.error("Error creating group:", err);
 
-      // ✅ Dispatch error message
       dispatch(
         setGroupError({
           message: err?.data?.message || "Failed to create group.",
@@ -151,7 +148,6 @@ const RegisterGroup: React.FC = () => {
 
   return (
     <div className="relative w-full min-h-screen font-poppins flex items-center justify-center">
-      {/* NEW: Success and Error Messages */}
       {successMessage && (
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
           {successMessage}
@@ -185,57 +181,80 @@ const RegisterGroup: React.FC = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white">
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-white"
+        >
           {/* Full Name */}
-          <div>
-            <label className="block mb-2 text-lg">Full Name</label>
+          <div className="space-y-2">
+            <label className="block text-base sm:text-lg font-medium">
+              Full Name
+            </label>
             <input
               type="text"
               name="name"
               placeholder="Enter your Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+              className="w-full rounded-lg p-3 text-white placeholder:text-gray-400 
+                     border-2 border-[#948E8E] bg-transparent outline-none
+                     focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825] transition-all
+                     text-sm sm:text-base"
             />
-            {errors.name && <p className="text-red-400">{errors.name}</p>}
+            {errors.name && (
+              <p className="text-red-400 text-sm">{errors.name}</p>
+            )}
           </div>
 
           {/* Interest Rate */}
-          <div>
-            <label className="block mb-2 text-lg">Interest Rate</label>
+          <div className="space-y-2">
+            <label className="block text-base sm:text-lg font-medium">
+              Interest Rate
+            </label>
             <input
               type="number"
               name="interestRate"
               placeholder="5.7"
               value={formData.interestRate ?? ""}
               onChange={handleChange}
-              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+              className="w-full rounded-lg p-3 text-white placeholder:text-gray-400 
+                     border-2 border-[#948E8E] bg-transparent outline-none
+                     focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825] transition-all
+                     text-sm sm:text-base"
             />
           </div>
 
           {/* Description */}
-          <div>
-            <label className="block mb-2 text-lg">Description</label>
+          <div className="space-y-2">
+            <label className="block text-base sm:text-lg font-medium">
+              Description
+            </label>
             <textarea
               name="description"
               placeholder="Enter your Description"
               value={formData.description}
               onChange={handleChange}
               rows={2}
-              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+              className="w-full rounded-lg p-3 text-white placeholder:text-gray-400 
+                     border-2 border-[#948E8E] bg-transparent outline-none
+                     focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825] transition-all
+                     text-sm sm:text-base resize-none"
             />
           </div>
 
           {/* Contact */}
-          <div>
-            <label className="block mb-2 text-lg">Contact</label>
+          <div className="space-y-2">
+            <label className="block text-base sm:text-lg font-medium">
+              Contact
+            </label>
             <input
               type="tel"
               name="contact"
               placeholder="Input Your Telephone Number"
               value={formData.contact}
               onChange={handleChange}
-              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+              className="w-full rounded-lg p-3 text-white placeholder:text-gray-400 
+                     border-2 border-[#948E8E] bg-transparent outline-none
+                     focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825] transition-all
+                     text-sm sm:text-base"
             />
           </div>
 
@@ -286,7 +305,6 @@ const RegisterGroup: React.FC = () => {
             </div>
           </div>
 
-          {/* Min Contribution */}
           <div>
             <label className="block mb-2 text-lg">Min Contribution</label>
             <input
@@ -335,7 +353,8 @@ const RegisterGroup: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="px-10 py-4 text-xl bg-[#F9A825] text-black font-bold rounded-lg hover:bg-yellow-500 transition w-100">
+              className="px-10 py-4 text-xl bg-[#F9A825] text-black font-bold rounded-lg hover:bg-yellow-500 transition w-100"
+            >
               {isLoading ? "Creating..." : "Create Group"}
             </button>
           </div>

@@ -22,7 +22,7 @@ export default function CheckEmail() {
           We've sent an email to the address
         </p>
 
-        <p className="text-center text-xl text-[#F9A825] font-semibold mb-8">
+        <p className="text-center text-1xl text-[#F9A825] font-semibold mb-8">
           {email || "**********san@gmail.com"}
         </p>
 

@@ -162,10 +162,9 @@ export default function RegisterMember() {
               onSubmit={handleSubmit}
               className="space-y-6 md:w-full max-w-md  mx-auto  "
             >
-              {/* Full Name */}
               <div>
                 <label htmlFor="fullName" className="text-2xl text-white mb-1">
-                  Full Name
+                   Full Name
                 </label>
                 <input
                   type="text"

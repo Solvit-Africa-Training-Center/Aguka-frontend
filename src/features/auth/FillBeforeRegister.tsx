@@ -42,7 +42,6 @@ export default function FillBeforeRegister() {
     if (!validate()) return;
 
     try {
-      // map phoneNumber -> phone for API
       const res = await completeProfile({
         phoneNumber: form.phoneNumber,
         groupId: form.groupId,
@@ -57,30 +56,34 @@ export default function FillBeforeRegister() {
   };
 
   return (
-    <div className="min-h-screen w-full flex pt-10 justify-center font-poppins bg-primary-500">
-      <div className="w-full max-w-xl p-8">
+    <div className="min-h-screen w-full flex items-start sm:items-center justify-center font-poppins bg-primary-500 px-4 py-8">
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl mx-auto">
         {/* Logo */}
         <div className="flex justify-center">
           <img
             src={logo}
             alt="Logo"
-            className="w-28 h-28 mb-4 rounded-full object-cover"
+            className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 mb-4 rounded-full object-cover"
           />
         </div>
 
         {/* Form Container */}
-        <div className="bg-[#003B42] p-10 rounded-4xl space-y-10">
-          <div className="space-y-3 text-center">
-            <h1 className="text-4xl text-white font-bold">Save Together,</h1>
-            <h1 className="text-4xl text-[#F9A825] font-bold">Grow Together</h1>
+        <div className="bg-[#003B42] p-6 sm:p-8 md:p-10 rounded-2xl space-y-6 sm:space-y-8">
+          <div className="space-y-2 text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl text-white font-bold">
+              Save Together,
+            </h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl text-[#F9A825] font-bold">
+              Grow Together
+            </h1>
           </div>
 
-          <form onSubmit={handleContinue} className="space-y-6">
+          <form onSubmit={handleContinue} className="space-y-4 sm:space-y-6">
             {/* Phone */}
             <div className="relative">
               <Phone
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-[#F9A825]"
-                size={20}
+                size={18}
               />
               <input
                 type="tel"
@@ -88,7 +91,7 @@ export default function FillBeforeRegister() {
                 placeholder="Input your Telephone Number"
                 value={form.phoneNumber}
                 onChange={handleChange}
-                className="w-full pl-10 pr-4 py-3 border-2 border-[#948E8E] rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-[#003B42] outline-none transition bg-transparent"
+                className="w-full pl-10 pr-4 py-3 sm:py-3 text-sm sm:text-base border-2 border-[#948E8E] rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-[#003B42] outline-none transition bg-transparent"
                 autoComplete="tel"
               />
               {errors.phoneNumber && (
@@ -102,7 +105,7 @@ export default function FillBeforeRegister() {
             <div className="relative">
               <Users
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-[#F9A825]"
-                size={20}
+                size={18}
               />
               <input
                 type="text"
@@ -110,7 +113,7 @@ export default function FillBeforeRegister() {
                 placeholder="Input Your Group ID"
                 value={form.groupId}
                 onChange={handleChange}
-                className="w-full pl-10 pr-4 py-3 border-2 border-[#948E8E] rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-[#003B42] outline-none transition bg-transparent"
+                className="w-full pl-10 pr-4 py-3 sm:py-3 text-sm sm:text-base border-2 border-[#948E8E] rounded-lg text-white placeholder-gray-300 focus:ring-2 focus:ring-[#003B42] outline-none transition bg-transparent"
                 autoComplete="off"
               />
               {errors.groupId && (
@@ -122,18 +125,20 @@ export default function FillBeforeRegister() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 text-2xl font-bold rounded-lg bg-[#F9A825] border-2 border-[#948E8E] transition hover:bg-yellow-600">
+              className="w-full py-3 sm:py-3 text-lg sm:text-xl font-semibold rounded-lg bg-[#F9A825] border-2 border-[#948E8E] transition hover:bg-yellow-600"
+            >
               {isLoading ? "Processing..." : "Continue"}
             </button>
           </form>
 
           {/* Link to Register Group */}
-          <div className="text-center mt-6 text-xl">
+          <div className="text-center mt-4 text-sm sm:text-base">
             <span className="text-white">Create a Group</span>
             <button
               type="button"
               onClick={() => navigate("/registergroup")}
-              className="ml-2 text-[#F9A825] underline hover:text-yellow-600 font-bold ">
+              className="ml-2 text-[#F9A825] underline hover:text-yellow-600 font-semibold"
+            >
               here
             </button>
           </div>
