@@ -33,12 +33,10 @@ const RegisterGroup: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // NEW: Select messages from redux state
   const { successMessage, errorMessage } = useSelector(
     (state: RootState) => state.group
   );
 
-  // NEW: Clear messages after 4 seconds
   useEffect(() => {
     if (successMessage || errorMessage) {
       const timer = setTimeout(() => {
@@ -122,7 +120,6 @@ const RegisterGroup: React.FC = () => {
         );
       }
 
-      // ✅ Reset form
       setFormData({
         name: "",
         description: "",
@@ -137,7 +134,6 @@ const RegisterGroup: React.FC = () => {
       });
     } catch (err: any) {
       console.error("Error creating group:", err);
-
       dispatch(
         setGroupError({
           message: err?.data?.message || "Failed to create group.",
@@ -147,120 +143,98 @@ const RegisterGroup: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full min-h-screen font-poppins flex items-center justify-center">
+    <div className="relative w-full min-h-screen overflow-hidden font-poppins flex items-center justify-center">
+      {/* Success/Error Messages */}
       {successMessage && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+        <div className="fixed top-3 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 text-sm rounded-lg shadow-lg z-50">
           {successMessage}
         </div>
       )}
       {errorMessage && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">
+        <div className="fixed top-3 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 text-sm rounded-lg shadow-lg z-50">
           {errorMessage}
         </div>
       )}
 
-      <img
-        src="image/ibiceri  aguka.jpg"
-        alt="background"
-        className="absolute inset-0 w-400 h-full "
-      />
-      <div className="absolute inset-0 bg-[#CED6D8] opacity-90 ml-300"></div>
+      {/* Backgrounds */}
+      <div className="fixed inset-0 bg-[url('/image/ibiceri%20%20aguka.jpg')] bg-cover bg-center bg-no-repeat"></div>
+      <div className="fixed inset-0 bg-[#CED6D8]/80"></div>
 
       {/* Logo */}
       <img
         src={logo}
         alt="logo"
-        className="absolute w-25 h-25 rounded-full left-6 top-2 z-20"
+        className="fixed w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full left-3 sm:left-5 top-3 z-20"
       />
 
-      {/* Form container */}
-      <div className="relative z-10 w-300 mx-auto bg-[#003B42] rounded-2xl p-8 shadow-lg mt-10">
-        <h1 className="text-3xl font-bold text-center mb-8 text-white">
+      {/* Form Container */}
+      <div className="relative z-10 w-[92%] sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-5/12 bg-[#003B42] rounded-xl p-3 sm:p-4 shadow-lg max-h-fit">
+        <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-center mb-4 text-white sticky top-0 bg-[#003B42] py-2">
           Register your Group
         </h1>
 
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 text-white"
+          className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 text-white text-sm sm:text-base"
         >
           {/* Full Name */}
-          <div className="space-y-2">
-            <label className="block text-base sm:text-lg font-medium">
-              Full Name
-            </label>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">Full Name</label>
             <input
               type="text"
               name="name"
               placeholder="Enter your Full Name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full rounded-lg p-3 text-white placeholder:text-gray-400 
-                     border-2 border-[#948E8E] bg-transparent outline-none
-                     focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825] transition-all
-                     text-sm sm:text-base"
+              className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-white placeholder:text-gray-400 border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all text-sm"
             />
             {errors.name && (
-              <p className="text-red-400 text-sm">{errors.name}</p>
+              <p className="text-red-400 text-xs">{errors.name}</p>
             )}
           </div>
 
           {/* Interest Rate */}
-          <div className="space-y-2">
-            <label className="block text-base sm:text-lg font-medium">
-              Interest Rate
-            </label>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">Interest Rate</label>
             <input
               type="number"
               name="interestRate"
               placeholder="5.7"
               value={formData.interestRate ?? ""}
               onChange={handleChange}
-              className="w-full rounded-lg p-3 text-white placeholder:text-gray-400 
-                     border-2 border-[#948E8E] bg-transparent outline-none
-                     focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825] transition-all
-                     text-sm sm:text-base"
+              className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-sm text-white placeholder:text-gray-400 border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all"
             />
           </div>
 
           {/* Description */}
-          <div className="space-y-2">
-            <label className="block text-base sm:text-lg font-medium">
-              Description
-            </label>
+          <div className="space-y-1 md:col-span-2">
+            <label className="block text-sm font-medium">Description</label>
             <textarea
               name="description"
               placeholder="Enter your Description"
               value={formData.description}
               onChange={handleChange}
-              rows={2}
-              className="w-full rounded-lg p-3 text-white placeholder:text-gray-400 
-                     border-2 border-[#948E8E] bg-transparent outline-none
-                     focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825] transition-all
-                     text-sm sm:text-base resize-none"
+              rows={3}
+              className="w-full rounded px-3 py-2 text-white placeholder:text-gray-400 border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all text-sm resize-none"
             />
           </div>
 
           {/* Contact */}
-          <div className="space-y-2">
-            <label className="block text-base sm:text-lg font-medium">
-              Contact
-            </label>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">Contact</label>
             <input
               type="tel"
               name="contact"
-              placeholder="Input Your Telephone Number"
+              placeholder="Your Telephone Number"
               value={formData.contact}
               onChange={handleChange}
-              className="w-full rounded-lg p-3 text-white placeholder:text-gray-400 
-                     border-2 border-[#948E8E] bg-transparent outline-none
-                     focus:border-[#F9A825] focus:ring-2 focus:ring-[#F9A825] transition-all
-                     text-sm sm:text-base"
+              className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-sm text-white placeholder:text-gray-400 border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all"
             />
           </div>
 
           {/* Location */}
-          <div>
-            <label className="block mb-2 text-lg">Location</label>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">Location</label>
             <input
               type="text"
               name="location"
@@ -272,88 +246,95 @@ const RegisterGroup: React.FC = () => {
                   location: [e.target.value],
                 }))
               }
-              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+              className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-sm text-white placeholder:text-gray-400 border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all"
             />
           </div>
 
           {/* Email */}
-          <div>
-            <label className="block mb-2 text-lg">Email</label>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">Email</label>
             <input
               type="email"
               name="email"
               placeholder="group@example.com"
               value={formData.email}
               onChange={handleChange}
-              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+              className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-sm text-white placeholder:text-gray-400 border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all"
             />
-            {errors.email && <p className="text-red-400">{errors.email}</p>}
+            {errors.email && (
+              <p className="text-red-400 text-xs">{errors.email}</p>
+            )}
           </div>
 
           {/* Profile Picture */}
-          <div>
-            <label className="block mb-2 text-lg">Profile Picture</label>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">Profile Picture</label>
             <div className="relative">
               <input
                 type="file"
                 name="profilePicture"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="w-full rounded-md p-3 text-white border-1 border-[#948E8E] bg-transparent outline-none pr-10"
+                className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-sm text-white file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-[#F9A825] file:text-black border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all"
               />
-              <ImagePlus className="absolute right-3 top-3 text-gray-300" />
+              <ImagePlus className="absolute right-2 top-2 text-gray-300 pointer-events-none" />
             </div>
           </div>
 
-          <div>
-            <label className="block mb-2 text-lg">Min Contribution</label>
+          {/* Min Contribution */}
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">
+              Min Contribution
+            </label>
             <input
-              type="text"
+              type="number"
               name="minContribution"
               placeholder="500"
               value={formData.minContribution}
               onChange={handleChange}
-              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+              className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-sm text-white placeholder:text-gray-400 border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all"
             />
             {errors.minContribution && (
-              <p className="text-red-400">{errors.minContribution}</p>
+              <p className="text-red-400 text-xs">{errors.minContribution}</p>
             )}
           </div>
 
           {/* Meeting Location */}
-          <div>
-            <label className="block mb-2 text-lg">Meeting Location</label>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">
+              Meeting Location
+            </label>
             <input
               type="text"
               name="meetingLocation"
               placeholder="Ndera"
               value={formData.meetingLocation}
               onChange={handleChange}
-              className="w-full rounded-md p-3 text-white placeholder:text-gray-400 border-1 border-[#948E8E] bg-transparent outline-none"
+              className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-sm text-white placeholder:text-gray-400 border border-[#948E8E] bg-transparent outline-none focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all"
             />
           </div>
 
           {/* Agreement Terms */}
-          <div>
-            <label className="block mb-2 text-lg">Agreement Terms</label>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium">Agreement Terms</label>
             <div className="relative">
               <input
                 type="file"
                 name="agreementTerms"
                 accept=".pdf,.doc,.docx"
                 onChange={handleFileChange}
-                className="w-full rounded-md p-3 text-white border-1 border-[#948E8E] bg-transparent outline-none pr-10"
+                className="w-full h-10 sm:h-9 md:h-8 rounded px-3 text-sm text-white file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:bg-[#F9A825] file:text-black border border-[#948E8E] bg-transparent outline-none pr-10 focus:border-[#F9A825] focus:ring-1 focus:ring-[#F9A825] transition-all"
               />
-              <Upload className="absolute right-3 top-3 text-gray-300" />
+              <Upload className="absolute right-2 top-2 text-gray-300" />
             </div>
           </div>
 
-          {/* Submit button */}
-          <div className="md:col-span-2 flex justify-center mt-6">
+          {/* Submit Button */}
+          <div className="md:col-span-2 flex justify-center mt-4">
             <button
               type="submit"
               disabled={isLoading}
-              className="px-10 py-4 text-xl bg-[#F9A825] text-black font-bold rounded-lg hover:bg-yellow-500 transition w-100"
+              className="px-6 py-2 text-sm sm:text-base bg-[#F9A825] text-black font-medium rounded hover:bg-yellow-500 transition"
             >
               {isLoading ? "Creating..." : "Create Group"}
             </button>
