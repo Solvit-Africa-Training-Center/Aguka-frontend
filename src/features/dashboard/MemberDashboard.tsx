@@ -1,11 +1,10 @@
 import React, { useMemo } from "react";
-import type { RootState } from "services/store/store";
+import type { RootState } from "@services/store/store";
 import { useSelector } from "react-redux";
 import CommunityFeed from "@components/dashboard/member/CommunityFeed";
 import LineChartDashboard from "@components/dashboard/member/LineChartDashboard";
 import RecentTransactions from "@components/dashboard/member/RecentTransaction";
 import {
-  Percent,
   Wallet,
   TrendingUp,
   WalletMinimal,
@@ -13,7 +12,7 @@ import {
 } from "lucide-react";
 import { useGetContributionsByUserQuery } from "@services/api/ContributionApi";
 import type { Loan } from "types/Loan";
-import { useGetLoansQuery } from "services/api/loanApi";
+import { useGetLoansQuery } from "@services/api/loanApi";
 import type { Contribution } from "@models/Contribution";
 import { useGetRepaymentsQuery } from "@services/api/repaymentApi";
 import type { Repayment } from "types/Repayment";
@@ -82,7 +81,7 @@ const MemberDashboard: React.FC = () => {
       }, 0);
   }, [userLoans, userRepayments]);
   //fetch dividend
-  const { data, isLoading } = useGetUserDividendsQuery();
+  const { data } = useGetUserDividendsQuery();
 
   const totalDividend = data?.userDividend ?? 0;
 
@@ -91,112 +90,97 @@ const MemberDashboard: React.FC = () => {
     return totalContribution + totalDividend - totalLoan;
   }, [totalContribution, totalDividend, totalLoan]);
 
+  // cards data for stats display
+  const cards = [
+    {
+      title: "Current Balance",
+      icon: (
+        <Wallet className="bg-[#005159] p-2 rounded-full text-[#F9A825] w-10 h-10" />
+      ),
+      value: `rwf ${currentBalance.toLocaleString()}`,
+      subtitle: "Available for withdrawal",
+    },
+    {
+      title: "My Contribution",
+      icon: (
+        <TrendingUp className="bg-[#005159] p-2 rounded-full text-[#F9A825] w-10 h-10" />
+      ),
+      value: `rwf ${totalContribution.toLocaleString()}`,
+      subtitle: "Total contributed this year",
+    },
+    {
+      title: "Dividend Payout",
+      icon: (
+        <WalletMinimal className="bg-[#005159] p-2 rounded-full text-[#F9A825] w-10 h-10" />
+      ),
+      value: `rwf ${totalDividend.toLocaleString()}`,
+      subtitle: "Next expected payout",
+    },
+    {
+      title: "Total Loan",
+      icon: (
+        <CreditCard className="bg-[#005159] p-2 rounded-full text-[#F9A825] w-10 h-10" />
+      ),
+      value: `rwf ${totalLoan.toLocaleString()}`,
+      subtitle: "Outstanding loan",
+    },
+  ];
+
   return (
     <div className="w-full min-h-screen bg-[#00353B] font-poppins">
-      <div>
-        <div className="p-10 grid grid-cols-2 w-full gap-10 pt-45">
-          {/* Line Chart */}
-          <div>
+      <div className="px-4 py-6 lg:px-10 lg:py-10 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Line Chart - spans 2 columns on large screens */}
+          <div className="lg:col-span-2 bg-transparent">
             <LineChartDashboard />
           </div>
 
+          {/* Stats Cards - responsive grid */}
           <div>
-            <div className="text-white grid grid-cols-2 gap-10 mt-20 w-150 ml-30">
-              <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-                <div className="flex space-x-5">
-                  <h2 className="capitalize text-xl font-bold">
-                    current balance
-                  </h2>
-                  <Wallet className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
+            <div className="text-white grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/** map cards into responsive card items **/}
+              {cards.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="bg-[#002f32] rounded-lg p-4 min-h-[14rem] flex flex-col justify-between border border-secondary-300 shadow-md"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="capitalize text-sm md:text-base font-medium text-gray-100">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 text-xl md:text-2xl font-bold text-white">
+                        {item.value}
+                      </p>
+                    </div>
+                    <div className="shrink-0">{item.icon}</div>
+                  </div>
+                  <div className="mt-4 text-sm text-stone-400">
+                    {item.subtitle}
+                  </div>
                 </div>
-                <span className="font-bold text-3xl text-center capitalize">
-                  rwf {currentBalance.toLocaleString()}
-                </span>
-                <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
-                  <span>+12.5</span>
-                  <Percent className="size-8 font-bold " />
-                </div>
-                <span>Available for Withdrawal</span>
-              </div>
-
-              {/* My Contribution */}
-              <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-                <div className="flex space-x-5">
-                  <h2 className="capitalize text-xl font-bold">
-                    My contribution
-                  </h2>
-                  <TrendingUp className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
-                </div>
-                <span className="font-bold text-3xl text-center capitalize">
-                  rwf {totalContribution.toLocaleString()}
-                </span>
-                <div className="flex p-2 bg-[#F9A825] text-black text-2xl font-bold w-30 place-content-center ml-10 rounded-full">
-                  <span>{"+8.2"}</span>
-                  <Percent className="size-8 font-bold " />
-                </div>
-                <span>Total contributed this year</span>
-              </div>
-
-              {/* Dividend Payout */}
-              <div className="w-70 h-80 border-0 border-[#F9A825] rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-                <div className="flex space-x-5">
-                  <h2 className="capitalize text-xl font-bold">
-                    dividend payout
-                  </h2>
-                  <WalletMinimal className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
-                </div>
-
-                {isLoading ? (
-                  <p>Loading...</p>
-                ) : !data ? (
-                  <p>No data available</p>
-                ) : (
-                  <>
-                    <span className="font-bold text-3xl text-center capitalize">
-                      rwf {totalDividend.toLocaleString()}
-                    </span>
-                    <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                      sept 20
-                    </span>
-                    <span>Next expected Payout</span>
-                  </>
-                )}
-              </div>
-
-              {/* Total Loan */}
-              <div className="w-70 h-80 border-0 rounded-lg p-5 grid gap-10 shadow-[2px_2px_2px_2px_#F9A825]">
-                <div className="flex space-x-5 justify-between">
-                  <h2 className="capitalize text-xl font-bold">total loan</h2>
-                  <CreditCard className="bg-[#005159] size-10 p-2 text-[#F9A825] rounded-full" />
-                </div>
-                <span className="font-bold text-4xl text-center capitalize">
-                  rwf {totalLoan.toLocaleString()}
-                </span>
-                <span className="capitalize p-2 bg-[#F9A825] text-black text-2xl font-bold w-40 place-content-center pl-10 ml-10 rounded-full">
-                  sept 20
-                </span>
-                <span>pay your debt properly</span>
-              </div>
+              ))}
             </div>
           </div>
+        </div>
 
-          {/* Recent Transactions */}
-          <div className="w-full max-w-3xl">
+        {/* Transactions and Community feeds */}
+        <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="w-full">
             <RecentTransactions />
           </div>
-
-          {/* Community Feeds */}
-          <div className="w-full max-w-3xl text-[#b2b2b2] border border-accent-50 overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg h-[480px] rounded-2xl mt-15 p-4">
-            <h2 className="text-left text-3xl capitalize p-2 text-[#F9A825] font-bold">
+          <div className="w-full text-[#b2b2b2] border border-accent-50 overflow-auto scrollbar-hide shadow-lg rounded-2xl p-4">
+            <h2 className="text-left text-xl sm:text-2xl md:text-3xl capitalize p-2 text-[#F9A825] font-bold">
               community feeds
             </h2>
             <CommunityFeed />
           </div>
         </div>
+
         {/* Footer */}
-        <div className="place-items-center">
-          <hr className="w-300 text-primary-white p-5" />
-          <div className="text-sm text-center pt-15 capitalize text-[#D4D4D4] p-4 ">
+        <div className="mt-8">
+          <hr className="border-t border-primary-white/20 mb-4" />
+          <div className="text-sm text-center capitalize text-[#D4D4D4] p-4">
             <span>
               &copy; 2025 Aguka. All rights reserved. Building wealth through
               community.

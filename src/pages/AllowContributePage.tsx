@@ -6,7 +6,7 @@ import { useCreateContributionMutation } from "@services/api/ContributionApi";
 import { useGetUsersQuery } from "@services/api/authApi";
 import type { RootState } from "@services/store/store";
 import type { User } from "@models/User";
-import type { ContributionCreate, PaymentMethod } from "types/Contribution";
+import type { ContributionCreate} from "types/Contribution";
 
 const AllowContributionPage: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<string>("");
@@ -14,7 +14,6 @@ const AllowContributionPage: React.FC = () => {
 
   const currentUser = useSelector((state: RootState) => state.auth.user);
   const currentGroupId = currentUser?.groupId || "";
-
 
   const { data: usersData } = useGetUsersQuery();
   const [createContribution] = useCreateContributionMutation();
@@ -68,18 +67,22 @@ const AllowContributionPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#003B42] flex flex-col items-center justify-center p-4 space-y-10">
-      <ActionPromptCard
-        title="Allow a Member to"
-        highlightedText="Contribute"
-        selectOptions={users}
-        selectedValue={selectedUser}
-        onChange={setSelectedUser}
-        onContinue={handleContinue}
-        amount={amount}
-        setAmount={setAmount}
-        placeholder="Choose the member contributing"
-      />
+    <div className="min-h-screen bg-[#003B42] font-poppins">
+      <div className="w-full max-w-7xl mx-auto min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 py-8 sm:py-12">
+        <div className="w-full max-w-md mx-auto">
+          <ActionPromptCard
+            title="Allow a Member to"
+            highlightedText="Contribute"
+            selectOptions={users}
+            selectedValue={selectedUser}
+            onChange={setSelectedUser}
+            onContinue={handleContinue}
+            amount={amount}
+            setAmount={setAmount}
+            placeholder="Choose the member contributing"
+          />
+        </div>
+      </div>
     </div>
   );
 };

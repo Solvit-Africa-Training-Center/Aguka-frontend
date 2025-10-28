@@ -34,9 +34,10 @@ const TreasurerDashboard: React.FC = () => {
   }, [usersData, currentGroupId]);
 
   // ------------------- Contributions -------------------
-  const { data, isLoading: loadingContributions } = useGetGroupContributionsTodayQuery(
-    currentGroupId ? { id: currentGroupId, isCode: false } : skipToken
-  );
+  const { data, isLoading: loadingContributions } =
+    useGetGroupContributionsTodayQuery(
+      currentGroupId ? { id: currentGroupId, isCode: false } : skipToken
+    );
   const contributions: Contribution[] = useMemo(() => {
     if (!data) return [];
     return Array.isArray(data)
@@ -94,41 +95,51 @@ const TreasurerDashboard: React.FC = () => {
   const formattedTotalDividend = `Frw ${totalDividend.toLocaleString()}`;
 
   return (
-    <div className="p-10 bg-[#003B42] min-h-screen text-white font-poppins pt-50">
-      <div className="flex justify-between px-70">
-        <StatCard
-          title="Total contribution"
-          amount={
-            loadingContributions
-              ? "Loading..."
-              : formattedTotalContributionToday
-          }
-          change="+12.5%"
-          isPositive
-        />
+    <div className="min-h-screen bg-[#003B42] text-white font-poppins">
+      <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-7xl mx-auto space-y-6 sm:space-y-8 lg:space-y-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="bg-[#002f32] rounded-xl p-4 shadow-md">
+            <StatCard
+              title="Total contribution"
+              amount={
+                loadingContributions
+                  ? "Loading..."
+                  : formattedTotalContributionToday
+              }
+              change="+12.5%"
+              isPositive
+            />
+          </div>
 
-        <StatCard
-          title="Total loan"
-          amount={loadingApprovedLoans ? "Loading..." : formattedTotalLoan}
-          change="+5.2%"
-          isPositive
-        />
+          <div className="bg-[#002f32] rounded-xl p-4 shadow-md">
+            <StatCard
+              title="Total loan"
+              amount={loadingApprovedLoans ? "Loading..." : formattedTotalLoan}
+              change="+5.2%"
+              isPositive
+            />
+          </div>
 
-        <StatCard
-          title="Total Dividend"
-          amount={loadingDividends ? "Loading..." : formattedTotalDividend}
-          change="-2.1%"
-          isPositive={totalDividend >= 0}
-        />
-      </div>
+          <div className="bg-[#002f32] rounded-xl p-4 shadow-md sm:col-span-2 lg:col-span-1">
+            <StatCard
+              title="Total Dividend"
+              amount={loadingDividends ? "Loading..." : formattedTotalDividend}
+              change="-2.1%"
+              isPositive={totalDividend >= 0}
+            />
+          </div>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <TransactionList />
-        <div className="font-poppins border-white text-[#b2b2b2] mt-17 border border-b-0 overflow-y-scroll scroll-smooth scrollbar-hide shadow-lg w-180 h-120 rounded-2xl p-4">
-          <h2 className="text-left ml-10 text-3xl capitalize p-2 text-[#F9A825] font-bold">
-            community feeds
-          </h2>
-          <div>
+        {/* Transactions and Community Feed - responsive grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-[#002f32] rounded-2xl p-4 shadow-md h-[32rem] overflow-auto">
+            <TransactionList />
+          </div>
+
+          <div className="bg-[#002f32] rounded-2xl p-4 shadow-md h-[32rem] overflow-auto">
+            <h2 className="text-2xl sm:text-3xl capitalize mb-4 text-[#F9A825] font-bold">
+              Community feeds
+            </h2>
             <CommunityFeed />
           </div>
         </div>
