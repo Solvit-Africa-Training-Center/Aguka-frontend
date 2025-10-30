@@ -47,29 +47,49 @@ const AdminTrendChart: React.FC = () => {
   });
 
   return (
-    <div className="p-6 text-white w-full md:w-200 mt-10 ml-10 font-poppins">
-      <div className="ml-5 md:ml-15">
-        <h2 className="text-4xl font-bold">System Usage Trends</h2>
-        <p className="text-gray-300">New users per day (last 7 days)</p>
+    <div className="p-3 sm:p-4 md:p-6 text-white w-full max-w-[95vw] md:max-w-[90vw] lg:max-w-[85vw] mx-auto mt-4 sm:mt-6 md:mt-10 font-poppins">
+      <div className="space-y-1 sm:space-y-2">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center sm:text-left">System Usage Trends</h2>
+        <p className="text-gray-300 text-sm sm:text-base text-center sm:text-left">New users per day (last 7 days)</p>
       </div>
-      <div className="mt-6 h-100 w-full border border-neutral-400 rounded-lg outline-none p-4 md:p-10">
-        <ResponsiveContainer>
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#F4F4F4" />
-            <XAxis dataKey="date" stroke="#ccc" />
-            <YAxis stroke="#ccc" />
-            <Tooltip />
+      <div className="mt-4 sm:mt-5 md:mt-6 h-[300px] sm:h-[400px] md:h-[500px] w-full border border-neutral-400 rounded-lg outline-none p-3 sm:p-4 md:p-6 bg-[#003B42]/50">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#F4F4F4" opacity={0.1} />
+            <XAxis 
+              dataKey="date" 
+              stroke="#ccc" 
+              tick={{ fontSize: 12 }}
+              angle={-45}
+              textAnchor="end"
+              height={60}
+            />
+            <YAxis 
+              stroke="#ccc"
+              tick={{ fontSize: 12 }}
+            />
+            <Tooltip 
+              contentStyle={{ 
+                backgroundColor: '#003B42', 
+                border: '1px solid #ccc',
+                borderRadius: '4px'
+              }}
+              labelStyle={{ color: '#ccc' }}
+              itemStyle={{ color: '#fff' }}
+            />
             <Legend
               formatter={(value) => (
-                <span style={{ color: "#fff" }}>{value}</span>
+                <span style={{ color: "#fff", fontSize: "12px" }}>{value}</span>
               )}
+              wrapperStyle={{ paddingTop: '10px' }}
             />
             <Line
               type="monotone"
               dataKey="users"
               stroke="#F9A825"
-              strokeWidth={3}
-              dot={false}
+              strokeWidth={2}
+              dot={{ stroke: '#F9A825', strokeWidth: 2, r: 4 }}
+              activeDot={{ stroke: '#F9A825', strokeWidth: 2, r: 6 }}
             />
           </LineChart>
         </ResponsiveContainer>

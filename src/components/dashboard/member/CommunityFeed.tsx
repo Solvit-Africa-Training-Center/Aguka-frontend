@@ -125,58 +125,69 @@ const CommunityFeed: React.FC = () => {
   };
 
   return (
-    <div className=" flex flex-col font-poppins    p-6 rounded-tl-xl rounded-tr-xl overflow-y-auto">
+    <div className="flex flex-col font-poppins p-3 sm:p-4 md:p-6 rounded-tl-xl rounded-tr-xl overflow-y-auto max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] lg:max-w-6xl mx-auto w-full">
       {/* Create Post */}
-      <div className="rounded-2xl p-5 flex gap-3 justify-center mb-6">
+      <div className="rounded-2xl p-3 sm:p-4 md:p-5 flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center mb-4 sm:mb-6 bg-primary-400/20 backdrop-blur-sm">
         <textarea
           value={newPostContent}
           onChange={(e) => setNewPostContent(e.target.value)}
           placeholder={`What's on your mind, ${user?.name || "member"}?`}
-          className="w-full h-15 text-white border border-secondary-400 rounded-lg p-3 resize-none focus:ring-2 focus:ring-secondary-400 focus:outline-none"
+          className="w-full min-h-[80px] sm:min-h-[60px] text-white border border-secondary-400 rounded-lg p-2 sm:p-3 resize-none focus:ring-2 focus:ring-secondary-400 focus:outline-none text-sm sm:text-base bg-transparent"
+          aria-label="Create new post"
         />
         <div className="flex justify-end">
           <button
             onClick={handleCreatePost}
-            className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white p-3 text-2xl h-15 rounded-xl transition-all">
+            className="bg-gradient-to-r from-secondary-800 to-secondary-500 hover:from-secondary-600 hover:to-secondary-800 text-white px-4 py-2 sm:px-5 sm:py-3 text-base sm:text-lg md:text-xl rounded-lg sm:rounded-xl transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!newPostContent.trim()}
+          >
             Post
           </button>
         </div>
       </div>
 
       {/* Feeds */}
-      <div className="max-w-5xl w-full mx-auto p-6 sm:p-8 md:p-10 space-y-6 overflow-y-auto max-h-[450px] rounded-xl scrollbar-hide bg-transparent">
+      <div className="w-full mx-auto p-3 sm:p-4 md:p-5 space-y-4 sm:space-y-6 overflow-y-auto max-h-[60vh] sm:max-h-[65vh] md:max-h-[70vh] rounded-xl scrollbar-hide">
         {groupFeeds.map((feed) => (
           <div
             key={feed.id}
-            className="rounded-2xl shadow-md p-5 text-white bg-transparent">
+            className="rounded-xl sm:rounded-2xl shadow-md p-3 sm:p-4 md:p-5 text-white bg-primary-400/30 backdrop-blur-sm hover:bg-primary-400/40 transition-colors"
+          >
             {/* Header */}
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-secondary-300 flex items-center justify-center text-white font-semibold">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-secondary-300 flex items-center justify-center text-white font-semibold text-sm sm:text-base shadow-md">
                 {getInitials(feed.author?.name || "")}
               </div>
               <div>
-                <div className="font-semibold text-white">
+                <div className="font-semibold text-white text-sm sm:text-base">
                   {feed.author?.name || "Unknown"}
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-xs sm:text-sm text-gray-400">
                   {formatDate(feed.createdAt)}
                 </div>
               </div>
             </div>
 
             {/* Content */}
-            <p className="mt-4">{feed.message}</p>
+            <p className="mt-3 sm:mt-4 text-sm sm:text-base break-words">
+              {feed.message}
+            </p>
 
             {/* Actions */}
-            <div className="flex items-center gap-6 mt-4 text-gray-400">
+            <div className="flex items-center gap-4 sm:gap-6 mt-3 sm:mt-4 text-gray-400">
               <button
                 onClick={() => handleLike(feed.id)}
-                className={`flex items-center gap-1 transition ${
+                className={`flex items-center gap-1 transition transform hover:scale-105 active:scale-95 ${
                   likedPosts[feed.id]
                     ? "text-yellow-400"
                     : "hover:text-secondary-400"
-                }`}>
-                <Heart size={18} /> {feed.likes.length}
+                }`}
+                aria-label={`Like post (${feed.likes.length} likes)`}
+              >
+                <Heart className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                <span className="text-sm sm:text-base">
+                  {feed.likes.length}
+                </span>
               </button>
               <button
                 onClick={() =>
@@ -185,29 +196,34 @@ const CommunityFeed: React.FC = () => {
                     [feed.id]: !visibleComments[feed.id],
                   })
                 }
-                className="flex items-center gap-1 hover:text-secondary-400 transition">
-                <MessageCircle size={18} /> Reply
+                className="flex items-center gap-1 hover:text-secondary-400 transition transform hover:scale-105 active:scale-95"
+                aria-label="Reply to post"
+              >
+                <MessageCircle className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+                <span className="text-sm sm:text-base">Reply</span>
               </button>
             </div>
 
             {/* Comments */}
             {visibleComments[feed.id] && (
-              <div className="mt-4 space-y-3">
+              <div className="mt-4 space-y-3 pl-2 sm:pl-3">
                 {feed.comments?.map((comment) => {
                   const authorName = getCommentAuthorName(comment);
                   return (
                     <div
                       key={comment.id}
-                      className="flex items-start gap-3 text-sm">
-                      <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold">
+                      className="flex items-start gap-2 sm:gap-3 text-xs sm:text-sm"
+                    >
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold text-xs sm:text-sm shadow-sm">
                         {getInitials(authorName)}
                       </div>
-                      <div>
-                        <div className="bg-gray-100 text-black rounded-lg p-2">
-                          <span className="font-medium">{authorName}</span>:{" "}
+                      <div className="flex-1 min-w-0">
+                        <div className="bg-gray-100 text-black rounded-lg p-2 sm:p-3 break-words">
+                          <span className="font-medium">{authorName}</span>
+                          <span className="mx-1.5">·</span>
                           {comment.message}
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500 mt-1">
                           {formatDate(comment.createdAt)}
                         </div>
                       </div>
@@ -219,31 +235,39 @@ const CommunityFeed: React.FC = () => {
                 {replyingTo !== feed.id ? (
                   <button
                     onClick={() => setReplyingTo(feed.id)}
-                    className="text-sm text-secondary-400 hover:underline">
+                    className="text-xs sm:text-sm text-secondary-400 hover:text-secondary-500 transition-colors hover:underline transform hover:translate-x-1"
+                    aria-label="Start writing a reply"
+                  >
                     Write a reply...
                   </button>
                 ) : (
-                  <div className="flex items-center gap-2 mt-2">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mt-2">
                     <input
                       type="text"
                       value={replyContent}
                       onChange={(e) => setReplyContent(e.target.value)}
                       placeholder="Write a reply..."
-                      className="flex-1 border border-secondary-400 rounded-lg px-3 py-1 focus:ring-2 focus:ring-secondary-400 focus:outline-none"
+                      className="flex-1 border border-secondary-400 rounded-lg px-3 py-1.5 sm:py-2 focus:ring-2 focus:ring-secondary-400 focus:outline-none text-sm bg-transparent text-white"
+                      aria-label="Reply input"
                     />
-                    <button
-                      onClick={() => handleAddComment(feed.id)}
-                      className="bg-secondary-400 hover:bg-secondary-500 text-white px-3 py-1 rounded-lg text-sm">
-                      Reply
-                    </button>
-                    <button
-                      onClick={() => {
-                        setReplyingTo(null);
-                        setReplyContent("");
-                      }}
-                      className="text-xs text-gray-400 hover:underline">
-                      Cancel
-                    </button>
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <button
+                        onClick={() => handleAddComment(feed.id)}
+                        disabled={!replyContent.trim()}
+                        className="bg-secondary-400 hover:bg-secondary-500 text-white px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition-colors flex-1 sm:flex-none disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95"
+                      >
+                        Reply
+                      </button>
+                      <button
+                        onClick={() => {
+                          setReplyingTo(null);
+                          setReplyContent("");
+                        }}
+                        className="text-xs sm:text-sm text-gray-400 hover:text-gray-300 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>

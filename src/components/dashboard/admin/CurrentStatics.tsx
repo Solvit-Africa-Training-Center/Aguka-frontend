@@ -12,7 +12,6 @@ import type { User } from "types/User";
 import type { Group } from "types/auth";
 
 const CurrentStatistics: React.FC = () => {
-  // ✅ Fetch live data
   const { data: usersResponse } = useGetUsersQuery(undefined, {
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
@@ -27,7 +26,6 @@ const CurrentStatistics: React.FC = () => {
     pollingInterval: 10000,
   });
 
-  // ✅ Handle both array or { data: [] } response
   const userList: User[] = Array.isArray(usersResponse)
     ? usersResponse
     : Array.isArray((usersResponse as any)?.data)
@@ -40,56 +38,75 @@ const CurrentStatistics: React.FC = () => {
     ? (groupsResponse as any).data
     : [];
 
-  // ✅ Calculate values
   const totalUsers = userList.length;
   const totalGroups = groupList.length;
 
-  // Usage = percentage of active users
-  const activeUsers = userList.some(u => "isActive" in u) 
-    ? userList.filter((u: any) => u.isActive).length 
+  const activeUsers = userList.some((u) => "isActive" in u)
+    ? userList.filter((u: any) => u.isActive).length
     : totalUsers;
 
-  const usage = totalUsers > 0 ? Math.round((activeUsers / totalUsers) * 100) : 0;
+  const usage =
+    totalUsers > 0 ? Math.round((activeUsers / totalUsers) * 100) : 0;
 
-  // ✅ Normalize other values to percentage scale for chart
   const maxVal = Math.max(totalUsers, totalGroups, 1);
   const toPercent = (val: number) => Math.round((val / maxVal) * 100);
 
   const data = [
-    { name: "Users", value: toPercent(totalUsers), raw: totalUsers, fill: "#BB7E1C" },
-    { name: "Groups", value: toPercent(totalGroups), raw: totalGroups, fill: "#327835" },
+    {
+      name: "Users",
+      value: toPercent(totalUsers),
+      raw: totalUsers,
+      fill: "#BB7E1C",
+    },
+    {
+      name: "Groups",
+      value: toPercent(totalGroups),
+      raw: totalGroups,
+      fill: "#327835",
+    },
     { name: "Usage", value: usage, raw: `${usage}%`, fill: "#009AAA" },
   ];
 
   return (
-    <div className="flex justify-center items-center w-full pb-20">
-      <div className="grid text-white border border-neutral-400 rounded-lg bg-primary-400 w-full md:w-200 h-auto md:h-150 p-4">
-        <h2 className="text-2xl md:text-4xl font-bold text-center capitalize mt-5 md:mt-10">
+    <div className="flex justify-center items-center w-full p-3 sm:p-4 md:p-6">
+      <div className="text-white border border-neutral-400 rounded-lg bg-primary-400/95 w-full max-w-[95vw] sm:max-w-[85vw] md:max-w-[75vw] lg:max-w-[65vw] p-3 sm:p-4 md:p-6 backdrop-blur-sm shadow-lg">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center capitalize mb-2 sm:mb-4 md:mb-6">
           Current Statistics
         </h2>
 
-        <div className="h-80 w-full">
-          <ResponsiveContainer>
+        <div className="h-[250px] sm:h-[300px] md:h-[350px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
             <RadialBarChart
-              innerRadius="30%"
-              outerRadius="120%"
+              innerRadius={window.innerWidth < 640 ? "25%" : "30%"}
+              outerRadius={window.innerWidth < 640 ? "90%" : "120%"}
               startAngle={90}
               endAngle={-270}
-              barSize={15}
+              barSize={window.innerWidth < 640 ? 12 : 15}
               data={data}
+              margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
             >
               <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-              <RadialBar dataKey="value" background cornerRadius={5} />
+              <RadialBar
+                dataKey="value"
+                background
+                cornerRadius={5}
+                animationBegin={200}
+                animationDuration={1500}
+              />
 
               <Legend
-                iconSize={20}
+                iconSize={window.innerWidth < 640 ? 15 : 20}
                 iconType="circle"
                 layout="vertical"
                 verticalAlign="bottom"
                 align="center"
-                wrapperStyle={{ top: 320, outline: "none" }}
+                wrapperStyle={{
+                  top: window.innerWidth < 640 ? 260 : 320,
+                  outline: "none",
+                  paddingTop: "1rem",
+                }}
                 formatter={(value: string, entry: any) => (
-                  <span className="text-white pl-2 md:pl-5">
+                  <span className="text-white text-sm sm:text-base md:text-lg pl-2 sm:pl-3 md:pl-4">
                     {value} ({entry.payload.raw})
                   </span>
                 )}

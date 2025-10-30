@@ -42,7 +42,7 @@ const RecentActivities: React.FC = () => {
     : [];
 
   const userActivities: Activity[] = userList
-    .filter(u => u.createdAt)
+    .filter((u) => u.createdAt)
     .slice(-5)
     .map((u) => ({
       time: new Date(u.createdAt!).toLocaleString(),
@@ -54,7 +54,7 @@ const RecentActivities: React.FC = () => {
     }));
 
   const groupActivities: Activity[] = groupList
-    .filter(g => g.createdAt)
+    .filter((g) => g.createdAt)
     .slice(-5)
     .map((g) => ({
       time: new Date(g.createdAt!).toLocaleString(),
@@ -70,26 +70,39 @@ const RecentActivities: React.FC = () => {
   );
 
   return (
-    <div className="w-full text-white md:w-150 mt-15">
+    <div className="w-full text-white max-w-[95vw] sm:max-w-[85vw] md:max-w-[600px] mx-auto mt-4 sm:mt-6 md:mt-8">
       {/* Title outside border */}
-      <h2 className="text-4xl font-bold mb-10 text-white">Recent Activities</h2>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8 text-white">
+        Recent Activities
+      </h2>
 
       {/* Scrollable box */}
-      <div className="p-4 rounded-lg border border-secondary-400 bg-primary-400 max-h-96 overflow-y-auto scrollbar-hide space-y-4">
+      <div className="p-3 sm:p-4 md:p-5 rounded-lg border border-secondary-400 bg-primary-400/95 backdrop-blur-sm max-h-[70vh] sm:max-h-[75vh] md:max-h-[80vh] overflow-y-auto scrollbar-hide space-y-3 sm:space-y-4 shadow-lg">
         {activities.map((activity, index) => (
-          <div key={index} className="flex items-start space-x-4">
-            <p className="text-[#929292] min-w-[90px]">{activity.time}</p>
+          <div
+            key={index}
+            className="flex items-start gap-2 sm:gap-3 md:gap-4 p-2 sm:p-3 hover:bg-white/5 rounded-lg transition-colors"
+          >
+            <p className="text-[#929292] text-xs sm:text-sm md:text-base min-w-[80px] sm:min-w-[90px] md:min-w-[100px]">
+              {activity.time}
+            </p>
             <div
-              className={`flex items-center justify-center w-10 h-10 rounded-full ${activity.color}`}
+              className={`flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full ${activity.color} shadow-md`}
             >
-              {activity.icon}
+              <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6">
+                {activity.icon}
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold text-xl">{activity.title}</h3>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-base sm:text-lg md:text-xl truncate">
+                {activity.title}
+              </h3>
               {activity.user && (
-                <p className="text-1xl text-[#F4F4F4]">
+                <p className="text-sm sm:text-base md:text-lg text-[#F4F4F4]">
                   <span className="font-semibold">{activity.user}</span>{" "}
-                  <span className="text-sm text-[#929292]">{activity.description}</span>
+                  <span className="text-xs sm:text-sm text-[#929292]">
+                    {activity.description}
+                  </span>
                 </p>
               )}
             </div>
